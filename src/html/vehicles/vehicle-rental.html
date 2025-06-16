@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Rental - Life For Fun Travel & Tours</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(to bottom right, #eef7fb, #dceffc);
+      color: #333;
+      padding: 30px;
+      animation: fadeInPage 1s ease;
+    }
+    @keyframes fadeInPage {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .vehicle-header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInTitle 1s ease;
+    }
+    @keyframes fadeInTitle {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .vehicle-header h1 {
+      font-size: 2.8rem;
+      color: #004a99;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .vehicle-header p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+    .vehicle-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .vehicle-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .vehicle-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    }
+    .vehicle-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .vehicle-info {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .vehicle-info h2 {
+      color: #004a99;
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    .vehicle-info p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 12px;
+    }
+    .vehicle-card .btn {
+      padding: 12px;
+      background: linear-gradient(45deg, #004a99, #0077cc);
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .vehicle-card .btn:hover {
+      background: linear-gradient(45deg, #0066cc, #0099ff);
+      transform: translateY(-2px);
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      background-color: #f1f6fc;
+      color: #666;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="vehicle-header">
+    <h1>Rent a Vehicle</h1>
+    <p>Choose from a wide range of vehicles for your journey across Nepal.</p>
+  </header>
+
+  <section class="vehicle-list" id="vehicleList"></section>
+
+  <footer>
+    <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const container = document.getElementById("vehicleList");
+
+      // ✅ Currency symbol map
+      const currencySymbols = {
+        'NPR': '₨',
+        'INR': '₹',
+        'USD': '$',
+        'EUR': '€',
+        'DKK': 'kr'
+      };
+
+      try {
+        const res = await fetch("/api/vehicles");
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        const vehicles = await res.json();
+
+        if (!Array.isArray(vehicles) || vehicles.length === 0) {
+          container.innerHTML = "<p>No vehicles available right now. Please check back later!</p>";
+          return;
+        }
+
+        vehicles.forEach((vehicle) => {
+          let imageUrl = "/public/images/vehicles/default.jpg";
+          if (vehicle.images && vehicle.images.length > 0) {
+            imageUrl = `/public/uploads/${vehicle.images[0]}`;
+          }
+
+          const symbol = currencySymbols[vehicle.currency] || '₨'; // Default to NPR
+          const priceText = vehicle.pricePerDay ? `${symbol} ${vehicle.pricePerDay}` : 'N/A';
+
+          const card = document.createElement("div");
+          card.className = "vehicle-card";
+          card.innerHTML = `
+            <img src="${imageUrl}" alt="${vehicle.name}" />
+            <div class="vehicle-info">
+              <h2>${vehicle.name || "Unnamed Vehicle"}</h2>
+              <p>Type: ${vehicle.vehicleType || "Unknown"} | Seats: ${vehicle.seatingCapacity || "N/A"}</p>
+              <p>From ${priceText}</p>
+              <a class="btn" href="./vehicle-detail.html?slug=${vehicle.slug || ""}">View Details</a>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("❌ Error loading vehicles:", err);
+        container.innerHTML = "<p>Failed to load vehicles. Please try again later.</p>";
+      }
+    });
+  </script>
+</body>
+</html>

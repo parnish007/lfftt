@@ -1,0 +1,120 @@
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to bottom right, #edf4ff, #d9e8f5);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Login Container */
+.login-container {
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1);
+  animation: slideFade 0.5s ease-out;
+}
+
+/* Heading */
+.login-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #004a99;
+  margin-bottom: 30px;
+}
+
+/* Form Styling */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #004a99;
+}
+
+.login-form input {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.login-form input:focus {
+  border-color: #004a99;
+  outline: none;
+}
+
+/* Button */
+.login-form button {
+  background-color: #004a99;
+  color: white;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 75, 185, 0.15);
+}
+
+/* Footer Link */
+.login-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.login-footer a {
+  color: #004a99;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 25px;
+  }
+
+  .login-container h1 {
+    font-size: 1.6rem;
+  }
+}
+

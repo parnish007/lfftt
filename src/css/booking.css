@@ -1,0 +1,118 @@
+/* General Reset & Typography */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #f6faff, #dde8f3);
+  color: #333;
+  padding: 30px 15px;
+}
+
+/* Header */
+.booking-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.booking-header h1 {
+  font-size: 2.5rem;
+  color: #004a99;
+  margin-bottom: 10px;
+}
+
+.booking-header p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Booking Form Box */
+.booking-container {
+  max-width: 800px;
+  background-color: #fff;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  animation: slideIn 0.6s ease;
+}
+
+/* Form Elements */
+form#bookingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+form#bookingForm label {
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+form#bookingForm input,
+form#bookingForm select,
+form#bookingForm textarea {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+form#bookingForm input:focus,
+form#bookingForm select:focus,
+form#bookingForm textarea:focus {
+  border-color: #0077cc;
+  outline: none;
+}
+
+/* Button Styling */
+form#bookingForm button {
+  background-color: #004a99;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form#bookingForm button:hover {
+  background-color: #0068d6;
+}
+
+/* Animation */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  .booking-container {
+    padding: 20px;
+  }
+
+  form#bookingForm button {
+    width: 100%;
+  }
+}

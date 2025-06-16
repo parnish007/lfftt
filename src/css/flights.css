@@ -1,0 +1,134 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #f4faff, #dfeffc);
+  color: #333;
+  padding: 20px;
+}
+
+/* Header */
+.flights-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.flights-header h1 {
+  font-size: 2.5rem;
+  color: #004a99;
+}
+
+.flights-header p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* Main Content Container */
+.flights-info {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  align-items: center;
+}
+
+/* Info Box */
+.info-box {
+  flex: 1 1 500px;
+}
+
+.info-box h2 {
+  color: #004a99;
+  margin-bottom: 10px;
+}
+
+.info-box ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  color: #444;
+}
+
+.info-box p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+/* Contact Section */
+.contact-methods {
+  background-color: #f0f6ff;
+  border-left: 4px solid #004a99;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.contact-methods p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+
+.contact-methods .btn {
+  display: inline-block;
+  background-color: #004a99;
+  color: #fff;
+  padding: 12px 20px;
+  margin-top: 12px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.contact-methods .btn:hover {
+  background-color: #0066cc;
+  box-shadow: 0 4px 14px rgba(0, 75, 185, 0.2);
+}
+
+/* Image Section */
+.flight-image {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.flight-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.flight-image img:hover {
+  transform: scale(1.03);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .flights-info {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .flight-image {
+    order: -1;
+  }
+}
+

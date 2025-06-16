@@ -1,0 +1,200 @@
+/* ===== Global Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f4faff, #e6f0ff);
+  color: #222;
+  padding: 40px 20px;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ===== Typography ===== */
+h1, h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #003366;
+  letter-spacing: 1px;
+}
+
+h3 {
+  color: #0055aa;
+  margin: 20px 0 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ===== Shared Buttons ===== */
+.btn {
+  background: linear-gradient(135deg, #004a99, #007acc);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #005fcc, #0088ff);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Admin Login Form ===== */
+.admin-login {
+  max-width: 420px;
+  background: #fff;
+  margin: 100px auto;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  animation: fadeInUp 0.7s ease-out;
+}
+
+.admin-login h1 {
+  margin-bottom: 28px;
+  font-size: 2rem;
+  color: #004a99;
+}
+
+.admin-login input {
+  width: 100%;
+  padding: 16px;
+  margin: 14px 0 24px;
+  border: 1px solid #ccd6e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #f9fbfc;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-login input:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 8px rgba(0, 122, 204, 0.4);
+}
+
+.error {
+  color: #d60000;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* ===== Admin Dashboard Grid ===== */
+.admin-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 26px;
+  max-width: 1200px;
+  margin: 60px auto 30px;
+}
+
+.admin-nav a {
+  background: #ffffff;
+  border: 2px solid #004a99;
+  text-decoration: none;
+  color: #004a99;
+  padding: 30px 20px;
+  border-radius: 16px;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.admin-nav a:hover {
+  background: linear-gradient(135deg, #004a99, #007acc);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Admin Form Layout ===== */
+form {
+  max-width: 900px;
+  background: #ffffff;
+  padding: 50px;
+  margin: 50px auto;
+  border-radius: 20px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  padding: 16px 18px;
+  margin: 16px 0 28px;
+  border: 1px solid #ccd6e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #f9fbfc;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 10px rgba(0, 122, 204, 0.4);
+}
+
+form label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* ===== Content Sections ===== */
+section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px 30px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Animation ===== */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Extras (Modern Touch) ===== */
+.card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: #004a99;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}

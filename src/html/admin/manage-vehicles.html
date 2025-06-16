@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Vehicles</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f0f8ff, #dceffc);
+      margin: 0;
+      padding: 40px 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #004a99;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    form, .edit-form {
+      max-width: 800px;
+      margin: 0 auto 30px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #0077cc;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0,119,204,0.3);
+    }
+    button {
+      background: linear-gradient(45deg, #004a99, #0077cc);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #0066cc, #0099ff);
+      transform: translateY(-2px);
+    }
+    #vehicleList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .vehicle-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 1s ease;
+    }
+    .vehicle-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    }
+    .vehicle-card h3 {
+      margin-bottom: 10px;
+      color: #004a99;
+      font-size: 1.3rem;
+    }
+    .vehicle-card p {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+    .vehicle-card button {
+      margin-right: 8px;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Manage Vehicle Rentals</h1>
+
+  <form id="vehicleForm">
+    <input type="text" name="name" placeholder="Vehicle Name" required />
+    <input type="text" name="vehicleType" placeholder="Type (e.g., SUV, Bus)" required />
+    <input type="number" name="seatingCapacity" placeholder="Seating Capacity" required />
+
+    <!-- ✅ Correct Label + Select for Currency -->
+    <label for="currency">Currency:</label>
+    <select name="currency" id="currency" required>
+      <option value="NPR">NPR (₨)</option>
+      <option value="INR">INR (₹)</option>
+      <option value="USD">USD ($)</option>
+      <option value="EUR">EUR (€)</option>
+      <option value="DKK">DKK (kr)</option>
+    </select>
+
+    <input type="number" name="pricePerDay" placeholder="Rate per Day" required />
+    <textarea name="description" placeholder="Description" required></textarea>
+    <input type="text" name="origin" placeholder="Origin (optional)" />
+    <input type="text" name="destination" placeholder="Destination (optional)" />
+    
+    <label>Upload Images (max 5):</label>
+    <input type="file" name="images" multiple accept="image/*" />
+    
+    <label>Upload Videos (max 3, optional):</label>
+    <input type="file" name="videos" multiple accept="video/*" />
+    
+    <button type="submit">Add Vehicle</button>
+  </form>
+
+  <section id="vehicleList"></section>
+
+  <footer style="text-align:center; padding:20px; margin-top:40px; background:#f1f6fc; color:#666; font-size:0.9rem;">
+    &copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.
+  </footer>
+
+  <script src="../../js/manage-vehicles.js"></script>
+</body>
+</html>

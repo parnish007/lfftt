@@ -1,0 +1,97 @@
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #f1f7ff, #dceffc);
+  padding: 30px;
+  color: #333;
+}
+
+.vehicle-detail-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.vehicle-detail-header h1 {
+  font-size: 2.3rem;
+  color: #004a99;
+}
+
+.vehicle-detail-header p {
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.vehicle-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+.vehicle-image {
+  flex: 1 1 40%;
+}
+
+.vehicle-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-description {
+  flex: 1 1 55%;
+}
+
+.vehicle-description h2 {
+  font-size: 1.5rem;
+  color: #004a99;
+  margin-bottom: 10px;
+}
+
+.vehicle-description ul {
+  list-style: disc;
+  padding-left: 20px;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.vehicle-description p {
+  margin-bottom: 10px;
+}
+
+.vehicle-custom-form label {
+  display: block;
+  font-weight: bold;
+  margin-top: 16px;
+}
+
+.vehicle-custom-form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.vehicle-custom-form button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: #004a99;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.vehicle-custom-form button:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+}
+

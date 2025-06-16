@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customize Tour - Life For Fun Travel & Tours</title>
+  <link rel="stylesheet" href="../../css/customize-tour.css" />
+  <link rel="stylesheet" href="../../css/shared.css" />
+</head>
+
+<body>
+
+  <!-- ✅ Header -->
+  <header class="customize-header">
+    <h1>Customize Your Tour</h1>
+    <p>Tell us what you want — we’ll make it happen.</p>
+  </header>
+
+  <!-- ✅ Form Section -->
+  <section class="customize-form-section">
+    <form id="customTourForm" class="customize-form">
+      <label for="origin">Origin</label>
+      <input type="text" id="origin" name="origin" required />
+
+      <label for="destination">Destination</label>
+      <input type="text" id="destination" name="destination" required />
+
+      <label for="budget">Estimated Budget (NPR)</label>
+      <input type="number" id="budget" name="budget" required placeholder="CONVERT ACCORDING TO CURRENCY...." />
+
+      <label for="days">Number of Days</label>
+      <input type="number" id="days" name="days" required />
+
+      <label for="vehicle">Preferred Vehicle Type</label>
+      <select id="vehicle" name="vehicle" required>
+        <option value="Car">Car</option>
+        <option value="Scorpio">Scorpio</option>
+        <option value="Bus">Bus</option>
+      </select>
+
+      <label for="message">Special Requirements AND CONTACT DETAILS</label>
+      <textarea id="message" name="message" rows="5" placeholder="REQUIREMENTS AND CONTACT"></textarea>
+
+      <button type="submit" class="btn">Submit Request</button>
+    </form>
+  </section>
+
+  <!-- ✅ Footer -->
+  <footer>
+    <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
+  </footer>
+
+  <!-- ✅ JS File -->
+  <script src="../../js/customize.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Node.js dependencies
+/node_modules
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+
+# dotenv environment files
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & IDE files
+.DS_Store
+Thumbs.db
+
+# Build artifacts (if you later add them)
+dist
+build
+
+# Optional:
+# Ignore uploads if you store user-uploaded files locally
+/public/uploads
+

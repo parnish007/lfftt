@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life For Fun Travel & Tours</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <link rel="stylesheet" href="../css/promodesign.css">
+
+
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(to bottom right, #f0f8ff, #e6f2ff);
+  color: #333;
+  padding-top: 80px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #004a99;
+}
+
+/* FIXED NAVBAR GLOW */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to right, #004a99, #005fcc);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left img.logo {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 2px solid #fff;
+}
+
+.navbar-left h1 {
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
+  animation: glowCompany 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowCompany {
+  0% { text-shadow: 0 0 10px #ffffff; }
+  100% { text-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff; }
+}
+
+.navbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+.navbar-links a {
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 8px 0;
+  text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff;
+  transition: text-shadow 0.3s ease;
+}
+
+.navbar-links a:hover {
+  text-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff, 0 0 60px #ffffff;
+}
+
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(to top right, #002244, #004488);
+}
+
+.hero-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: zoomIn 15s ease-in-out infinite alternate;
+  opacity: 0.5;
+  z-index: 1;
+  filter: brightness(0.8);
+}
+
+@keyframes zoomIn {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 20px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.6);
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.btn {
+  background-color: #004a99;
+  color: #fff;
+  padding: 12px 28px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 75, 185, 0.15);
+}
+
+.btn.secondary {
+  background-color: #ccc;
+  color: #222;
+}
+
+.language-switcher {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.language-switcher a {
+  margin: 0 10px;
+  color: #004a99;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.language-switcher a:hover {
+  text-decoration: underline;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #004a99;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: #004a99;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.services, .promo, .location, .reviews {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.service-cards, .review-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.card, .review {
+  background: #fff;
+  width: 260px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover, .review:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  height: 160px;
+  object-fit: cover;
+}
+
+.promo {
+  background: linear-gradient(135deg, #004a99, #0077cc);
+  color: white;
+  border-radius: 16px;
+}
+
+.promo p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.location iframe {
+  border-radius: 12px;
+  width: 100%;
+  height: 300px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+  text-align: center;
+  padding: 30px 10px;
+  background-color: #f0f6fc;
+  color: #888;
+  font-size: 0.95rem;
+  margin-top: 40px;
+}
+
+
+
+@media (max-width: 768px) {
+  .hero-content h1 { font-size: 2rem; }
+  .card, .review { width: 90%; }
+  .navbar-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+}
+</style>
+
+
+</head>
+<body>
+  <!-- NAVBAR -->
+<div class="navbar">
+  <div class="navbar-left">
+    <img src="../../public/images/backgrounds/logo.jpeg" alt="Company Logo" class="logo" />
+    <h1>LIFE FOR FUN TRAVEL AND TOURS</h1>
+  </div>
+  <div class="navbar-links">
+    <a href="index.html">Home</a>
+    <a href="tours/tours.html">Tours</a>
+    <a href="vehicles/vehicle-rental.html">Vehicles</a>
+    <a href="trekking.html">Trekking</a>
+    <a href="flights.html">Flights</a>
+    <a href="booking.html">Booking</a>
+    <a href="saved-tours.html">Saved</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html">Login</a>
+  </div>
+</div>
+  <!-- HERO -->
+ <header class="hero" id="home">
+  <div class="hero-content">
+    <h1>Explore Nepal and the globe With Us</h1>
+    <p>Your journey begins here. Tours, Rentals, Treks & Flights according to your requirements</p>
+    <a href="#services" class="btn">View our Services</a>
+  </div>
+  <img id="hero-img" src="../../public/images/backgrounds/mountain.jpeg" alt="Tour Image" class="hero-bg" />
+</header>
+
+
+  <div class= b"language-switcher">
+    | <a href="languages/index-hindi.html">HI</a> |
+    <a href="languages/index-nepali.html">NE</a>
+  </div>
+
+  <!-- SERVICES -->
+<section class="services" id="services">
+  <h2 class="section-title">Our Services</h2>
+  <div class="service-cards">
+    <div class="card">
+      <img id="tour-img" src="../../public/images/backgrounds/back.png" alt="Tour Image" />
+      <h3>Tour Packages</h3>
+      <p>Curated experiences across Nepal. Family, luxury, adventure & more.</p>
+      <a href="tours/tours.html" class="btn">View Packages</a>
+    </div>
+    <div class="card">
+      <img id="vehicle-img" src="../../public/images/backgrounds/vehicle.png" alt="Vehicle Image" />
+      <h3>Vehicle Rental</h3>
+      <p>Choose from cars, Scorpios, or buses. Customize your route easily.</p>
+      <a href="vehicles/vehicle-rental.html" class="btn">Rent Now</a>
+    </div>
+    <div class="card">
+      <img id="trekking-img" src="../../public/images/backgrounds/trek.png" alt="Trekking" />
+      <h3>Trekking</h3>
+      <p>Need trekking? Contact us directly for personal recommendations.</p>
+      <a href="trekking.html" class="btn secondary">Contact Us</a>
+    </div>
+    <div class="card">
+      <img id="flight-img" src="../../public/images/backgrounds/flight.png" alt="Flights" />
+      <h3>Flight Booking</h3>
+      <p>Domestic flight assistance across Nepal — fast & affordable.</p>
+      <a href="flights.html" class="btn secondary">Inquire</a>
+    </div>
+  </div>
+</section>
+
+
+  <!-- PROMO -->
+<section class="promo" id="promo">
+  <!-- Dynamic banners will load here -->
+</section>
+<script src="/js/promo-banner.js"></script>
+
+
+  <!-- LOCATION -->
+  <section class="location" id="location">
+    <h2 class="section-title">Our Office</h2>
+    <p>tillotama-09, Rupandehi, Nepal</p>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d767.345663896841!2d83.469845498019!3d27.616206163737854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399685006633a899%3A0x39634238eab64563!2sLife%20for%20fun%20travel%20and%20tours%20pvt.ltd!5e0!3m2!1sen!2snp!4v1748004006206!5m2!1sen!2snp" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <h2 class="section-title">What Our Travelers Say</h2>
+    <div class="review-cards">
+      <div class="review"><p>“Best trip of my life! Everything was organized perfectly.”</p><h4>- Ramesh T. (Nepal)</h4></div>
+      <div class="review"><p>“Friendly staff, great service. Highly recommend!”</p><h4>- Anita G. (Nepal)</h4></div>
+      <div class="review"><p>“Absolutely loved the Himalayas trek! Once-in-a-lifetime experience.”</p><h4>- Aarav S. (India)</h4></div>
+      <div class="review"><p>“Seamless booking process and very professional guides.”</p><h4>- Priya K. (India)</h4></div>
+      <div class="review"><p>“The cultural tours were eye-opening and unforgettable.”</p><h4>- Vivek M. (India)</h4></div>
+      <div class="review"><p>“A beautiful adventure, from start to finish. Thank you!”</p><h4>- Lars H. (Denmark)</h4></div>
+      <div class="review"><p>“The vehicle rental was smooth and the car was top-notch.”</p><h4>- Maya R. (Nepal)</h4></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="text-align: center; padding: 20px; background-color: #f0f0f0;">
+    <p style="margin: 5px 0;">&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd. | <a href="contact.html" style="color: #004a99; text-decoration: none;">Contact Us</a></p>
+    <p style="margin: 10px 0;">
+        <a href="https://www.facebook.com/share/19WLN7kqKY/" target="_blank" style="margin: 0 10px; color: #3b5998; font-size: 24px;">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" target="_blank" style="margin: 0 10px; color: #E1306C; font-size: 24px;">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@life.for.fun.trav?_t=ZS-8wcDeAyvUI4&_r=1" target="_blank" style="margin: 0 10px; color: #000000; font-size: 24px;">
+            <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://wa.me/9779844757889" target="_blank" style="margin: 0 10px; color: #25D366; font-size: 24px;">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </p>
+</footer>
+  <!-- CHAT BUTTON -->
+   <!-- WHATSAPP + CHAT BUTTONS -->
+<a href="https://wa.me/9779844757889" class="whatsapp-glow-btn" title="Chat on WhatsApp">
+    <i class="fab fa-whatsapp"></i> WhatsApp
+</a>
+<a href="./chat.html" class="chat-glow-btn" title="Chat with Us">
+    💬 Chat with Us
+</a>   
+<a href="https://invite.viber.com/?g2=YOUR_LINK_HERE" target="_blank"
+   title="Chat on Viber"
+   style="
+     position: fixed;
+     bottom: 90px;
+     right: 20px;
+     background-color: #7360f2;
+     color: #fff;
+     padding: 16px 28px;
+     border-radius: 50px;
+     font-size: 20px;
+     font-weight: 700;
+     text-decoration: none;
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     box-shadow: 0 0 14px #7360f2;
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+     z-index: 1000;
+   "
+   onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 0 24px #7360f2';"
+   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 14px #7360f2';">
+   <i class="fab fa-viber" style="font-size: 26px;"></i> Viber
+</a>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const sections = ["logo", "hero", "tour", "vehicle", "trekking", "flight"];
+  const idMap = {
+    logo: "logo-img",
+    hero: "hero-img",
+    tour: "tour-img",
+    vehicle: "vehicle-img",
+    trekking: "trekking-img",
+    flight: "flight-img"
+  };
+
+  try {
+    const res = await fetch("/api/image-settings");
+    if (!res.ok) throw new Error("Failed to fetch image settings");
+
+    const data = await res.json();
+
+    sections.forEach(section => {
+      const setting = data.find(img => img.section === section);
+      if (setting && setting.mode === "upload" && setting.path) {
+        const imgEl = document.getElementById(idMap[section]);
+        if (imgEl) {
+          imgEl.src = setting.path;
+        }
+      }
+    });
+  } catch (err) {
+    console.error("❌ Failed to load dynamic images:", err);
+  }
+});
+</script>
+</body>
+</html>

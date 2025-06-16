@@ -1,0 +1,156 @@
+/* ===== Reset & Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #f1f7ff, #dceffc);
+  color: #333;
+  padding: 30px;
+}
+
+/* ===== Header ===== */
+.saved-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.saved-header h1 {
+  font-size: 2.5rem;
+  color: #004a99;
+}
+
+.saved-header p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* ===== Saved Tours Section ===== */
+.saved-tours-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ===== Tour Card ===== */
+.tour-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.tour-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.tour-info {
+  padding: 20px;
+  flex: 1;
+}
+
+.tour-info h2 {
+  font-size: 1.3rem;
+  color: #004a99;
+  margin-bottom: 10px;
+}
+
+.tour-info p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.tour-card .actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.tour-card .btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.tour-card .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.btn.primary {
+  background-color: #004a99;
+  color: white;
+}
+
+.btn.secondary {
+  background-color: #ccc;
+  color: #222;
+}
+
+/* ===== Empty State Message ===== */
+#noToursMessage {
+  text-align: center;
+  font-size: 1rem;
+  color: #777;
+  padding: 60px 20px;
+}
+
+#noToursMessage a {
+  color: #004a99;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#noToursMessage a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .tour-card {
+    margin: 0 auto;
+  }
+
+  .tour-info h2 {
+    font-size: 1.1rem;
+  }
+
+  .tour-info p {
+    font-size: 0.9rem;
+  }
+
+  .tour-card .actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+

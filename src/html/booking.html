@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Booking Details</title>
+  <link rel="stylesheet" href="../css/booking.css" />
+
+</head>
+<body>
+
+  <section class="booking-container">
+    <h1>Book Your Trip</h1>
+    <form id="bookingForm">
+      <label>
+        Full Name:
+        <input type="text" name="name" required />
+      </label>
+
+      <label>
+        Email:
+        <input type="email" name="email" required />
+      </label>
+
+      <label>
+        Phone Number:
+        <input type="tel" name="phone" required />
+      </label>
+
+      <label>
+        Package Name:
+        <input type="text" name="package" required />
+      </label>
+
+      <label>
+        Origin:
+        <input type="text" name="origin" required />
+      </label>
+
+      <label>
+        Destination:
+        <input type="text" name="destination" required />
+      </label>
+
+      <label>
+        Number of People:
+        <input type="number" name="people" min="1" required />
+      </label>
+
+      <label>
+        Preferred Dates:
+        <input type="date" name="startDate" required />
+      </label>
+
+      <label>
+        Accommodation Type:
+        <select name="accommodation">
+          <option value="Standard Hotel">Standard Hotel</option>
+          <option value="Deluxe Hotel">Deluxe Hotel</option>
+          <option value="Resort">Resort</option>
+        </select>
+      </label>
+
+      <label>
+        Payment Method:
+        <select name="payment">
+          <option value="Cash">Cash</option>
+          <option value="Card">Card</option>
+          <option value="eSewa">eSewa</option>
+          <option value="Khalti">Khalti</option>
+          <option value="bank">BANKING APP </option>
+        </select>
+      </label>
+
+      <label>
+        Special Notes:
+        <textarea name="notes" rows="4"></textarea>
+      </label>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </section>
+
+  <script src="../../js/booking.js"></script>
+</body>
+</html>

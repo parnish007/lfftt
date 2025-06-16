@@ -1,0 +1,150 @@
+/* General Reset & Setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #f3f9ff, #e5effa);
+  color: #333;
+  padding: 20px;
+}
+
+/* Header */
+.contact-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.contact-header h1 {
+  font-size: 2.5rem;
+  color: #004a99;
+}
+
+.contact-header p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Form & Info Section */
+.contact-form-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Contact Form */
+.contact-form {
+  flex: 1 1 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  margin: 10px 0 4px;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  transition: border 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #004a99;
+  outline: none;
+}
+
+.contact-form button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #004a99;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+}
+
+/* Contact Info */
+.contact-info {
+  flex: 1 1 300px;
+  background: #f5f9ff;
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid #004a99;
+}
+
+.contact-info h3 {
+  margin-bottom: 16px;
+  color: #004a99;
+}
+
+.contact-info p {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Map Section */
+.map-section {
+  max-width: 1100px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.map-section h2 {
+  margin-bottom: 20px;
+  color: #004a99;
+  font-size: 1.8rem;
+}
+
+.map-section iframe {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-form-section {
+    flex-direction: column;
+  }
+
+  .contact-form,
+  .contact-info {
+    flex: 1 1 100%;
+  }
+
+  .map-section iframe {
+    width: 100%;
+    height: 250px;
+  }
+}
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Bookings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f4faff;
+    }
+    h1 {
+      text-align: center;
+      color: #004a99;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th {
+      background: #004a99;
+      color: #fff;
+    }
+    button {
+      padding: 6px 12px;
+      margin-right: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .confirm {
+      background: #28a745;
+      color: white;
+    }
+    .cancel {
+      background: #dc3545;
+      color: white;
+    }
+    .delete {
+  background: #ff6600;
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Manage Customer Bookings</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Package</th>
+        <th>Origin → Destination</th>
+        <th>Dates</th>
+        <th>People</th>
+        <th>Accommodation</th>
+        <th>Payment</th>
+        <th>Notes</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="bookingList">
+      <!-- Filled dynamically by JS -->
+    </tbody>
+  </table>
+
+  <script src="../../js/manage-bookings.js"></script>
+</body>
+</html>

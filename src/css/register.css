@@ -1,0 +1,133 @@
+/* ===== Reset & Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #edf5ff, #d9e8f5);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* ===== Container ===== */
+.register-section {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* ===== Header ===== */
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-header h1 {
+  font-size: 2rem;
+  color: #004a99;
+}
+
+.auth-header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* ===== Form Styling ===== */
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form label {
+  margin: 12px 0 6px;
+  font-weight: bold;
+  color: #004a99;
+}
+
+.register-form input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  transition: border 0.3s ease;
+}
+
+.register-form input:focus {
+  border-color: #0066cc;
+  outline: none;
+}
+
+/* ===== Button ===== */
+.register-form button {
+  background-color: #004a99;
+  color: #fff;
+  padding: 14px 0;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.register-form button:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 75, 185, 0.15);
+}
+
+/* ===== Login Link ===== */
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.login-link a {
+  color: #004a99;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .register-section {
+    padding: 25px;
+  }
+
+  .auth-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .register-form button {
+    width: 100%;
+  }
+}
+

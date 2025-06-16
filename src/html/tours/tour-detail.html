@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tour Details</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
+      color: #333;
+    }
+
+    header.tour-detail-header {
+      background: linear-gradient(135deg, #004a99, #005ecc);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .tour-detail-header h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .tour-detail-header p {
+      font-size: 1.2rem;
+    }
+
+    .summary-box {
+      max-width: 1200px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .summary-card, .price-box {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .summary-card:hover, .price-box:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .summary-card h4 {
+      color: #004a99;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .summary-card p, .summary-card ul {
+      margin: 0;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .summary-card ul {
+      padding-left: 20px;
+      list-style: disc;
+    }
+
+    .price-box {
+      background: linear-gradient(135deg, #008000, #00a000);
+      color: white;
+      text-align: center;
+    }
+
+    .price-box h2 {
+      margin: 15px 0;
+      font-size: 1.8rem;
+    }
+
+    .price-box p {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+
+    .price-box a {
+      display: inline-block;
+      background-color: #ffa500;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .price-box a:hover {
+      background-color: #ff8c00;
+    }
+
+    .overview-section {
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .overview-section h2 {
+      color: #004a99;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    .overview-section p {
+      line-height: 1.7;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    .btn {
+      background-color: #004a99;
+      color: white;
+      border: none;
+      padding: 12px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 25px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #0066cc;
+      transform: translateY(-3px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      margin-top: 50px;
+      background-color: #f1f6fc;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .tour-detail-header h1 {
+        font-size: 2rem;
+      }
+      .price-box h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Header -->
+  <header class="tour-detail-header">
+    <h1 class="tour-title">Tour Package Title</h1>
+    <p class="tour-days">Duration: X Days</p>
+  </header>
+
+  <!-- ✅ Summary Section -->
+  <section class="summary-box">
+    <div class="summary-card">
+      <h4>Duration</h4>
+      <p><span class="tour-duration">X Days</span></p>
+    </div>
+    <div class="summary-card">
+      <h4>Activities</h4>
+      <ul class="activities-list">
+        <!-- Injected by JS -->
+      </ul>
+    </div>
+    <div class="summary-card">
+      <h4>Accommodation</h4>
+      <p><span class="accommodation">Hotel Details Here</span></p>
+    </div>
+    <div class="summary-card">
+      <h4>Meals</h4>
+      <p><span class="meals">Breakfast Only</span></p>
+    </div>
+
+    <!-- ✅ Price Box Updated -->
+    <div class="price-box">
+      <p>Price starts from</p>
+      <h2><span class="currency-symbol">$</span><span class="price-value">400</span></h2>
+      <p>10% Discount for Group</p>
+      <a href="../contact.html">Contact Us</a>
+    </div>
+  </section>
+
+  <!-- ✅ Overview Section -->
+  <section class="overview-section">
+    <h2>Overview & Highlights</h2>
+    <p class="overview">
+      <!-- Injected overview goes here (e.g. cultural, religious, and scenic highlights) -->
+    </p>
+    <a href="../booking.html" class="btn">Book Now</a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
+  </footer>
+
+  <!-- ✅ Sample Script -->
+  <script>
+    // This is dummy data – replace with dynamic tour details later
+    const tour = {
+      price: 400,
+      currency: 'USD'
+    };
+
+    const symbols = {
+      'NPR': '₨',
+      'INR': '₹',
+      'USD': '$',
+      'EUR': '€',
+      'DKK': 'kr'
+    };
+
+    document.querySelector('.price-value').textContent = tour.price;
+    document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '';
+  </script>
+
+  <script src="../../js/tour-detail.js"></script>
+</body>
+</html>

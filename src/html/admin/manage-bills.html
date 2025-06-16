@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Bills | Admin</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #e6f0ff;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #004a99;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .booking-container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 20px;
+    }
+
+    .booking-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .booking-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .booking-card h3 {
+      margin: 0 0 10px;
+      color: #003366;
+    }
+
+    .booking-card p {
+      margin: 6px 0;
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    .actions {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .default-bill {
+      background: #0077cc;
+      color: white;
+    }
+
+    .default-bill:hover {
+      background: #005fa3;
+    }
+
+    .custom-bill {
+      background: #ff944d;
+      color: white;
+    }
+
+    .custom-bill:hover {
+      background: #e67e22;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Accepted Bookings - Generate Bills</h1>
+
+  <div class="booking-container" id="bookingContainer">
+    <!-- Booking cards will be loaded here by manage-bills.js -->
+  </div>
+
+  <footer>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</footer>
+
+  <script src="../../js/manage-bills.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+/* ===== RESET & BASE ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(to bottom right, #f2f9ff, #e2eefc);
+  color: #333;
+  overflow-x: hidden;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 10px;
+  animation: fadeDown 0.6s ease;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.hero .btn {
+  background-color: #004a99;
+  color: #fff;
+  padding: 12px 28px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.hero .btn:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+}
+
+/* ===== LANGUAGE SWITCHER ===== */
+.language-switcher {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.language-switcher a {
+  margin: 0 10px;
+  color: #004a99;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.language-switcher a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SERVICES SECTION ===== */
+.services {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.services h2 {
+  font-size: 2rem;
+  color: #004a99;
+  margin-bottom: 20px;
+}
+
+.service-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.card {
+  background: #fff;
+  width: 250px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeUp 0.6s ease;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+.card h3 {
+  margin: 12px 0;
+  color: #004a99;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.card .btn {
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #004a99;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.card .btn.secondary {
+  background-color: #ccc;
+  color: #222;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* ===== PROMO SECTION ===== */
+.promo {
+  text-align: center;
+  background: #004a99;
+  color: #fff;
+  padding: 40px 20px;
+  margin: 60px 0;
+}
+
+.promo h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+/* ===== LOCATION SECTION ===== */
+.location {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.location iframe {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== REVIEWS ===== */
+.reviews {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.reviews h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #004a99;
+}
+
+.review-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.review {
+  background: #fff;
+  padding: 20px;
+  width: 280px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  font-style: italic;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 30px 10px;
+  background-color: #f0f6fc;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .card {
+    width: 90%;
+  }
+
+  .service-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .location iframe {
+    height: 250px;
+  }
+}
+

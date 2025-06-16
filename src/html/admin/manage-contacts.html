@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Contact Messages</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f0f8ff;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #004a99;
+      margin-bottom: 30px;
+    }
+    #contactList {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .contact-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    .contact-card h3 {
+      color: #004a99;
+      margin-bottom: 10px;
+    }
+    .contact-card p {
+      margin: 5px 0;
+    }
+    .contact-card button {
+      margin-top: 10px;
+      background: #cc0000;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .contact-card button:hover {
+      background: #ff3333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Manage Contact Messages</h1>
+  <section id="contactList"></section>
+  <script src="../../js/manage-contacts.js"></script>
+</body>
+</html>

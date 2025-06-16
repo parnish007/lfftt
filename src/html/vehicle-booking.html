@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Book a Vehicle - Life For Fun</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e6f2ff, #f9fcff);
+      padding: 40px 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #004a99;
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+    }
+    form {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      animation: fadeIn 0.8s ease;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: linear-gradient(to right, #0055cc, #0077ee);
+      color: #fff;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(to right, #0040aa, #0066cc);
+      transform: translateY(-2px);
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #777;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Vehicle Booking Form</h1>
+
+  <form id="vehicleBookingForm">
+    <input type="text" name="name" placeholder="Your Full Name" required />
+    <input type="tel" name="phone" placeholder="Contact Number" required />
+    <input type="email" name="email" placeholder="Email Address" required />
+    <input type="text" name="vehicle" placeholder="Vehicle Name / Type" required />
+    <input type="text" name="origin" placeholder="Pickup Location" required />
+    
+    <select name="tripType" required>
+      <option value="" disabled selected>Select Trip Type</option>
+      <option value="One Way">One Way</option>
+      <option value="Round Trip">Round Trip</option>
+      <option value="Rental">Rental (X Days)</option>
+    </select>
+
+    <input type="date" name="travelDate" required />
+    <input type="number" name="days" placeholder="Total Days (Required for Rental)" min="1" />
+    
+    <textarea name="message" placeholder="Additional Request (Optional)" rows="4"></textarea>
+    <button type="submit">Submit Booking</button>
+  </form>
+
+  <footer>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</footer>
+
+  <!-- ✅ Link to JS -->
+  <script src="../../js/vehicle-booking.js"></script>
+</body>
+</html>

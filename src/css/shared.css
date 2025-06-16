@@ -1,0 +1,123 @@
+/* ===== Base Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: #f8fbff;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ===== Global Containers ===== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3 {
+  font-weight: 600;
+  color: #004a99;
+}
+
+p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  background-color: #004a99;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0066cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 75, 185, 0.15);
+}
+
+.btn.secondary {
+  background-color: #ccc;
+  color: #222;
+}
+
+.btn.secondary:hover {
+  background-color: #bbb;
+}
+
+/* ===== Form Inputs ===== */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #004a99;
+  outline: none;
+}
+
+/* ===== Image Helpers ===== */
+img.responsive {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #888;
+  font-size: 0.95rem;
+  background-color: #f0f6fc;
+  margin-top: 60px;
+}
+
+/* ===== Utilities ===== */
+.text-center {
+  text-align: center;
+}
+
+.mt-20 { margin-top: 20px; }
+.mb-20 { margin-bottom: 20px; }
+.mt-40 { margin-top: 40px; }
+.mb-40 { margin-bottom: 40px; }
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
