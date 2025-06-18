@@ -3,11 +3,14 @@ const mongoose = require('mongoose');
 const billSchema = new mongoose.Schema({
   customerName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   customerEmail: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    lowercase: true
   },
   packageType: {
     type: String,
@@ -16,20 +19,24 @@ const billSchema = new mongoose.Schema({
   },
   packageName: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   origin: {
     type: String,
-    default: ''
+    default: '',
+    trim: true
   },
   destination: {
     type: String,
-    default: ''
+    default: '',
+    trim: true
   },
   price: {
     amount: {
       type: Number,
-      required: true
+      required: true,
+      min: 0
     },
     currency: {
       type: String,
@@ -39,7 +46,8 @@ const billSchema = new mongoose.Schema({
   },
   notes: {
     type: String,
-    default: ''
+    default: '',
+    trim: true
   },
   dateIssued: {
     type: Date,
@@ -55,8 +63,9 @@ const billSchema = new mongoose.Schema({
   },
   filePath: {
     type: String,
-    default: ''
+    default: '',
+    trim: true
   }
-});
+}, { timestamps: true }); // ✅ adds createdAt & updatedAt fields for auditing
 
 module.exports = mongoose.model('Bill', billSchema);

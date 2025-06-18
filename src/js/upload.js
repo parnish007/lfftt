@@ -15,22 +15,22 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const inputs = form.querySelectorAll("input, textarea");
+      const inputs = form.querySelectorAll("input, textarea, select");
       const data = {};
 
       inputs.forEach(input => {
         if (input.type === "file") {
-          const files = input.files;
-          if (files.length > 0) {
-            data.image = files[0].name; // Note: Only filename stored for demo
+          if (input.files.length > 0) {
+            data[input.name || "file"] = Array.from(input.files).map(f => f.name); // Capture all files
           }
         } else {
-          data[input.placeholder || input.name] = input.value;
+          const key = input.name || input.placeholder || `field_${input.type}`;
+          data[key] = input.value.trim();
         }
       });
 
-      console.log(`${type} submitted:`, data);
-      alert(`${type} submitted successfully!`);
+      console.log(`📤 ${type} form submitted:`, data);
+      alert(`✅ ${type} submitted successfully! (Check console for data)`);
       form.reset();
     });
   };

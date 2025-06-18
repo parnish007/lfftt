@@ -5,12 +5,11 @@ exports.createBooking = async (req, res) => {
   try {
     const data = { ...req.body };
 
-    // ✅ Basic sanitization and safety
     data.startDate = new Date(data.startDate);
     data.people = Math.max(1, parseInt(data.people) || 1);
     data.total = Math.max(0, parseFloat(data.total) || 0);
-    data.status = 'pending'; // default status
-    data.billed = false;     // not billed yet
+    data.status = 'Pending'; // ✅ Capitalized to match enum
+    data.billed = false;
 
     const booking = new Booking(data);
     await booking.save();
@@ -60,9 +59,14 @@ exports.cancelBooking = async (req, res) => {
 // ✅ Update booking status (Confirm / Cancel)
 exports.updateBookingStatus = async (req, res) => {
   try {
+    const { status } = req.body;
+    if (!['Pending', 'Confirmed', 'Cancelled'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status value' });
+    }
+
     const updated = await Booking.findByIdAndUpdate(
       req.params.bookingId,
-      { status: req.body.status },
+      { status },
       { new: true }
     );
 
@@ -77,10 +81,10 @@ exports.updateBookingStatus = async (req, res) => {
   }
 };
 
-// ✅ Get only accepted & unbilled bookings (for manage-bills)
+// ✅ Get only confirmed & unbilled bookings (for billing)
 exports.getAcceptedBookingsForBilling = async (req, res) => {
   try {
-    const bookings = await Booking.find({ status: 'accepted', billed: { $ne: true } }).sort({ createdAt: -1 });
+    const bookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } }).sort({ createdAt: -1 });
     res.json(bookings);
   } catch (err) {
     console.error('❌ Error fetching accepted bookings for billing:', err);

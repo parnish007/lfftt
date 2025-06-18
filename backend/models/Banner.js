@@ -14,14 +14,14 @@ const bannerSchema = new mongoose.Schema({
     maxlength: 500
   },
   image: {
-    type: String, // relative path like uploads/banner123.jpg
-    required: false,
-    trim: true
+    type: String, // relative or public path like /uploads/banner123.jpg
+    trim: true,
+    default: '' // ✅ ensures consistency in case no image is uploaded
   },
   createdAt: {
     type: Date,
     default: Date.now
   }
-});
+}, { timestamps: true }); // ✅ include timestamps for better record tracking
 
 module.exports = mongoose.model('Banner', bannerSchema);

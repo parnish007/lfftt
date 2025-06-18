@@ -1,5 +1,3 @@
-// backend/controllers/customizeController.js
-
 const mongoose = require('mongoose');
 const CustomizeRequest = require('../models/CustomizeRequest');
 
@@ -17,15 +15,19 @@ exports.createRequest = async (req, res) => {
       message = '',
     } = req.body;
 
+    if (!origin || !destination || !budget || !days || !vehicle) {
+      return res.status(400).json({ error: 'Origin, destination, budget, days, and vehicle are required.' });
+    }
+
     const request = new CustomizeRequest({
-      name,
-      phone,
-      origin,
-      destination,
-      budget,
-      days,
-      vehicle,
-      message,
+      name: name.trim(),
+      phone: phone.trim(),
+      origin: origin.trim(),
+      destination: destination.trim(),
+      budget: parseFloat(budget),
+      days: parseInt(days, 10),
+      vehicle: vehicle.trim(),
+      message: message.trim(),
       status: 'Pending',
     });
 
@@ -48,7 +50,7 @@ exports.getRequests = async (req, res) => {
   }
 };
 
-// ✅ Update request status (Approve / Reject)
+// ✅ Update request status (Approve / Reject / Pending)
 exports.updateRequestStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -56,6 +58,10 @@ exports.updateRequestStatus = async (req, res) => {
 
     if (!['Approved', 'Rejected', 'Pending'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status value.' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid request ID.' });
     }
 
     const updated = await CustomizeRequest.findByIdAndUpdate(
@@ -75,12 +81,11 @@ exports.updateRequestStatus = async (req, res) => {
   }
 };
 
-// ✅ Delete a request permanently (with ObjectId validation)
+// ✅ Delete a request permanently
 exports.deleteRequest = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // ✅ Validate MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'Invalid request ID.' });
     }

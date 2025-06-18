@@ -28,14 +28,13 @@ async function loadBanners() {
     console.error('❌ Error loading banners:', err);
     const promoSection = document.getElementById('promo');
     if (promoSection) {
-      promoSection.innerHTML = '<p>Failed to load promotions.</p>';
+      promoSection.innerHTML = '<p>❌ Failed to load promotions.</p>';
     }
   }
 }
 
 function buildCarouselDots() {
   const promoSection = document.getElementById('promo');
-
   const existingDots = promoSection.querySelector('.carousel-dots');
   if (existingDots) existingDots.remove();
 
@@ -44,6 +43,7 @@ function buildCarouselDots() {
 
   banners.forEach((_, i) => {
     const dot = document.createElement('span');
+    dot.className = 'dot';
     dot.addEventListener('click', () => goToBanner(i));
     dotsContainer.appendChild(dot);
   });
@@ -54,21 +54,18 @@ function buildCarouselDots() {
 function updateActiveDot() {
   const dots = document.querySelectorAll('.carousel-dots span');
   dots.forEach(dot => dot.classList.remove('active'));
-
   if (dots[currentBannerIndex]) {
     dots[currentBannerIndex].classList.add('active');
   }
 }
 
 function showBanner(index) {
-  const banner = banners[index];
   const promoSection = document.getElementById('promo');
+  const banner = banners[index];
 
   let imagePath = banner.image;
-
-  if (imagePath && imagePath.includes('uploads/')) {
-    const splitPath = imagePath.split('uploads/');
-    imagePath = `uploads/${splitPath[1]}`;
+  if (imagePath && !imagePath.startsWith('/uploads/')) {
+    imagePath = `/${imagePath}`;
   }
 
   const slideContainer = document.createElement('div');
@@ -78,8 +75,8 @@ function showBanner(index) {
     <p>${banner.description || 'Stay tuned for our latest deals and promos.'}</p>
     ${
       imagePath
-        ? `<img src="/${imagePath}" alt="Promo Banner Image" style="max-width: 100%; height: auto;">`
-        : '<p style="color: #ddd;">No image available.</p>'
+        ? `<img src="${imagePath}" alt="Promo Banner Image" style="max-width: 100%; height: auto; border-radius: 8px;">`
+        : '<p style="color: #aaa;">No image available.</p>'
     }
   `;
 

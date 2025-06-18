@@ -22,39 +22,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     const mediaContainer = document.querySelector(".vehicle-media");
 
     if (!titleEl || !descEl || !typeEl || !seatsEl || !priceEl || !notesEl || !mediaContainer) {
-      console.warn("⚠️ One or more required elements are missing on this page.");
+      console.warn("⚠️ Required elements missing in HTML. Please check the markup.");
       return;
     }
 
     titleEl.textContent = vehicle.name || "Untitled Vehicle";
-    descEl.textContent = vehicle.description || "";
+    descEl.textContent = vehicle.description || "No description available.";
     typeEl.textContent = vehicle.vehicleType || "N/A";
     seatsEl.textContent = vehicle.seatingCapacity || "N/A";
-    priceEl.textContent = vehicle.pricePerDay || "N/A";
-    notesEl.textContent = vehicle.notes || "";
+    priceEl.textContent = `${vehicle.currency || 'NPR'} ${vehicle.pricePerDay || 'N/A'}`;
+    notesEl.textContent = vehicle.notes || "No additional notes.";
 
     mediaContainer.innerHTML = "";
 
-    if (vehicle.images && vehicle.images.length > 0) {
+    if (Array.isArray(vehicle.images)) {
       vehicle.images.forEach(img => {
-        const image = document.createElement("img");
-        image.src = img.startsWith('/uploads/') ? img : `/uploads/${img}`;
-        image.alt = vehicle.name || "Vehicle image";
-        image.style.maxWidth = "100%";
-        image.style.borderRadius = "8px";
-        image.style.margin = "10px 0";
-        mediaContainer.appendChild(image);
+        const imageEl = document.createElement("img");
+        imageEl.src = img.startsWith("/uploads/") ? img : `/uploads/${img}`;
+        imageEl.alt = vehicle.name || "Vehicle image";
+        imageEl.style.maxWidth = "100%";
+        imageEl.style.borderRadius = "8px";
+        imageEl.style.margin = "10px 0";
+        mediaContainer.appendChild(imageEl);
       });
     }
 
-    if (vehicle.videos && vehicle.videos.length > 0) {
-      vehicle.videos.forEach(videoPath => {
-        const video = document.createElement("video");
-        video.src = videoPath.startsWith('/uploads/') ? videoPath : `/uploads/${videoPath}`;
-        video.controls = true;
-        video.style.maxWidth = "100%";
-        video.style.margin = "10px 0";
-        mediaContainer.appendChild(video);
+    if (Array.isArray(vehicle.videos)) {
+      vehicle.videos.forEach(video => {
+        const videoEl = document.createElement("video");
+        videoEl.src = video.startsWith("/uploads/") ? video : `/uploads/${video}`;
+        videoEl.controls = true;
+        videoEl.style.maxWidth = "100%";
+        videoEl.style.margin = "10px 0";
+        mediaContainer.appendChild(videoEl);
       });
     }
 

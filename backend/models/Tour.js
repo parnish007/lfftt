@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const tourSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   slug: {
     type: String,
@@ -15,21 +16,20 @@ const tourSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
-  // ✅ Currency field added
   currency: {
     type: String,
     enum: ['NPR', 'INR', 'USD', 'EUR', 'DKK'],
     default: 'NPR'
   },
-
   price: {
     type: Number,
-    required: true
+    required: true,
+    min: 0
   },
   duration: {
     type: Number,
-    required: true
+    required: true,
+    min: 1
   },
   activities: {
     type: [String],
@@ -48,12 +48,8 @@ const tourSchema = new mongoose.Schema({
     maxlength: 2000
   },
   images: [{
-    type: String  // ✅ e.g., uploads/filename.jpg (relative path, no /public)
-  }],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+    type: String // uploads/filename.jpg (relative path)
+  }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Tour', tourSchema);

@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 🔄 Load requests from backend
   async function loadRequests() {
     try {
       const res = await fetch("/api/customize");
@@ -28,12 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const card = document.createElement("div");
         card.className = "request-card";
-        card.style.border = "1px solid #ccc";
-        card.style.padding = "16px";
-        card.style.margin = "12px 0";
-        card.style.borderRadius = "8px";
-        card.style.background = "#f9f9f9";
-        card.style.boxShadow = "0 2px 5px rgba(0,0,0,0.05)";
+        Object.assign(card.style, {
+          border: "1px solid #ccc",
+          padding: "16px",
+          margin: "12px 0",
+          borderRadius: "8px",
+          background: "#f9f9f9",
+          boxShadow: "0 2px 5px rgba(0,0,0,0.05)"
+        });
 
         card.innerHTML = `
           <h3>${req.origin} → ${req.destination}</h3>

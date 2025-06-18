@@ -24,7 +24,11 @@ exports.getVehicleBySlug = async (req, res) => {
     const v = await Vehicle.findOne({ slug: req.params.slug });
     if (v) {
       console.log(`✅ Found vehicle by slug: ${v.slug}`);
-      res.json(v);
+      res.json({
+        ...v.toObject(),
+        images: v.images?.map(f => f.replace(/\\/g, '/')) || [],
+        videos: v.videos?.map(f => f.replace(/\\/g, '/')) || []
+      });
     } else {
       console.warn(`⚠ No vehicle found for slug: ${req.params.slug}`);
       res.status(404).json({ error: "Vehicle not found" });
@@ -45,7 +49,7 @@ exports.createVehicle = async (req, res) => {
       description,
       origin,
       destination,
-      currency // ✅ ADDED
+      currency
     } = req.body;
 
     if (!name || !vehicleType || !seatingCapacity || !pricePerDay) {
@@ -55,24 +59,21 @@ exports.createVehicle = async (req, res) => {
 
     const slug = slugify(name, { lower: true, strict: true });
 
-    const images = req.files?.images?.map(f => f.filename) || [];
-    const videos = req.files?.videos?.map(f => f.filename) || [];
+    const images = req.files?.images?.map(f => `uploads/${f.filename}`) || [];
+    const videos = req.files?.videos?.map(f => `uploads/${f.filename}`) || [];
 
-    console.log("📦 Creating vehicle with:");
-    console.log("Name:", name);
-    console.log("Images:", images);
-    console.log("Videos:", videos);
+    console.log("📦 Creating vehicle with:", { name, images, videos });
 
     const vehicle = new Vehicle({
       slug,
-      name,
-      vehicleType,
+      name: name.trim(),
+      vehicleType: vehicleType.trim(),
       seatingCapacity: Number(seatingCapacity),
-      currency: currency || 'NPR', // ✅ ADDED
+      currency: currency || 'NPR',
       pricePerDay: Number(pricePerDay),
-      description,
-      origin,
-      destination,
+      description: description?.trim(),
+      origin: origin?.trim(),
+      destination: destination?.trim(),
       images,
       videos
     });
@@ -90,10 +91,15 @@ exports.updateVehicle = async (req, res) => {
   try {
     const updateData = {
       ...req.body,
-      currency: req.body.currency || 'NPR' // ✅ Ensure currency is kept or updated
+      currency: req.body.currency || 'NPR'
     };
 
     const updated = await Vehicle.findByIdAndUpdate(req.params.id, updateData, { new: true });
+
+    if (!updated) {
+      return res.status(404).json({ error: "Vehicle not found" });
+    }
+
     console.log(`✅ Vehicle updated: ${updated.name} (ID: ${updated._id})`);
     res.json(updated);
   } catch (err) {
@@ -104,7 +110,10 @@ exports.updateVehicle = async (req, res) => {
 
 exports.deleteVehicle = async (req, res) => {
   try {
-    await Vehicle.findByIdAndDelete(req.params.id);
+    const deleted = await Vehicle.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: "Vehicle not found" });
+    }
     console.log(`✅ Vehicle deleted: ${req.params.id}`);
     res.json({ message: "Vehicle deleted" });
   } catch (err) {

@@ -1,5 +1,3 @@
-// src/js/manage-bookings.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const bookingList = document.getElementById("bookingList");
 
@@ -8,14 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ✅ Load all bookings on page load
   async function loadBookings() {
     try {
       const res = await fetch("/api/bookings");
       if (!res.ok) throw new Error(`Server responded ${res.status}`);
 
       const bookings = await res.json();
-
       bookingList.innerHTML = "";
 
       if (!Array.isArray(bookings) || bookings.length === 0) {
@@ -25,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       bookings.forEach(booking => {
         const row = document.createElement("tr");
-
         row.innerHTML = `
           <td>${booking.name || 'N/A'}</td>
           <td>${booking.email || 'N/A'}</td>
@@ -44,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="delete" onclick="deleteBooking('${booking._id}')">Delete</button>
           </td>
         `;
-
         bookingList.appendChild(row);
       });
     } catch (err) {
@@ -53,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ Update booking status via PATCH request
   window.updateBookingStatus = async (id, status) => {
     if (!confirm(`Are you sure you want to mark this booking as ${status}?`)) return;
 
@@ -78,15 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ Delete booking
   window.deleteBooking = async (id) => {
     if (!confirm("🗑️ Are you sure you want to permanently delete this booking?")) return;
 
     try {
-      const res = await fetch(`/api/bookings/${id}`, {
-        method: "DELETE"
-      });
-
+      const res = await fetch(`/api/bookings/${id}`, { method: "DELETE" });
       const result = await res.json();
 
       if (res.ok) {
@@ -101,6 +90,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // 🔄 Load bookings on initial page load
   loadBookings();
 });

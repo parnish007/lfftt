@@ -8,15 +8,19 @@ const bookingSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    lowercase: true
   },
   phone: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   type: {
     type: String,
@@ -25,19 +29,23 @@ const bookingSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   origin: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   destination: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   vehicle: {
     type: String,
-    default: 'Car'
+    default: 'Car',
+    trim: true
   },
   people: {
     type: Number,
@@ -73,10 +81,11 @@ const bookingSchema = new mongoose.Schema({
   },
   notes: {
     type: String,
-    default: ''
+    default: '',
+    trim: true
   }
 }, {
-  timestamps: true
+  timestamps: true // createdAt, updatedAt fields
 });
 
 module.exports = mongoose.model('Booking', bookingSchema);

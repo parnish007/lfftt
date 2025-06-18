@@ -26,22 +26,23 @@ exports.createVehicleBooking = async (req, res) => {
     }
 
     const booking = new VehicleBooking({
-      name,
-      phone,
-      email,
-      vehicle,
-      origin,
-      tripType,
-      travelDate,
-      days: tripType === 'Rental' ? days : undefined, // Only store days for rental
-      message,
-      status: 'pending' // ✅ Default status
+      name: name.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+      vehicle: vehicle.trim(),
+      origin: origin.trim(),
+      tripType: tripType.trim(),
+      travelDate: new Date(travelDate),
+      days: tripType === 'Rental' ? Number(days) : undefined,
+      message: message ? message.trim() : '',
+      status: 'pending',
+      billed: false
     });
 
     await booking.save();
-    res.status(201).json({ message: '✅ Vehicle booking created successfully.' });
+    res.status(201).json({ message: '✅ Vehicle booking created successfully.', booking });
   } catch (err) {
-    console.error("❌ Error creating booking:", err);
+    console.error("❌ Error creating vehicle booking:", err);
     res.status(500).json({ error: 'Failed to create booking.' });
   }
 };
@@ -52,15 +53,18 @@ exports.getVehicleBookings = async (req, res) => {
     const bookings = await VehicleBooking.find().sort({ createdAt: -1 });
     res.json(bookings);
   } catch (err) {
-    console.error("❌ Error fetching bookings:", err);
+    console.error("❌ Error fetching vehicle bookings:", err);
     res.status(500).json({ error: 'Failed to fetch bookings.' });
   }
 };
 
-// ✅ Get accepted and unbilled bookings (for billing)
+// ✅ Get accepted & unbilled bookings (for billing)
 exports.getAcceptedVehicleBookings = async (req, res) => {
   try {
-    const acceptedBookings = await VehicleBooking.find({ status: 'accepted', billed: { $ne: true } });
+    const acceptedBookings = await VehicleBooking.find({
+      status: 'accepted',
+      billed: { $ne: true }
+    }).sort({ createdAt: -1 });
     res.json(acceptedBookings);
   } catch (err) {
     console.error("❌ Error fetching accepted bookings:", err);
@@ -68,7 +72,7 @@ exports.getAcceptedVehicleBookings = async (req, res) => {
   }
 };
 
-// ✅ Optional: Delete a vehicle booking
+// ✅ Delete a vehicle booking
 exports.deleteVehicleBooking = async (req, res) => {
   try {
     const deleted = await VehicleBooking.findByIdAndDelete(req.params.id);

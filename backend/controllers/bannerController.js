@@ -53,7 +53,7 @@ exports.deleteBanner = async (req, res) => {
       const imagePath = path.join(__dirname, '../../public', banner.image);
       fs.unlink(imagePath, (err) => {
         if (err) {
-          console.warn(`⚠ Failed to delete image file: ${imagePath}`, err.message);
+          console.warn(`⚠ Failed to delete image file: ${imagePath} — ${err.message}`);
         } else {
           console.log(`🗑 Deleted image file: ${imagePath}`);
         }

@@ -1,5 +1,3 @@
-// backend/models/CustomizeRequest.js
-
 const mongoose = require('mongoose');
 
 const customizeRequestSchema = new mongoose.Schema({
@@ -11,22 +9,26 @@ const customizeRequestSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 100
   },
   phone: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 20
   },
   origin: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 100
   },
   destination: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 100
   },
   budget: {
     type: Number,
@@ -45,8 +47,9 @@ const customizeRequestSchema = new mongoose.Schema({
   },
   message: {
     type: String,
-    default: '',
-    trim: true
+    trim: true,
+    maxlength: 2000,
+    default: ''
   },
   status: {
     type: String,

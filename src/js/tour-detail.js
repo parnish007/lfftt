@@ -30,12 +30,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     titleEl.textContent = tour.name || "Untitled Tour";
     daysEl.textContent = `Duration: ${tour.duration || 'N/A'} Days`;
     overviewEl.textContent = tour.overview || "No overview available.";
-    priceEl.textContent = `NPR ${tour.price || '0'}`;
+    priceEl.textContent = `${tour.currency || 'NPR'} ${tour.price || '0'}`;
     accommodationEl.textContent = tour.accommodation || "Standard Hotel";
     mealsEl.textContent = tour.meals || "Breakfast Included";
 
+    // Render activities
     activitiesList.innerHTML = "";
-    if (tour.activities && tour.activities.length > 0) {
+    if (Array.isArray(tour.activities) && tour.activities.length > 0) {
       tour.activities.forEach(activity => {
         const li = document.createElement("li");
         li.textContent = activity;
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       activitiesList.appendChild(li);
     }
 
+    // Render main image
     if (tour.images && tour.images.length > 0) {
       const firstImage = tour.images[0].startsWith('/uploads/')
         ? tour.images[0]
@@ -55,12 +57,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       const imageEl = document.createElement("img");
       imageEl.src = firstImage;
       imageEl.alt = tour.name || "Tour Image";
-      imageEl.style.width = "100%";
-      imageEl.style.maxHeight = "400px";
-      imageEl.style.objectFit = "cover";
-      imageEl.style.borderRadius = "12px";
-      imageEl.style.margin = "20px auto";
-      imageEl.style.display = "block";
+      Object.assign(imageEl.style, {
+        width: "100%",
+        maxHeight: "400px",
+        objectFit: "cover",
+        borderRadius: "12px",
+        margin: "20px auto",
+        display: "block"
+      });
 
       overviewSection.parentNode.insertBefore(imageEl, overviewSection);
     }
@@ -69,4 +73,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("❌ Failed to load tour details:", err);
     alert("Failed to load tour details. Please try again later.");
   }
-}); 
+});

@@ -5,11 +5,10 @@ const path = require('path');
 exports.updateImageSetting = async (req, res) => {
   try {
     const { sectionId } = req.params;
-    const useDefault = req.body.useDefault === 'true'; // For default button
+    const useDefault = req.body.useDefault === 'true';
 
     let update = {};
 
-    // ✅ If admin wants to switch to default image
     if (useDefault) {
       update = {
         useDefault: true,
@@ -17,7 +16,6 @@ exports.updateImageSetting = async (req, res) => {
       };
     }
 
-    // ✅ If admin uploaded a new image
     if (req.file) {
       update = {
         useDefault: false,
@@ -36,14 +34,13 @@ exports.updateImageSetting = async (req, res) => {
     );
 
     res.json({ message: '✅ Image setting updated.', setting: updated });
-
   } catch (err) {
     console.error("❌ Error updating image setting:", err);
     res.status(500).json({ error: "Failed to update image setting." });
   }
 };
 
-// ✅ Get all image settings (for admin or frontend display)
+// ✅ Get all image settings
 exports.getAllImageSettings = async (req, res) => {
   try {
     const settings = await ImageSetting.find({});
@@ -54,7 +51,7 @@ exports.getAllImageSettings = async (req, res) => {
   }
 };
 
-// ✅ Set default paths based on sectionId
+// ✅ Return default path based on sectionId
 function getDefaultPathFor(sectionId) {
   const defaultPaths = {
     hero: '/public/images/backgrounds/mountain.jpeg',

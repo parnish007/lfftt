@@ -1,5 +1,3 @@
-// backend/routes/customize.js
-
 const express = require('express');
 const router = express.Router();
 

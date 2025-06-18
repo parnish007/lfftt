@@ -1,5 +1,3 @@
-// backend/routes/vehicleBookings.js
-
 const express = require('express');
 const router = express.Router();
 const {
@@ -19,7 +17,7 @@ router.get('/', getVehicleBookings);
 
 // ✅ Admin: Get accepted (unbilled) vehicle bookings — for billing
 // GET /api/vehicle-bookings/accepted
-router.get('/accepted', getAcceptedVehicleBookings); // ✅ NEW
+router.get('/accepted', getAcceptedVehicleBookings);
 
 // ✅ Admin: Delete a specific booking
 // DELETE /api/vehicle-bookings/:id

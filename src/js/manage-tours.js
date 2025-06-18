@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ✅ Currency symbols map
   const currencySymbols = {
     'NPR': '₨',
     'INR': '₹',
@@ -16,18 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
     'DKK': 'kr'
   };
 
-  // ✅ Handle form submission
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(form);
-
-    // Convert activities to array
     const activitiesInput = form.elements['activities'].value;
     const activities = activitiesInput
       ? activitiesInput.split(',').map(item => item.trim())
       : [];
-
     formData.set('activities', JSON.stringify(activities));
 
     try {
@@ -36,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await res.json();
         throw new Error(result.error || 'Unknown error');
       }
-
       alert("✅ Tour added!");
       form.reset();
       loadTours();
@@ -46,14 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ Load tours and display them
   async function loadTours() {
     try {
       const res = await fetch("/api/tours");
       if (!res.ok) throw new Error(`Server responded ${res.status}`);
 
       const tours = await res.json();
-
       tourList.innerHTML = "";
 
       if (!Array.isArray(tours) || tours.length === 0) {
@@ -69,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ? (tour.images[0].startsWith('/') ? tour.images[0] : `/uploads/${tour.images[0]}`)
           : "/public/images/tour-packages/default.jpg";
 
-        const symbol = currencySymbols[tour.currency] || '₨'; // default to NPR
+        const symbol = currencySymbols[tour.currency] || '₨';
 
         card.innerHTML = `
           <img src="${imageUrl}" alt="${tour.name || 'Tour'}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;" />
@@ -90,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ Edit tour
   window.editTour = async (id) => {
     const newName = prompt("Enter new tour name:");
     const newPrice = prompt("Enter new price:");
@@ -137,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ Delete tour
   window.deleteTour = async (id) => {
     if (!confirm("Are you sure you want to delete this tour?")) return;
 

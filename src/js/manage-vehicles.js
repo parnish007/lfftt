@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ✅ Currency symbol mapping
   const currencySymbols = {
     'NPR': '₨',
     'INR': '₹',
@@ -16,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     'DKK': 'kr'
   };
 
-  // ✅ Submit new vehicle
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
@@ -26,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         body: formData
       });
+
       if (!res.ok) {
         const result = await res.json();
         throw new Error(result.error || 'Unknown error');
@@ -35,12 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset();
       loadVehicles();
     } catch (err) {
-      console.error("Error adding vehicle:", err);
+      console.error("❌ Error adding vehicle:", err);
       alert("❌ Failed to add vehicle.");
     }
   });
 
-  // ✅ Load existing vehicles
   async function loadVehicles() {
     try {
       const res = await fetch("/api/vehicles");
@@ -56,15 +54,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       vehicles.forEach(v => {
         const imageUrl = v.images && v.images.length > 0
-          ? `/public/uploads/${v.images[0]}`
+          ? (v.images[0].startsWith('/') ? v.images[0] : `/uploads/${v.images[0]}`)
           : '/public/images/vehicles/default.jpg';
 
         const symbol = currencySymbols[v.currency] || '₨';
 
         const card = document.createElement("div");
         card.className = "vehicle-card";
+        card.style.border = "1px solid #ddd";
+        card.style.borderRadius = "8px";
+        card.style.padding = "10px";
+        card.style.marginBottom = "10px";
+        card.style.backgroundColor = "#f9f9f9";
+
         card.innerHTML = `
-          <img src="${imageUrl}" alt="${v.name || 'Vehicle'}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;" />
+          <img src="${imageUrl}" alt="${v.name || 'Vehicle'}" style="width:100%; height:150px; object-fit:cover; border-radius:6px; margin-bottom:8px;" />
           <h3>${v.name || 'N/A'}</h3>
           <p>Type: ${v.vehicleType || 'N/A'} | Seats: ${v.seatingCapacity || 'N/A'}</p>
           <p>From ${symbol} ${v.pricePerDay || 'N/A'}</p>
@@ -75,12 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
         vehicleList.appendChild(card);
       });
     } catch (err) {
-      console.error("Error loading vehicles:", err);
+      console.error("❌ Error loading vehicles:", err);
       vehicleList.innerHTML = "<p style='grid-column: 1 / -1; text-align: center;'>Failed to load vehicles. Please try again later.</p>";
     }
   }
 
-  // ✅ Edit a vehicle
   window.editVehicle = async (id) => {
     const newName = prompt("Enter new vehicle name:");
     const newPrice = prompt("Enter new price per day:");
@@ -89,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newDescription = prompt("Enter new description:");
 
     if (!newName || !newPrice || !newSeats || !newDescription) {
-      alert("⚠ Update cancelled: all fields are required.");
+      alert("⚠ Update cancelled: All fields are required.");
       return;
     }
 
@@ -114,14 +117,13 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("✅ Vehicle updated!");
       loadVehicles();
     } catch (err) {
-      console.error("Error updating vehicle:", err);
+      console.error("❌ Error updating vehicle:", err);
       alert("❌ Failed to update vehicle.");
     }
   };
 
-  // ✅ Delete a vehicle
   window.deleteVehicle = async (id) => {
-    if (!confirm("Are you sure you want to delete this vehicle?")) return;
+    if (!confirm("🗑 Are you sure you want to delete this vehicle?")) return;
 
     try {
       const res = await fetch(`/api/vehicles/${id}`, { method: "DELETE" });
@@ -133,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("✅ Vehicle deleted!");
       loadVehicles();
     } catch (err) {
-      console.error("Error deleting vehicle:", err);
+      console.error("❌ Error deleting vehicle:", err);
       alert("❌ Failed to delete vehicle.");
     }
   };

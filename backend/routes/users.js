@@ -1,5 +1,3 @@
-// backend/routes/users.js
-
 const express = require('express');
 const router = express.Router();
 const {
@@ -22,4 +20,3 @@ router.get('/', getAllUsers);
 router.delete('/:id', deleteUser);
 
 module.exports = router;
-

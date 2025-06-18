@@ -19,11 +19,11 @@ const currencySymbols = {
 // 📥 Get all accepted bookings not yet billed
 exports.getBillableRequests = async (req, res) => {
   try {
-    const bookings = await Booking.find({ status: 'accepted', billed: { $ne: true } });
+    const bookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } }); // ✅ Use 'Confirmed' for billing
 
     const result = await Promise.all(bookings.map(async (b) => {
-      let dataSource = b.type === 'Vehicle' ? Vehicle : Tour;
-      let item = await dataSource.findOne({ title: b.title });
+      const dataSource = b.type === 'Vehicle' ? Vehicle : Tour;
+      const item = await dataSource.findOne({ title: b.title });
 
       return {
         _id: b._id,
@@ -61,8 +61,12 @@ exports.sendBillToUser = async (req, res) => {
     const price = item?.pricePerDay || item?.price || 0;
 
     const billId = `LFFTT-${booking._id}-${Date.now()}`;
+    const pdfDir = path.join(__dirname, '../../public/bills'); // ✅ Save in public/bills so it's accessible
+    if (!fs.existsSync(pdfDir)) {
+      fs.mkdirSync(pdfDir, { recursive: true });
+    }
+    const pdfPath = path.join(pdfDir, `bill-${billId}.pdf`);
 
-    const pdfPath = path.join(__dirname, '../../bills', `bill-${billId}.pdf`);
     const doc = new PDFDocument();
     const stream = fs.createWriteStream(pdfPath);
     doc.pipe(stream);
@@ -84,7 +88,6 @@ exports.sendBillToUser = async (req, res) => {
     doc.end();
 
     stream.on('finish', async () => {
-      // Send email with attachment
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -93,24 +96,22 @@ exports.sendBillToUser = async (req, res) => {
         }
       });
 
-      const mailOptions = {
+      await transporter.sendMail({
         from: `"Life For Fun Travel" <${process.env.EMAIL_USER}>`,
         to: booking.email,
         subject: 'Your Travel Bill from Life For Fun Travel',
         text: 'Please find your attached bill below. Thank you!',
         attachments: [{ filename: `bill-${billId}.pdf`, path: pdfPath }]
-      };
-
-      await transporter.sendMail(mailOptions);
+      });
 
       await Bill.create({
         customerName: booking.name,
-        email: booking.email,
+        customerEmail: booking.email,
         packageName: booking.title,
-        amount: price,
-        currency: currency,
+        price: { amount: price, currency: currency },
         billId: billId,
-        type: 'default'
+        packageType: booking.type,
+        filePath: `/bills/bill-${billId}.pdf`
       });
 
       booking.billed = true;
@@ -125,7 +126,7 @@ exports.sendBillToUser = async (req, res) => {
   }
 };
 
-// 📤 Send custom bill (manual by admin)
+// 📤 Send custom bill
 exports.sendCustomBill = async (req, res) => {
   try {
     const { customerName, customerEmail, packageName, amount, currency, description } = req.body;
@@ -136,8 +137,12 @@ exports.sendCustomBill = async (req, res) => {
 
     const currencySymbol = currencySymbols[currency] || '₨';
     const billId = `CUSTOM-${Date.now()}`;
+    const pdfDir = path.join(__dirname, '../../public/bills');
+    if (!fs.existsSync(pdfDir)) {
+      fs.mkdirSync(pdfDir, { recursive: true });
+    }
+    const pdfPath = path.join(pdfDir, `custom-bill-${billId}.pdf`);
 
-    const pdfPath = path.join(__dirname, '../../bills', `custom-bill-${billId}.pdf`);
     const doc = new PDFDocument();
     const stream = fs.createWriteStream(pdfPath);
     doc.pipe(stream);
@@ -170,24 +175,25 @@ exports.sendCustomBill = async (req, res) => {
         }
       });
 
-      const mailOptions = {
+      await transporter.sendMail({
         from: `"Life For Fun Travel" <${process.env.EMAIL_USER}>`,
         to: customerEmail,
         subject: 'Custom Travel Bill - Life For Fun Travel',
         text: 'Attached is your custom bill. Thank you!',
         attachments: [{ filename: `custom-bill-${billId}.pdf`, path: pdfPath }]
-      };
-
-      await transporter.sendMail(mailOptions);
+      });
 
       await Bill.create({
         customerName,
-        email: customerEmail,
+        customerEmail,
         packageName,
-        amount,
-        currency,
+        price: { amount, currency },
         billId,
-        type: 'custom'
+        packageType: 'Custom',
+        filePath: `/bills/custom-bill-${billId}.pdf`,
+        adminEdited: true,
+        isCustom: true,
+        notes: description || ''
       });
 
       res.json({ message: "✅ Custom bill sent to customer!" });

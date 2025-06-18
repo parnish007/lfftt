@@ -5,40 +5,45 @@ const vehicleSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    lowercase: true
+    lowercase: true,
+    trim: true
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    maxlength: 150
   },
   vehicleType: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   seatingCapacity: {
     type: Number,
-    required: true
+    required: true,
+    min: 1
   },
-
-  // ✅ Added currency field
   currency: {
     type: String,
     enum: ['NPR', 'INR', 'USD', 'EUR', 'DKK'],
     default: 'NPR'
   },
-
   pricePerDay: {
     type: Number,
-    required: true
+    required: true,
+    min: 0
   },
   images: [
     {
-      type: String // relative image filenames, e.g., 171xxx-vehicle.png
+      type: String,
+      trim: true // e.g., uploads/filename.jpg
     }
   ],
   videos: [
     {
-      type: String // relative video filenames, e.g., 171xxx-video.mp4
+      type: String,
+      trim: true // e.g., uploads/video.mp4
     }
   ],
   available: {
@@ -47,13 +52,16 @@ const vehicleSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    maxlength: 1000
+    maxlength: 1000,
+    trim: true
   },
   origin: {
-    type: String
+    type: String,
+    trim: true
   },
   destination: {
-    type: String
+    type: String,
+    trim: true
   },
   availableDates: [
     {

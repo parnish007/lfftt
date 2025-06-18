@@ -1,5 +1,3 @@
-// /src/js/vehicle-booking.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("vehicleBookingForm");
 
@@ -8,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ✅ USER SIDE: Submit booking form
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -25,22 +22,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const res = await fetch("/api/vehicle-bookings", {
+      const response = await fetch("/api/vehicle-bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
       });
 
-      const result = await res.json();
+      const result = await response.json();
 
-      if (res.ok) {
+      if (response.ok) {
         alert("✅ Vehicle booking submitted successfully!");
         form.reset();
       } else {
+        console.warn("❌ Booking failed:", result.error || "Unknown error");
         alert("❌ Booking failed: " + (result.error || "Unknown error"));
       }
+
     } catch (err) {
-      console.error("❌ Booking error:", err);
+      console.error("❌ Booking submission error:", err);
       alert("❌ Failed to submit booking. Please try again.");
     }
   });

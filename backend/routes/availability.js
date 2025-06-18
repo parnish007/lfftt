@@ -1,14 +1,11 @@
-// backend/routes/availability.js
-
 const express = require('express');
 const router = express.Router();
 const { updateAvailability, getAvailability } = require('../controllers/availabilityController');
 
-// PUT /api/availability/:type/:id
-router.put('/:type/:id', updateAvailability); // type = tour or vehicle
+// ✅ PUT /api/availability/:type/:id — Update availability (type = tour or vehicle)
+router.put('/:type/:id', updateAvailability);
 
-// GET /api/availability/:type/:id
+// ✅ GET /api/availability/:type/:id — Get availability info
 router.get('/:type/:id', getAvailability);
 
 module.exports = router;
-

@@ -26,7 +26,7 @@ exports.getTourBySlug = async (req, res) => {
   }
 };
 
-// ✅ Create a new tour with currency
+// ✅ Create a new tour
 exports.createTour = async (req, res) => {
   try {
     const images = req.files
@@ -37,10 +37,14 @@ exports.createTour = async (req, res) => {
       name: req.body.name.trim(),
       slug: slugify(req.body.name, { lower: true, strict: true }),
       description: req.body.description,
-      currency: req.body.currency || 'NPR', // ✅ currency from form
+      currency: req.body.currency || 'NPR',
       price: Number(req.body.price),
       duration: Number(req.body.duration),
-      activities: JSON.parse(req.body.activities || '[]'),
+      activities: req.body.activities
+        ? Array.isArray(req.body.activities)
+          ? req.body.activities
+          : req.body.activities.split(',').map(a => a.trim())
+        : [],
       accommodation: req.body.accommodation,
       meals: req.body.meals,
       overview: req.body.overview,
@@ -56,19 +60,19 @@ exports.createTour = async (req, res) => {
   }
 };
 
-// ✅ Update an existing tour with currency
+// ✅ Update a tour
 exports.updateTour = async (req, res) => {
   try {
     const updateData = {
       ...req.body,
-      currency: req.body.currency || 'NPR', // ✅ added
+      currency: req.body.currency || 'NPR',
       price: Number(req.body.price),
       duration: Number(req.body.duration),
-      activities: Array.isArray(req.body.activities)
-        ? req.body.activities
-        : typeof req.body.activities === 'string'
-          ? req.body.activities.split(',').map(item => item.trim())
-          : []
+      activities: req.body.activities
+        ? Array.isArray(req.body.activities)
+          ? req.body.activities
+          : req.body.activities.split(',').map(a => a.trim())
+        : []
     };
 
     const updatedTour = await Tour.findByIdAndUpdate(req.params.id, updateData, { new: true });
