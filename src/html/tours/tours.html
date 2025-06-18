@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tour Packages - Life For Fun Travel & Tours</title>
-  <link rel="stylesheet" href="../../css/tours.css" />
-  <link rel="stylesheet" href="../../css/shared.css" />
+  <link rel="stylesheet" href="/css/tours.css" />
+  <link rel="stylesheet" href="/css/shared.css" />
   <style>
     .tour-card {
       background: #fff;
@@ -61,7 +61,7 @@
   <!-- ✅ Customize Button -->
   <section class="customize-call">
     <h2>Didn't Find What You’re Looking For?</h2>
-    <a href="./customize-tour.html" class="btn secondary">Customize Your Tour</a>
+    <a href="/customize-tour.html" class="btn secondary">Customize Your Tour</a>
   </section>
 
   <!-- ✅ Footer -->
@@ -69,7 +69,7 @@
     <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
   </footer>
 
-   <script>
+  <script>
   document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("toursList");
 
@@ -83,22 +83,21 @@
       }
 
       tours.forEach(tour => {
-        // ✅ Construct frontend-accessible image URL
         const rawPath = tour.images && tour.images.length > 0 ? tour.images[0] : null;
         const imageUrl = rawPath
           ? (rawPath.startsWith('/uploads/') ? rawPath : `/uploads/${rawPath}`)
-          : "/public/images/tour-packages/default.jpg";
+          : "/images/tour-packages/default.jpg";
 
         const card = document.createElement("div");
         card.className = "tour-card";
         card.innerHTML = `
-          <img src="${imageUrl}" alt="${tour.name}" onerror="this.src='/public/images/tour-packages/default.jpg'" />
+          <img src="${imageUrl}" alt="${tour.name}" onerror="this.src='/images/tour-packages/default.jpg'" />
           <div class="tour-info">
             <h2>${tour.name}</h2>
             <p>${tour.description}</p>
             <p><strong>Price:</strong> NPR ${tour.price}</p>
             <p><strong>Duration:</strong> ${tour.duration} days</p>
-            <a class="btn" href="./tour-detail.html?slug=${tour.slug}">View Details</a>
+            <a class="btn" href="/tour-detail.html?slug=${tour.slug}">View Details</a>
           </div>
         `;
 

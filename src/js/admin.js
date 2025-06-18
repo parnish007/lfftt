@@ -2,7 +2,7 @@
   const role = localStorage.getItem("role");
   if (role !== "admin") {
     alert("Access denied. Please login as admin.");
-    window.location.href = "../login.html";
+    window.location.href = "/html/login.html"; // ✅ Use root-relative path for reliability on Render or similar
   }
 })();
 
@@ -16,7 +16,7 @@ const createLogoutButton = () => {
   logoutBtn.onclick = () => {
     localStorage.removeItem("role");
     alert("Logged out successfully.");
-    window.location.href = "../login.html";
+    window.location.href = "/html/login.html"; // ✅ Consistent root-relative path
   };
   document.body.appendChild(logoutBtn);
 };
@@ -25,12 +25,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   createLogoutButton();
 
   const requestList = document.getElementById("requestList");
+  if (!requestList) {
+    console.error("❌ requestList container missing in HTML");
+    return;
+  }
 
   try {
     const res = await fetch("/api/customize");
+    if (!res.ok) throw new Error(`Server responded ${res.status}`);
+    
     const requests = await res.json();
 
-    if (requests.length === 0) {
+    if (!Array.isArray(requests) || requests.length === 0) {
       requestList.innerHTML = "<p>No custom tour requests yet.</p>";
     } else {
       requestList.innerHTML = requests.map(req => `
@@ -40,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <p><strong>Budget:</strong> NPR ${req.budget}</p>
           <p><strong>Days:</strong> ${req.days}, <strong>Vehicle:</strong> ${req.vehicle}</p>
           <p><strong>Message:</strong> ${req.message || 'No special requests'}</p>
-          <p><strong>Status:</strong> ${req.status}</p>
+          <p><strong>Status:</strong> ${req.status || 'Pending'}</p>
         </div>
       `).join("");
     }

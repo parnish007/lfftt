@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Book a Vehicle - Life For Fun</title>
   <style>
     body {
@@ -68,7 +69,7 @@
     <input type="email" name="email" placeholder="Email Address" required />
     <input type="text" name="vehicle" placeholder="Vehicle Name / Type" required />
     <input type="text" name="origin" placeholder="Pickup Location" required />
-    
+
     <select name="tripType" required>
       <option value="" disabled selected>Select Trip Type</option>
       <option value="One Way">One Way</option>
@@ -78,14 +79,14 @@
 
     <input type="date" name="travelDate" required />
     <input type="number" name="days" placeholder="Total Days (Required for Rental)" min="1" />
-    
+
     <textarea name="message" placeholder="Additional Request (Optional)" rows="4"></textarea>
     <button type="submit">Submit Booking</button>
   </form>
 
   <footer>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</footer>
 
-  <!-- ✅ Link to JS -->
-  <script src="../../js/vehicle-booking.js"></script>
+  <!-- ✅ Link to JS (updated for deployment) -->
+  <script src="/js/vehicle-booking.js"></script>
 </body>
 </html>

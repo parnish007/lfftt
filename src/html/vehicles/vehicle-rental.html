@@ -117,7 +117,6 @@
     document.addEventListener("DOMContentLoaded", async () => {
       const container = document.getElementById("vehicleList");
 
-      // ✅ Currency symbol map
       const currencySymbols = {
         'NPR': '₨',
         'INR': '₹',
@@ -137,12 +136,12 @@
         }
 
         vehicles.forEach((vehicle) => {
-          let imageUrl = "/public/images/vehicles/default.jpg";
+          let imageUrl = "/images/vehicles/default.jpg";
           if (vehicle.images && vehicle.images.length > 0) {
-            imageUrl = `/public/uploads/${vehicle.images[0]}`;
+            imageUrl = `/uploads/${vehicle.images[0]}`;
           }
 
-          const symbol = currencySymbols[vehicle.currency] || '₨'; // Default to NPR
+          const symbol = currencySymbols[vehicle.currency] || '₨';
           const priceText = vehicle.pricePerDay ? `${symbol} ${vehicle.pricePerDay}` : 'N/A';
 
           const card = document.createElement("div");
@@ -153,7 +152,7 @@
               <h2>${vehicle.name || "Unnamed Vehicle"}</h2>
               <p>Type: ${vehicle.vehicleType || "Unknown"} | Seats: ${vehicle.seatingCapacity || "N/A"}</p>
               <p>From ${priceText}</p>
-              <a class="btn" href="./vehicle-detail.html?slug=${vehicle.slug || ""}">View Details</a>
+              <a class="btn" href="/vehicle-detail.html?slug=${vehicle.slug || ""}">View Details</a>
             </div>
           `;
           container.appendChild(card);

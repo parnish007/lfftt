@@ -141,7 +141,7 @@
       <h3>Seats: <span class="vehicle-seats"></span></h3>
       <h3>Price per Day: <span class="vehicle-currency"></span><span class="vehicle-price"></span></h3>
       <p class="vehicle-notes"></p>
-      <a href="../../html/vehicle-booking.html" class="book-now-btn">Book Now</a>
+      <a href="/vehicle-booking.html" class="book-now-btn">Book Now</a>
     </div>
   </section>
 
@@ -184,7 +184,7 @@
         if (vehicle.images && vehicle.images.length > 0) {
           vehicle.images.forEach(imgPath => {
             const img = document.createElement('img');
-            img.src = `/public/uploads/${imgPath}`;
+            img.src = `/uploads/${imgPath}`;
             img.alt = vehicle.name;
             slideTrack.appendChild(img);
           });
@@ -192,7 +192,7 @@
           if (vehicle.images.length > 1) {
             vehicle.images.forEach(imgPath => {
               const img = document.createElement('img');
-              img.src = `/public/uploads/${imgPath}`;
+              img.src = `/uploads/${imgPath}`;
               img.alt = vehicle.name;
               slideTrack.appendChild(img);
             });
