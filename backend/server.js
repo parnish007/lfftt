@@ -19,11 +19,11 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static assets (images, uploads, PDFs, etc.)
+// ✅ Serve static assets
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
-app.use('/bills', express.static(path.join(__dirname, '../public/bills'))); // ✅ PDF access
-app.use(express.static(path.join(__dirname, '../src')));
+app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
+app.use(express.static(path.join(__dirname, '../src/html'))); // Serve frontend
 
 // ✅ Database connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -45,14 +45,22 @@ app.use('/api/banners', require('./routes/banners'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/vehicle-bookings', require('./routes/vehicleBookings'));
 app.use('/api/image-settings', require('./routes/imageSettings'));
-app.use('/api/bills', require('./routes/bills')); // ✅ NEW: Bills API
+app.use('/api/bills', require('./routes/bills'));
 
 // ✅ WebSocket setup
 require('./socket')(io);
 
-// ✅ Root route
+// ✅ Root route → Serve index.html
 app.get('/', (req, res) => {
-  res.send('Life For Fun API is running.');
+  res.sendFile(path.join(__dirname, '../src/html/index.html'));
+});
+
+// ✅ Handle 404 for unknown API routes
+app.use((req, res, next) => {
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(404).json({ error: 'API route not found' });
+  }
+  next();
 });
 
 // ✅ Start server
