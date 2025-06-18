@@ -56,14 +56,14 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Fallback for frontend pages (e.g. /tours/tours.html)
+// ✅ Fallback for frontend pages (supports Render serving HTML like vehicle-detail.html)
 app.get('*', (req, res, next) => {
-  const requestedPath = req.path.endsWith('.html') ? req.path : `${req.path}.html`;
-  const filePath = path.join(__dirname, '../src/html', requestedPath);
+  const cleanPath = req.path.replace(/^\/+/, '');
+  const filePath = path.join(__dirname, '../src/html', cleanPath);
 
   res.sendFile(filePath, (err) => {
     if (err) {
-      next();  // Pass to 404 handler if file not found
+      next();  // Pass to 404 handler
     }
   });
 });
