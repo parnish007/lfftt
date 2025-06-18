@@ -19,12 +19,12 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static assets (public and frontend)
+// ✅ Serve static assets
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
-app.use(express.static(path.join(__dirname, '../src'))); // serves html/css/js directly
+app.use(express.static(path.join(__dirname, '../src')));
 
 // ✅ Database connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -51,20 +51,16 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket setup
 require('./socket')(io);
 
-// ✅ Root route serves index.html
+// ✅ Root serves index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Fallback for frontend pages (supports Render serving HTML like vehicle-detail.html)
-app.get('*', (req, res, next) => {
-  const cleanPath = req.path.replace(/^\/+/, '');
-  const filePath = path.join(__dirname, '../src/html', cleanPath);
-
+// ✅ Update: Serve clean .html files from /src/html
+app.get('/*.html', (req, res, next) => {
+  const filePath = path.join(__dirname, '../src/html', req.path);
   res.sendFile(filePath, (err) => {
-    if (err) {
-      next();  // Pass to 404 handler
-    }
+    if (err) next();
   });
 });
 
