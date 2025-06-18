@@ -24,5 +24,5 @@ build
 
 # Optional:
 # Ignore uploads if you store user-uploaded files locally
-/public/uploads
+#/public/uploads
 
