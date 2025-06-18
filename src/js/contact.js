@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contactForm');
 
+  if (!form) {
+    console.warn("⚠️ contactForm not found on this page.");
+    return;
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const data = {
-      name: form.name.value,
-      email: form.email.value,
-      phone: form.phone.value,
-      message: form.message.value
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      message: form.message.value.trim()
     };
 
     try {
@@ -20,11 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const result = await res.json();
 
-      if (result.success) {
+      if (res.ok && result.success) {
         alert('✅ Message sent successfully!');
         form.reset();
       } else {
-        alert('❌ Failed to send message.');
+        alert('❌ Failed to send message: ' + (result.error || 'Unknown error.'));
       }
     } catch (err) {
       console.error('Error submitting contact form:', err);

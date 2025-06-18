@@ -1,36 +1,44 @@
-// src/js/booking.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("bookingForm");
 
-  bookingForm?.addEventListener("submit", async (e) => {
+  if (!bookingForm) {
+    console.warn("⚠️ bookingForm not found on this page.");
+    return;
+  }
+
+  bookingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(bookingForm);
     const data = {};
 
-    // ✅ Convert form data into JSON object
     formData.forEach((value, key) => {
-      data[key] = value;
+      data[key] = value.trim ? value.trim() : value;
     });
 
-    // ✅ REQUIRED FIELD MAPPINGS
-    data.title = data.package;                  // map 'package' → 'title'
+    data.title = data.package;
     delete data.package;
 
-    data.hotel = data.accommodation;            // map 'accommodation' → 'hotel'
+    data.hotel = data.accommodation;
     delete data.accommodation;
 
     if (data.payment === 'bank') {
-      data.payment = 'BANKING APP';             // correct value casing for enum
+      data.payment = 'BANKING APP';
     }
 
-    data.type = 'Tour';                         // hardcoded for now
-    data.total = calculateTotal(data);          // simple total logic
-    data.user = null;                           // guest user (unauthenticated)
+    data.type = 'Tour';
+    data.total = calculateTotal(data);
+    data.user = null;
 
-    // ✅ Optional: Parse date to Date object (safe for mongoose)
-    data.startDate = new Date(data.startDate);
+    if (data.startDate) {
+      const parsedDate = new Date(data.startDate);
+      if (!isNaN(parsedDate)) {
+        data.startDate = parsedDate;
+      } else {
+        alert("❌ Invalid date format.");
+        return;
+      }
+    }
 
     try {
       const response = await fetch("/api/bookings", {
@@ -47,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("✅ Booking submitted successfully!");
         bookingForm.reset();
       } else {
-        alert("❌ Booking failed: " + result.error);
+        alert("❌ Booking failed: " + (result.error || "Unknown error"));
       }
 
     } catch (err) {
@@ -56,10 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ Simple total calculator
   function calculateTotal(data) {
-    const basePricePerPerson = 1000; // example only
-    const numPeople = parseInt(data.people, 10) || 1;
+    const basePricePerPerson = 1000;
+    const numPeople = Math.max(parseInt(data.people, 10) || 1, 1);
     return basePricePerPerson * numPeople;
   }
 });

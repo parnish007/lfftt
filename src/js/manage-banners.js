@@ -2,6 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const bannerForm = document.getElementById("bannerForm");
   const bannerList = document.getElementById("bannerList");
 
+  if (!bannerForm || !bannerList) {
+    console.warn("⚠️ bannerForm or bannerList not found on this page.");
+    return;
+  }
+
   // Load banners on page load
   loadBanners();
 
@@ -36,6 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadBanners() {
     try {
       const res = await fetch("/api/banners");
+      if (!res.ok) throw new Error(`Server responded ${res.status}`);
+      
       const banners = await res.json();
 
       bannerList.innerHTML = "";
@@ -50,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "banner-card";
         card.innerHTML = `
           ${banner.image ? `<img src="/${banner.image}" alt="${banner.headline}" style="max-width: 100%; height: auto;">` : ''}
-          <h3>${banner.headline}</h3>
-          <p>${banner.description}</p>
+          <h3>${banner.headline || 'No headline'}</h3>
+          <p>${banner.description || ''}</p>
           <button class="delete-btn" data-id="${banner._id}">🗑 Delete</button>
         `;
         bannerList.appendChild(card);

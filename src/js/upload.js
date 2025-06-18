@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const bannerForm = document.getElementById("bannerForm");
 
   const handleUpload = (form, type) => {
+    if (!form) {
+      console.warn(`⚠️ ${type} form not found on this page.`);
+      return;
+    }
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -30,8 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  if (tourForm) handleUpload(tourForm, "Tour");
-  if (vehicleForm) handleUpload(vehicleForm, "Vehicle");
-  if (bannerForm) handleUpload(bannerForm, "Banner");
+  handleUpload(tourForm, "Tour");
+  handleUpload(vehicleForm, "Vehicle");
+  handleUpload(bannerForm, "Banner");
 });
-

@@ -1,10 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   const requestList = document.getElementById("requestList");
 
+  if (!requestList) {
+    console.warn("⚠️ requestList not found on this page.");
+    return;
+  }
+
   // 🔄 Load requests from backend
   async function loadRequests() {
     try {
       const res = await fetch("/api/customize");
+      if (!res.ok) throw new Error(`Server responded ${res.status}`);
+      
       const requests = await res.json();
       requestList.innerHTML = "";
 
@@ -14,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       requests.forEach(req => {
-        // ✅ Skip if _id is invalid (not 24-char hex string)
         if (!req._id || !/^[a-f\d]{24}$/i.test(req._id)) {
           console.warn("⚠️ Skipping invalid request ID:", req._id);
           return;
@@ -33,15 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3>${req.origin} → ${req.destination}</h3>
           <p><strong>Name:</strong> ${req.name || 'N/A'}</p>
           <p><strong>Phone:</strong> ${req.phone || 'N/A'}</p>
-          <p><strong>Budget:</strong> NPR ${req.budget}</p>
-          <p><strong>Days:</strong> ${req.days}</p>
-          <p><strong>Vehicle:</strong> ${req.vehicle}</p>
+          <p><strong>Budget:</strong> NPR ${req.budget || 'N/A'}</p>
+          <p><strong>Days:</strong> ${req.days || 'N/A'}</p>
+          <p><strong>Vehicle:</strong> ${req.vehicle || 'N/A'}</p>
           <p><strong>Special Requirements:</strong> ${req.message || 'N/A'}</p>
           <p><strong>Status:</strong> 
             <span style="font-weight:bold; color:${
               req.status === 'Approved' ? '#28a745' :
               req.status === 'Rejected' ? '#dc3545' : '#333'
-            }">${req.status}</span>
+            }">${req.status || 'Pending'}</span>
           </p>
           <button class="approve" onclick="approveRequest('${req._id}')">Approve</button>
           <button class="reject" onclick="rejectRequest('${req._id}')">Reject</button>
@@ -57,15 +63,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ✅ Approve
   window.approveRequest = async (id) => {
     if (!confirm("Approve this request?")) return;
     try {
-      await fetch(`/api/customize/${id}/status`, {
+      const res = await fetch(`/api/customize/${id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "Approved" })
       });
+      if (!res.ok) throw new Error("Failed to approve request");
       alert("✅ Request approved!");
       loadRequests();
     } catch (err) {
@@ -74,15 +80,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ❌ Reject
   window.rejectRequest = async (id) => {
     if (!confirm("Reject this request?")) return;
     try {
-      await fetch(`/api/customize/${id}/status`, {
+      const res = await fetch(`/api/customize/${id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "Rejected" })
       });
+      if (!res.ok) throw new Error("Failed to reject request");
       alert("✅ Request rejected!");
       loadRequests();
     } catch (err) {
@@ -91,17 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // 🗑️ Delete
   window.deleteRequest = async (id) => {
     if (!confirm("⚠ Are you sure you want to delete this request permanently?")) return;
     try {
-      const res = await fetch(`/api/customize/${id}`, {
-        method: "DELETE"
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) throw new Error(result.error || "Failed to delete request.");
+      const res = await fetch(`/api/customize/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const result = await res.json();
+        throw new Error(result.error || "Failed to delete request.");
+      }
       alert("🗑️ Request deleted.");
       loadRequests();
     } catch (err) {
@@ -110,6 +113,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // 🔁 Load on page ready
   loadRequests();
 });

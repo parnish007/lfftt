@@ -3,15 +3,22 @@
 document.addEventListener("DOMContentLoaded", () => {
   const bookingList = document.getElementById("bookingList");
 
+  if (!bookingList) {
+    console.warn("⚠️ bookingList not found on this page.");
+    return;
+  }
+
   // ✅ Load all bookings on page load
   async function loadBookings() {
     try {
       const res = await fetch("/api/bookings");
+      if (!res.ok) throw new Error(`Server responded ${res.status}`);
+
       const bookings = await res.json();
 
       bookingList.innerHTML = "";
 
-      if (bookings.length === 0) {
+      if (!Array.isArray(bookings) || bookings.length === 0) {
         bookingList.innerHTML = "<tr><td colspan='12'>No bookings found.</td></tr>";
         return;
       }
@@ -20,17 +27,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
-          <td>${booking.name}</td>
-          <td>${booking.email}</td>
-          <td>${booking.phone}</td>
-          <td>${booking.title} (${booking.type})</td>
-          <td>${booking.origin} → ${booking.destination}</td>
-          <td>${new Date(booking.startDate).toLocaleDateString()}</td>
-          <td>${booking.people}</td>
+          <td>${booking.name || 'N/A'}</td>
+          <td>${booking.email || 'N/A'}</td>
+          <td>${booking.phone || 'N/A'}</td>
+          <td>${booking.title || 'N/A'} (${booking.type || 'N/A'})</td>
+          <td>${(booking.origin || 'N/A')} → ${(booking.destination || 'N/A')}</td>
+          <td>${booking.startDate ? new Date(booking.startDate).toLocaleDateString() : 'N/A'}</td>
+          <td>${booking.people || 'N/A'}</td>
           <td>${booking.hotel || 'N/A'}</td>
-          <td>${booking.payment}</td>
+          <td>${booking.payment || 'N/A'}</td>
           <td>${booking.notes || 'N/A'}</td>
-          <td>${booking.status}</td>
+          <td>${booking.status || 'N/A'}</td>
           <td>
             <button class="confirm" onclick="updateBookingStatus('${booking._id}', 'Confirmed')">Confirm</button>
             <button class="cancel" onclick="updateBookingStatus('${booking._id}', 'Cancelled')">Cancel</button>

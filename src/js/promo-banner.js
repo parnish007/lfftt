@@ -4,11 +4,19 @@ let slideInterval;
 
 async function loadBanners() {
   try {
+    const promoSection = document.getElementById('promo');
+    if (!promoSection) {
+      console.warn("⚠️ promo section not found on this page.");
+      return;
+    }
+
     const res = await fetch('/api/banners');
+    if (!res.ok) throw new Error(`Server responded ${res.status}`);
+
     banners = await res.json();
 
-    if (banners.length === 0) {
-      document.getElementById('promo').innerHTML = '<p>No current promotions.</p>';
+    if (!Array.isArray(banners) || banners.length === 0) {
+      promoSection.innerHTML = '<p>No current promotions.</p>';
       return;
     }
 
@@ -18,13 +26,16 @@ async function loadBanners() {
     slideInterval = setInterval(nextBanner, 5000);
   } catch (err) {
     console.error('❌ Error loading banners:', err);
-    document.getElementById('promo').innerHTML = '<p>Failed to load promotions.</p>';
+    const promoSection = document.getElementById('promo');
+    if (promoSection) {
+      promoSection.innerHTML = '<p>Failed to load promotions.</p>';
+    }
   }
 }
 
 function buildCarouselDots() {
   const promoSection = document.getElementById('promo');
-  
+
   const existingDots = promoSection.querySelector('.carousel-dots');
   if (existingDots) existingDots.remove();
 
@@ -54,8 +65,7 @@ function showBanner(index) {
   const promoSection = document.getElementById('promo');
 
   let imagePath = banner.image;
-  
-  // ✅ Normalize path if full system path is stored (e.g., "C:/Users/…/uploads/xxx.png")
+
   if (imagePath && imagePath.includes('uploads/')) {
     const splitPath = imagePath.split('uploads/');
     imagePath = `uploads/${splitPath[1]}`;

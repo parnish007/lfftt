@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("role");
       localStorage.removeItem("user");
       alert("You have been logged out.");
-      window.location.href = "index.html";
+      window.location.href = "/html/index.html"; // ✅ Root-relative for Render
     };
 
     if (role) {
@@ -38,17 +38,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Scroll animation for service cards
   const cards = document.querySelectorAll(".card");
-  const revealOnScroll = () => {
-    const triggerBottom = window.innerHeight * 0.9;
-    cards.forEach(card => {
-      const cardTop = card.getBoundingClientRect().top;
-      if (cardTop < triggerBottom) {
-        card.classList.add("visible");
-      }
-    });
-  };
+  if (cards.length > 0) {
+    const revealOnScroll = () => {
+      const triggerBottom = window.innerHeight * 0.9;
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if (cardTop < triggerBottom) {
+          card.classList.add("visible");
+        }
+      });
+    };
 
-  window.addEventListener("scroll", revealOnScroll);
-  revealOnScroll(); // run on page load
+    window.addEventListener("scroll", revealOnScroll);
+    revealOnScroll(); // run on page load
+  }
 });
-

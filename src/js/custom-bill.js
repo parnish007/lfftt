@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("customBillForm");
 
+  if (!form) {
+    console.warn("⚠️ customBillForm not found on this page.");
+    return;
+  }
+
   // ✅ Autofill from query params
   const params = new URLSearchParams(window.location.search);
   if (params.has("customerName")) form.customerName.value = decodeURIComponent(params.get("customerName"));
@@ -35,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await res.json();
 
-      if (res.ok) {
+      if (res.ok && result.success) {
         alert("✅ Bill sent to customer email!");
         form.reset();
       } else {

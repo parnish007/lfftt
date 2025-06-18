@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const container = document.getElementById("imageSettingsContainer");
 
+  if (!container) {
+    console.warn("⚠️ imageSettingsContainer not found on this page.");
+    return;
+  }
+
   imageSections.forEach(section => {
     const block = document.createElement("div");
     block.className = "image-block";
@@ -82,6 +87,11 @@ async function saveImageSetting(sectionId) {
   const mode = document.getElementById(`${sectionId}-mode`).value;
   const fileInput = document.getElementById(`${sectionId}-file`);
 
+  if (!mode) {
+    alert(`❌ No mode selected for ${sectionId}`);
+    return;
+  }
+
   try {
     if (mode === "default") {
       const res = await fetch(`/api/image-settings/${sectionId}`, {
@@ -90,8 +100,11 @@ async function saveImageSetting(sectionId) {
         body: JSON.stringify({ mode: 'default' })
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Default reset failed');
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Default reset failed');
+      }
+
       alert("✅ Default image selected for " + sectionId);
 
     } else if (fileInput.files[0]) {
@@ -103,8 +116,11 @@ async function saveImageSetting(sectionId) {
         body: formData
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Upload failed');
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Upload failed');
+      }
+
       alert("✅ New image uploaded for " + sectionId);
 
     } else {

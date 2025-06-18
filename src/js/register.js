@@ -5,7 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registerForm");
   const errorMsg = document.getElementById("registerError");
 
-  if (!form) return;
+  if (!form) {
+    console.warn("⚠️ registerForm not found on this page.");
+    return;
+  }
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -19,10 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("user", JSON.stringify({ name, email, phone }));
       localStorage.setItem("role", "customer");
       alert("Registered successfully. Redirecting to homepage...");
-      window.location.href = "index.html";
+      window.location.href = "/index.html"; // ✅ Use root-relative path for consistency
     } else {
-      errorMsg.textContent = "Please fill in all fields with valid details.";
+      if (errorMsg) {
+        errorMsg.textContent = "Please fill in all fields with valid details.";
+      } else {
+        alert("❌ Please fill in all fields with valid details.");
+      }
     }
   });
 });
-

@@ -2,7 +2,7 @@
   const role = localStorage.getItem("role");
   if (role !== "admin") {
     alert("Access denied. Please login as admin.");
-    window.location.href = "/html/login.html"; // ✅ Use root-relative path for reliability on Render or similar
+    window.location.href = "/html/login.html";
   }
 })();
 
@@ -16,7 +16,7 @@ const createLogoutButton = () => {
   logoutBtn.onclick = () => {
     localStorage.removeItem("role");
     alert("Logged out successfully.");
-    window.location.href = "/html/login.html"; // ✅ Consistent root-relative path
+    window.location.href = "/html/login.html";
   };
   document.body.appendChild(logoutBtn);
 };
@@ -41,10 +41,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       requestList.innerHTML = requests.map(req => `
         <div class="request-card">
-          <h3>${req.name} (${req.phone})</h3>
-          <p><strong>From:</strong> ${req.origin} → <strong>To:</strong> ${req.destination}</p>
-          <p><strong>Budget:</strong> NPR ${req.budget}</p>
-          <p><strong>Days:</strong> ${req.days}, <strong>Vehicle:</strong> ${req.vehicle}</p>
+          <h3>${req.name || 'Unnamed'} (${req.phone || 'N/A'})</h3>
+          <p><strong>From:</strong> ${req.origin || 'N/A'} → <strong>To:</strong> ${req.destination || 'N/A'}</p>
+          <p><strong>Budget:</strong> NPR ${req.budget || 'N/A'}</p>
+          <p><strong>Days:</strong> ${req.days || 'N/A'}, <strong>Vehicle:</strong> ${req.vehicle || 'N/A'}</p>
           <p><strong>Message:</strong> ${req.message || 'No special requests'}</p>
           <p><strong>Status:</strong> ${req.status || 'Pending'}</p>
         </div>

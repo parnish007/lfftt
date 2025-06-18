@@ -2,6 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("addTourForm");
   const tourList = document.getElementById("tourList");
 
+  if (!form || !tourList) {
+    console.warn("⚠️ addTourForm or tourList not found on this page.");
+    return;
+  }
+
   // ✅ Currency symbols map
   const currencySymbols = {
     'NPR': '₨',
@@ -27,15 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const res = await fetch("/api/tours", { method: "POST", body: formData });
-      const result = await res.json();
-
-      if (res.ok) {
-        alert("✅ Tour added!");
-        form.reset();
-        loadTours();
-      } else {
-        alert(`❌ Failed to add tour: ${result.error || 'Unknown error'}`);
+      if (!res.ok) {
+        const result = await res.json();
+        throw new Error(result.error || 'Unknown error');
       }
+
+      alert("✅ Tour added!");
+      form.reset();
+      loadTours();
     } catch (err) {
       console.error("❌ Error adding tour:", err);
       alert("❌ Failed to add tour. See console for details.");
@@ -46,11 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadTours() {
     try {
       const res = await fetch("/api/tours");
+      if (!res.ok) throw new Error(`Server responded ${res.status}`);
+
       const tours = await res.json();
 
       tourList.innerHTML = "";
 
-      if (tours.length === 0) {
+      if (!Array.isArray(tours) || tours.length === 0) {
         tourList.innerHTML = "<p>No tours available.</p>";
         return;
       }
@@ -66,11 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const symbol = currencySymbols[tour.currency] || '₨'; // default to NPR
 
         card.innerHTML = `
-          <img src="${imageUrl}" alt="${tour.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;" />
-          <h3>${tour.name}</h3>
-          <p>${tour.description}</p>
-          <p>Price: ${symbol} ${tour.price}</p>
-          <p>Duration: ${tour.duration} days</p>
+          <img src="${imageUrl}" alt="${tour.name || 'Tour'}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;" />
+          <h3>${tour.name || 'N/A'}</h3>
+          <p>${tour.description || 'N/A'}</p>
+          <p>Price: ${symbol} ${tour.price || 'N/A'}</p>
+          <p>Duration: ${tour.duration || 'N/A'} days</p>
           <p>Accommodation: ${tour.accommodation || 'N/A'}</p>
           <p>Meals: ${tour.meals || 'N/A'}</p>
           <button onclick="editTour('${tour._id}')">Edit</button>
@@ -108,24 +114,23 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({
           name: newName,
           price: Number(newPrice),
-          currency: newCurrency || 'NPR', // ✅ include currency update
+          currency: newCurrency || 'NPR',
           description: newDescription,
           duration: Number(newDuration),
           accommodation: newAccommodation,
           meals: newMeals,
-          activities: newActivities.split(',').map(item => item.trim()),
+          activities: newActivities ? newActivities.split(',').map(item => item.trim()) : [],
           overview: newOverview
         })
       });
 
-      const result = await res.json();
-
-      if (res.ok) {
-        alert("✅ Tour updated!");
-        loadTours();
-      } else {
-        alert(`❌ Failed to update tour: ${result.error || 'Unknown error'}`);
+      if (!res.ok) {
+        const result = await res.json();
+        throw new Error(result.error || 'Unknown error');
       }
+
+      alert("✅ Tour updated!");
+      loadTours();
     } catch (err) {
       console.error("❌ Error updating tour:", err);
       alert("❌ Failed to update tour. See console for details.");
@@ -138,14 +143,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const res = await fetch(`/api/tours/${id}`, { method: "DELETE" });
-      const result = await res.json();
-
-      if (res.ok) {
-        alert("✅ Tour deleted!");
-        loadTours();
-      } else {
-        alert(`❌ Failed to delete tour: ${result.error || 'Unknown error'}`);
+      if (!res.ok) {
+        const result = await res.json();
+        throw new Error(result.error || 'Unknown error');
       }
+
+      alert("✅ Tour deleted!");
+      loadTours();
     } catch (err) {
       console.error("❌ Error deleting tour:", err);
       alert("❌ Failed to delete tour. See console for details.");

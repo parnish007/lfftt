@@ -9,18 +9,31 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const response = await fetch(`/api/tours/${tourSlug}`);
-    if (!response.ok) throw new Error("Tour not found");
+    if (!response.ok) throw new Error(`Tour not found (status ${response.status})`);
 
     const tour = await response.json();
 
-    document.querySelector(".tour-title").textContent = tour.name || "Untitled Tour";
-    document.querySelector(".tour-days").textContent = `Duration: ${tour.duration || 'N/A'} Days`;
-    document.querySelector(".overview").textContent = tour.overview || "No overview available.";
-    document.querySelector(".price-usd").textContent = `NPR ${tour.price || '0'}`;
-    document.querySelector(".accommodation").textContent = tour.accommodation || "Standard Hotel";
-    document.querySelector(".meals").textContent = tour.meals || "Breakfast Included";
-
+    const titleEl = document.querySelector(".tour-title");
+    const daysEl = document.querySelector(".tour-days");
+    const overviewEl = document.querySelector(".overview");
+    const priceEl = document.querySelector(".price-usd");
+    const accommodationEl = document.querySelector(".accommodation");
+    const mealsEl = document.querySelector(".meals");
     const activitiesList = document.querySelector(".activities-list");
+    const overviewSection = document.querySelector(".overview-section");
+
+    if (!titleEl || !daysEl || !overviewEl || !priceEl || !accommodationEl || !mealsEl || !activitiesList || !overviewSection) {
+      console.warn("⚠️ One or more required elements are missing on this page.");
+      return;
+    }
+
+    titleEl.textContent = tour.name || "Untitled Tour";
+    daysEl.textContent = `Duration: ${tour.duration || 'N/A'} Days`;
+    overviewEl.textContent = tour.overview || "No overview available.";
+    priceEl.textContent = `NPR ${tour.price || '0'}`;
+    accommodationEl.textContent = tour.accommodation || "Standard Hotel";
+    mealsEl.textContent = tour.meals || "Breakfast Included";
+
     activitiesList.innerHTML = "";
     if (tour.activities && tour.activities.length > 0) {
       tour.activities.forEach(activity => {
@@ -34,7 +47,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       activitiesList.appendChild(li);
     }
 
-    // ✅ Insert main image at top (if present)
     if (tour.images && tour.images.length > 0) {
       const firstImage = tour.images[0].startsWith('/uploads/')
         ? tour.images[0]
@@ -42,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const imageEl = document.createElement("img");
       imageEl.src = firstImage;
-      imageEl.alt = tour.name;
+      imageEl.alt = tour.name || "Tour Image";
       imageEl.style.width = "100%";
       imageEl.style.maxHeight = "400px";
       imageEl.style.objectFit = "cover";
@@ -50,7 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       imageEl.style.margin = "20px auto";
       imageEl.style.display = "block";
 
-      const overviewSection = document.querySelector(".overview-section");
       overviewSection.parentNode.insertBefore(imageEl, overviewSection);
     }
 
@@ -58,4 +69,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("❌ Failed to load tour details:", err);
     alert("Failed to load tour details. Please try again later.");
   }
-});
+}); 

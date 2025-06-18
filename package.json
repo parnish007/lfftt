@@ -23,6 +23,9 @@
   "devDependencies": {
     "nodemon": "^3.1.10"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Life For Fun Travel & Tours Pvt. Ltd.",
   "license": "MIT"
 }

@@ -1,12 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
   const bookingContainer = document.getElementById("bookingContainer");
 
+  if (!bookingContainer) {
+    console.warn("⚠️ bookingContainer not found on this page.");
+    return;
+  }
+
   async function fetchAcceptedBookings() {
     try {
       const [tourRes, vehicleRes] = await Promise.all([
         fetch("/api/bookings"),
         fetch("/api/vehicle-bookings")
       ]);
+
+      if (!tourRes.ok || !vehicleRes.ok) {
+        throw new Error(`Server responded ${tourRes.status} / ${vehicleRes.status}`);
+      }
 
       const [tourData, vehicleData] = await Promise.all([
         tourRes.json(),
@@ -31,14 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    bookingContainer.innerHTML = ""; // Clear previous if any
+
     bookings.forEach(b => {
       const card = document.createElement("div");
       card.className = "booking-card";
 
       card.innerHTML = `
-        <h3>${b.title}</h3>
-        <p><strong>Name:</strong> ${b.name}</p>
-        <p><strong>Email:</strong> ${b.email}</p>
+        <h3>${b.title || 'No title'}</h3>
+        <p><strong>Name:</strong> ${b.name || 'N/A'}</p>
+        <p><strong>Email:</strong> ${b.email || 'N/A'}</p>
         <p><strong>Phone:</strong> ${b.phone || 'N/A'}</p>
         <p><strong>Origin:</strong> ${b.origin || 'N/A'}</p>
         <p><strong>Destination:</strong> ${b.destination || 'N/A'}</p>
@@ -61,12 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
       packageName: title
     }).toString();
 
-    window.location.href = `custom-bill.html?${query}`;
+    window.location.href = "/html/custom-bill.html?" + query; // ✅ Root-relative for Render
   };
 
   window.processDefaultBill = async (name, email, title) => {
-    const currency = prompt("Enter currency (e.g., NPR, INR, USD, EUR, DKK):", "NPR");
-    const amount = prompt("Enter final price (numeric):");
+    const currency = (prompt("Enter currency (e.g., NPR, INR, USD, EUR, DKK):", "NPR") || "").trim();
+    const amount = (prompt("Enter final price (numeric):") || "").trim();
 
     if (!currency || !amount) {
       alert("❌ Bill not processed: both currency and price are required.");

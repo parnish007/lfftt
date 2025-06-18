@@ -1,22 +1,29 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const contactList = document.getElementById('contactList');
 
+  if (!contactList) {
+    console.warn("⚠️ contactList not found on this page.");
+    return;
+  }
+
   async function loadContacts() {
     try {
       const res = await fetch('/api/contact');
+      if (!res.ok) throw new Error(`Server responded ${res.status}`);
+      
       const messages = await res.json();
 
-      if (messages.length === 0) {
+      if (!Array.isArray(messages) || messages.length === 0) {
         contactList.innerHTML = '<p>No contact messages yet.</p>';
         return;
       }
 
       contactList.innerHTML = messages.map(msg => `
         <div class="contact-card">
-          <h3>${msg.name} (${msg.email})</h3>
+          <h3>${msg.name || 'N/A'} (${msg.email || 'N/A'})</h3>
           <p><strong>Phone:</strong> ${msg.phone || 'N/A'}</p>
-          <p><strong>Message:</strong> ${msg.message}</p>
-          <p><em>${new Date(msg.date).toLocaleString()}</em></p>
+          <p><strong>Message:</strong> ${msg.message || 'N/A'}</p>
+          <p><em>${msg.date ? new Date(msg.date).toLocaleString() : 'N/A'}</em></p>
           <button onclick="deleteMessage('${msg._id}')">Delete</button>
         </div>
       `).join('');
@@ -29,9 +36,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.deleteMessage = async (id) => {
     if (!confirm('Are you sure you want to delete this message?')) return;
     try {
-      await fetch(`/api/contact/${id}`, { method: 'DELETE' });
-      alert('✅ Message deleted.');
-      loadContacts();
+      const res = await fetch(`/api/contact/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        alert('✅ Message deleted.');
+        loadContacts();
+      } else {
+        const result = await res.json();
+        alert(`❌ Failed to delete message: ${result.error || 'Unknown error'}`);
+      }
     } catch (err) {
       console.error('Error deleting message:', err);
       alert('❌ Failed to delete message.');
