@@ -6,7 +6,6 @@ const socketIo = require('socket.io');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// ✅ Load environment variables
 dotenv.config();
 
 const app = express();
@@ -15,7 +14,6 @@ const io = socketIo(server, {
   cors: { origin: '*' }
 });
 
-// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -51,14 +49,23 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket setup
 require('./socket')(io);
 
-// ✅ Root serves index.html
+// ✅ Serve index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Update: Serve clean .html files from /src/html
+// ✅ Serve .html files directly
 app.get('/*.html', (req, res, next) => {
   const filePath = path.join(__dirname, '../src/html', req.path);
+  res.sendFile(filePath, (err) => {
+    if (err) next();
+  });
+});
+
+// ✅ Fallback: try .html if no extension
+app.get('*', (req, res, next) => {
+  const cleanPath = req.path.replace(/^\/+/, '') + '.html';
+  const filePath = path.join(__dirname, '../src/html', cleanPath);
   res.sendFile(filePath, (err) => {
     if (err) next();
   });
