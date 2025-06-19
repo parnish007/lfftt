@@ -162,14 +162,57 @@ a:hover {
   color: #222;
 }
 
-.service-cards, .review-cards {
+.services, .reviews {
+  padding: 40px 10px;
+}
+
+.service-cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
 }
 
-.card, .review {
+.review-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  flex: 1 1 250px;
+  max-width: 280px;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.card p {
+  flex-grow: 1;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.review {
   background: #fff;
   width: 100%;
   max-width: 280px;
@@ -178,11 +221,14 @@ a:hover {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-.card img {
+.location iframe {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+  max-width: 900px;
+  height: 300px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  display: block;
 }
 
 .floating-btn {
@@ -263,7 +309,13 @@ a:hover {
   .floating-btn.viber {
     bottom: 20px;
   }
+
+  .card {
+    min-height: auto;
+  }
 }
+
+
 </style>
 
 
