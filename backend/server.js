@@ -22,6 +22,8 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
+
+// ✅ Serve static frontend files (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, '../src')));
 
 // ✅ Database connection
@@ -49,31 +51,31 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket setup
 require('./socket')(io);
 
-// ✅ Base directory for HTML files
-const baseDir = path.join(__dirname, '../src/html');
-
 // ✅ Serve index.html for root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(baseDir, 'index.html'));
+  res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve nested HTML files (no src/src issue)
+// ✅ Serve any .html dynamically from proper folders
 app.get('/*.html', (req, res, next) => {
-  const fileName = path.basename(req.path);
-  const pathsToTry = [
-    path.join(baseDir, fileName),
-    path.join(baseDir, 'tour', fileName),
-    path.join(baseDir, 'vehicle', fileName),
-    path.join(baseDir, 'admin', fileName)
+  const file = path.basename(req.path);
+
+  const tryPaths = [
+    path.join(__dirname, '../src/html', file),
+    path.join(__dirname, '../src/html/tour', file),
+    path.join(__dirname, '../src/html/vehicle', file),
+    path.join(__dirname, '../src/html/vehicles', file),
+    path.join(__dirname, '../src/html/tours', file),
+    path.join(__dirname, '../src/html/admin', file)
   ];
 
   let i = 0;
   const tryNext = () => {
-    if (i >= pathsToTry.length) return next();
-    const tryPath = pathsToTry[i++];
-    res.sendFile(tryPath, (err) => {
+    if (i >= tryPaths.length) return next();
+    const currentPath = tryPaths[i++];
+    res.sendFile(currentPath, (err) => {
       if (err) {
-        console.warn(`⚠ Not found: ${tryPath}`);
+        console.warn(`⚠ Not found: ${currentPath}`);
         tryNext();
       }
     });
