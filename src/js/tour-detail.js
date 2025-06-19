@@ -16,21 +16,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const titleEl = document.querySelector(".tour-title");
     const daysEl = document.querySelector(".tour-days");
     const overviewEl = document.querySelector(".overview");
-    const priceEl = document.querySelector(".price-usd");
+    const priceValueEl = document.querySelector(".price-value");
+    const currencySymbolEl = document.querySelector(".currency-symbol");
     const accommodationEl = document.querySelector(".accommodation");
     const mealsEl = document.querySelector(".meals");
     const activitiesList = document.querySelector(".activities-list");
     const overviewSection = document.querySelector(".overview-section");
 
-    if (!titleEl || !daysEl || !overviewEl || !priceEl || !accommodationEl || !mealsEl || !activitiesList || !overviewSection) {
+    if (!titleEl || !daysEl || !overviewEl || !priceValueEl || !currencySymbolEl || !accommodationEl || !mealsEl || !activitiesList || !overviewSection) {
       console.warn("⚠️ One or more required elements are missing on this page.");
       return;
     }
 
+    const currencySymbols = { 'NPR': '₨', 'INR': '₹', 'USD': '$', 'EUR': '€', 'DKK': 'kr' };
+
     titleEl.textContent = tour.name || "Untitled Tour";
     daysEl.textContent = `Duration: ${tour.duration || 'N/A'} Days`;
     overviewEl.textContent = tour.overview || "No overview available.";
-    priceEl.textContent = `${tour.currency || 'NPR'} ${tour.price || '0'}`;
+    priceValueEl.textContent = tour.price || '0';
+    currencySymbolEl.textContent = currencySymbols[tour.currency] || '₨';
     accommodationEl.textContent = tour.accommodation || "Standard Hotel";
     mealsEl.textContent = tour.meals || "Breakfast Included";
 

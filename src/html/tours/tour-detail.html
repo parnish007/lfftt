@@ -210,23 +210,76 @@
   </footer>
 
   <!-- ✅ Sample Script -->
-  <script>
-    const tour = {
-      price: 400,
-      currency: 'USD'
-    };
+<script>
+(async () => {
+  const symbols = {
+    'NPR': '₨',
+    'INR': '₹',
+    'USD': '$',
+    'EUR': '€',
+    'DKK': 'kr'
+  };
 
-    const symbols = {
-      'NPR': '₨',
-      'INR': '₹',
-      'USD': '$',
-      'EUR': '€',
-      'DKK': 'kr'
-    };
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get('slug');
 
-    document.querySelector('.price-value').textContent = tour.price;
-    document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '';
-  </script>
+  if (!slug) {
+    alert("❌ No tour slug provided in URL.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/tours/${slug}`);
+    if (!res.ok) throw new Error("Tour not found");
+
+    const tour = await res.json();
+
+    document.querySelector('.tour-title').textContent = tour.name || "Untitled Tour";
+    document.querySelector('.tour-days').textContent = `Duration: ${tour.duration || 'N/A'} Days`;
+    document.querySelector('.tour-duration').textContent = `${tour.duration || 'N/A'} Days`;
+    document.querySelector('.accommodation').textContent = tour.accommodation || 'N/A';
+    document.querySelector('.meals').textContent = tour.meals || 'N/A';
+    document.querySelector('.overview').textContent = tour.overview || 'No overview available';
+    document.querySelector('.price-value').textContent = tour.price || '0';
+    document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
+
+    const activitiesEl = document.querySelector('.activities-list');
+    activitiesEl.innerHTML = '';
+    (tour.activities || []).forEach(activity => {
+      const li = document.createElement('li');
+      li.textContent = activity;
+      activitiesEl.appendChild(li);
+    });
+
+    // Optional: Render main image if needed
+    if (tour.images && tour.images.length > 0) {
+      const firstImage = tour.images[0].startsWith('/uploads/')
+        ? tour.images[0]
+        : `/uploads/${tour.images[0]}`;
+
+      const imageEl = document.createElement("img");
+      imageEl.src = firstImage;
+      imageEl.alt = tour.name || "Tour Image";
+      Object.assign(imageEl.style, {
+        width: "100%",
+        maxHeight: "400px",
+        objectFit: "cover",
+        borderRadius: "12px",
+        margin: "20px auto",
+        display: "block"
+      });
+
+      const overviewSection = document.querySelector(".overview-section");
+      overviewSection.parentNode.insertBefore(imageEl, overviewSection);
+    }
+
+  } catch (err) {
+    console.error("❌ Error loading tour:", err);
+    document.querySelector('.overview').textContent = 'Failed to load tour details.';
+  }
+})();
+</script>
+
   <script src="/js/tour-detail.js"></script>
 </body>
 </html>

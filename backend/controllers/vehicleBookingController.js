@@ -32,11 +32,10 @@ exports.createVehicleBooking = async (req, res) => {
       vehicle: vehicle.trim(),
       origin: origin.trim(),
       tripType: tripType.trim(),
-      travelDate: new Date(travelDate),
+      travelDate: travelDate.trim(),  // your model stores travelDate as String
       days: tripType === 'Rental' ? Number(days) : undefined,
       message: message ? message.trim() : '',
-      status: 'pending',
-      billed: false
+      status: 'Pending'  // Ensure capital P as per schema enum
     });
 
     await booking.save();
@@ -58,12 +57,11 @@ exports.getVehicleBookings = async (req, res) => {
   }
 };
 
-// ✅ Get accepted & unbilled bookings (for billing)
+// ✅ Get accepted bookings
 exports.getAcceptedVehicleBookings = async (req, res) => {
   try {
     const acceptedBookings = await VehicleBooking.find({
-      status: 'accepted',
-      billed: { $ne: true }
+      status: 'Confirmed'  // Use status from enum: Pending, Confirmed, Rejected
     }).sort({ createdAt: -1 });
     res.json(acceptedBookings);
   } catch (err) {
