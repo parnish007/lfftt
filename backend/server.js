@@ -49,19 +49,22 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket setup
 require('./socket')(io);
 
+// ✅ Base directory for HTML files
+const baseDir = path.join(__dirname, '../src/html');
+
 // ✅ Serve index.html for root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../src/html/index.html'));
+  res.sendFile(path.join(baseDir, 'index.html'));
 });
 
-// ✅ Serve nested HTML files (support /tour/tour-detail.html, /vehicle/vehicle-detail.html, etc.)
+// ✅ Serve nested HTML files (no src/src issue)
 app.get('/*.html', (req, res, next) => {
-  const reqFile = req.path.replace(/^\//, '');
+  const fileName = path.basename(req.path);
   const pathsToTry = [
-    path.join(__dirname, '../src/html', reqFile),
-    path.join(__dirname, '../src/html/tour', reqFile),
-    path.join(__dirname, '../src/html/vehicle', reqFile),
-    path.join(__dirname, '../src/html/admin', reqFile)
+    path.join(baseDir, fileName),
+    path.join(baseDir, 'tour', fileName),
+    path.join(baseDir, 'vehicle', fileName),
+    path.join(baseDir, 'admin', fileName)
   ];
 
   let i = 0;
