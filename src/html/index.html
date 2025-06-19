@@ -42,7 +42,6 @@ a:hover {
   width: 100%;
   background: linear-gradient(to right, #004a99, #005fcc);
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
@@ -78,7 +77,6 @@ a:hover {
 
 .navbar-links {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
 }
@@ -182,15 +180,13 @@ a:hover {
 
 .card {
   background: #fff;
-  flex: 1 1 250px;
+  flex: 1 1 260px;
   max-width: 280px;
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 380px;
 }
 
 .card img {
@@ -207,7 +203,6 @@ a:hover {
 }
 
 .card p {
-  flex-grow: 1;
   font-size: 0.95rem;
   margin-bottom: 10px;
 }
@@ -258,20 +253,26 @@ a:hover {
   bottom: 90px;
 }
 
-.floating-btn.chat {
-  background: linear-gradient(45deg, #00c3ff, #005eff);
-  bottom: 150px;
-}
-
 .floating-btn.viber {
   background: #7360f2;
   bottom: 30px;
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    padding: 10px;
+  .navbar-links {
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 0;
+    padding: 5px 0;
+    scrollbar-width: none;
+  }
+  .navbar-links::-webkit-scrollbar {
+    display: none;
+  }
+  .navbar-links a {
+    display: inline-block;
+    padding: 10px 16px;
+    font-size: 0.95rem;
   }
 
   .navbar-left h1 {
@@ -302,10 +303,6 @@ a:hover {
     bottom: 70px;
   }
 
-  .floating-btn.chat {
-    bottom: 130px;
-  }
-
   .floating-btn.viber {
     bottom: 20px;
   }
@@ -314,8 +311,6 @@ a:hover {
     min-height: auto;
   }
 }
-
-
 </style>
 
 
@@ -336,7 +331,6 @@ a:hover {
     <a href="trekking.html">Trekking</a>
     <a href="flights.html">Flights</a>
     <a href="booking.html">Booking</a>
-    <a href="saved-tours.html">Saved</a>
     <a href="contact.html">Contact</a>
     <a href="login.html">Login</a>
   </div>
@@ -467,8 +461,6 @@ a:hover {
    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 14px #7360f2';">
    <i class="fab fa-viber" style="font-size: 20px;"></i> Viber
 </a>
-
-
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
   const sections = ["logo", "hero", "tour", "vehicle", "trekking", "flight"];
@@ -484,7 +476,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const res = await fetch("/api/image-settings");
     if (!res.ok) throw new Error("Failed to fetch image settings");
-
     const data = await res.json();
 
     sections.forEach(section => {
@@ -501,5 +492,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 </script>
+
+<script>
+// Enable horizontal scroll on wheel for mobile navbar slider
+document.querySelectorAll('.navbar-links').forEach(nav => {
+  nav.addEventListener('wheel', e => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      nav.scrollLeft += e.deltaY;
+    }
+  });
+});
+</script>
+
+<script>
+// Enable click-and-drag horizontal scroll for mobile navbar slider
+document.querySelectorAll('.navbar-links').forEach(nav => {
+  let isDown = false;
+  let startX, scrollLeft;
+
+  nav.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX - nav.offsetLeft;
+    scrollLeft = nav.scrollLeft;
+  });
+  nav.addEventListener('mouseleave', () => { isDown = false; });
+  nav.addEventListener('mouseup', () => { isDown = false; });
+  nav.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - nav.offsetLeft;
+    const walk = (x - startX) * 2; // Adjust scroll speed multiplier
+    nav.scrollLeft = scrollLeft - walk;
+  });
+});
+</script>
+
+
 </body>
 </html>
