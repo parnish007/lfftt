@@ -7,7 +7,7 @@ const vehicleBookingSchema = new mongoose.Schema({
   },
   phone: { 
     type: String, 
-    required: true 
+    required: true  
   },
   email: { 
     type: String, 

@@ -49,25 +49,19 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket setup
 require('./socket')(io);
 
-// ✅ Serve index.html
+// ✅ Serve index.html for root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve .html files directly
-app.get('/*.html', (req, res, next) => {
+// ✅ Serve nested HTML files (e.g. /tour/tours.html, /vehicle/vehicle-rental.html)
+app.get('/*', (req, res, next) => {
   const filePath = path.join(__dirname, '../src/html', req.path);
   res.sendFile(filePath, (err) => {
-    if (err) next();
-  });
-});
-
-// ✅ Fallback: try .html if no extension
-app.get('*', (req, res, next) => {
-  const cleanPath = req.path.replace(/^\/+/, '') + '.html';
-  const filePath = path.join(__dirname, '../src/html', cleanPath);
-  res.sendFile(filePath, (err) => {
-    if (err) next();
+    if (err) {
+      console.warn(`⚠ File not found: ${filePath}`);
+      next();
+    }
   });
 });
 
