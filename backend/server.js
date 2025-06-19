@@ -54,15 +54,29 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve nested HTML files (e.g. /tour/tours.html, /vehicle/vehicle-rental.html)
-app.get('/*', (req, res, next) => {
-  const filePath = path.join(__dirname, '../src/html', req.path);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      console.warn(`⚠ File not found: ${filePath}`);
-      next();
-    }
-  });
+// ✅ Serve nested HTML files (support /tour/tour-detail.html, /vehicle/vehicle-detail.html, etc.)
+app.get('/*.html', (req, res, next) => {
+  const reqFile = req.path.replace(/^\//, '');
+  const pathsToTry = [
+    path.join(__dirname, '../src/html', reqFile),
+    path.join(__dirname, '../src/html/tour', reqFile),
+    path.join(__dirname, '../src/html/vehicle', reqFile),
+    path.join(__dirname, '../src/html/admin', reqFile)
+  ];
+
+  let i = 0;
+  const tryNext = () => {
+    if (i >= pathsToTry.length) return next();
+    const tryPath = pathsToTry[i++];
+    res.sendFile(tryPath, (err) => {
+      if (err) {
+        console.warn(`⚠ Not found: ${tryPath}`);
+        tryNext();
+      }
+    });
+  };
+
+  tryNext();
 });
 
 // ✅ 404 handler
