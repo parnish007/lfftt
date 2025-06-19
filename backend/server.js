@@ -54,14 +54,14 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve nested HTML files (support /tour/tour-detail.html, /vehicle/vehicle-detail.html, etc.)
+// ✅ Serve nested HTML files
 app.get('/*.html', (req, res, next) => {
-  const reqFile = req.path.replace(/^\//, '');
+  const file = path.basename(req.path);
   const pathsToTry = [
-    path.join(__dirname, '../src/html', reqFile),
-    path.join(__dirname, '../src/html/tour', reqFile),
-    path.join(__dirname, '../src/html/vehicle', reqFile),
-    path.join(__dirname, '../src/html/admin', reqFile)
+    path.join(__dirname, '../src/html', file),
+    path.join(__dirname, '../src/html/tour', file),
+    path.join(__dirname, '../src/html/vehicle', file),
+    path.join(__dirname, '../src/html/admin', file)
   ];
 
   let i = 0;
