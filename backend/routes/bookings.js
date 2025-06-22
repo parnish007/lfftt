@@ -6,14 +6,18 @@ const {
   cancelBooking,
   getAllBookings,
   updateBookingStatus,
-  getAcceptedBookingsForBilling // ✅ NEW: For billing only
+  getAcceptedBookingsForBilling,
+  getNewBookingCount // ✅ NEW: For badge
 } = require('../controllers/bookingController');
 
 // ✅ Admin: Get all bookings
 router.get('/', getAllBookings);
 
 // ✅ Admin: Get accepted (unbilled) bookings - used in billing
-router.get('/accepted', getAcceptedBookingsForBilling); // ✅ NEW endpoint
+router.get('/accepted', getAcceptedBookingsForBilling);
+
+// ✅ Admin: Get count of new bookings (for badge)
+router.get('/new-count', getNewBookingCount); // ✅ NEW endpoint
 
 // ✅ Public: Create a new booking
 router.post('/', createBooking);

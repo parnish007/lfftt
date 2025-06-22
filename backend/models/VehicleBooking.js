@@ -41,6 +41,10 @@ const vehicleBookingSchema = new mongoose.Schema({
     type: String,
     enum: ['Pending', 'Confirmed', 'Rejected'],
     default: 'Pending'
+  },
+  newBooking: {
+    type: Boolean,
+    default: true
   }
 }, { timestamps: true });
 

@@ -15,12 +15,10 @@ exports.createVehicleBooking = async (req, res) => {
       message
     } = req.body;
 
-    // 🔒 Validate required fields
     if (!name || !phone || !email || !vehicle || !origin || !tripType || !travelDate) {
       return res.status(400).json({ error: "All required fields must be filled." });
     }
 
-    // ⏳ If rental, 'days' must be provided and > 0
     if (tripType === 'Rental' && (!days || days <= 0)) {
       return res.status(400).json({ error: "Please enter valid number of days for Rental." });
     }
@@ -32,10 +30,10 @@ exports.createVehicleBooking = async (req, res) => {
       vehicle: vehicle.trim(),
       origin: origin.trim(),
       tripType: tripType.trim(),
-      travelDate: travelDate.trim(),  // your model stores travelDate as String
+      travelDate: travelDate.trim(),
       days: tripType === 'Rental' ? Number(days) : undefined,
       message: message ? message.trim() : '',
-      status: 'Pending'  // Ensure capital P as per schema enum
+      status: 'Pending'
     });
 
     await booking.save();
@@ -46,10 +44,14 @@ exports.createVehicleBooking = async (req, res) => {
   }
 };
 
-// ✅ Get all vehicle bookings (Admin side)
+// ✅ Get all vehicle bookings (Admin side) + mark as seen
 exports.getVehicleBookings = async (req, res) => {
   try {
     const bookings = await VehicleBooking.find().sort({ createdAt: -1 });
+
+    // 👉 Mark new bookings as seen
+    await VehicleBooking.updateMany({ newBooking: true }, { newBooking: false });
+
     res.json(bookings);
   } catch (err) {
     console.error("❌ Error fetching vehicle bookings:", err);
@@ -61,7 +63,7 @@ exports.getVehicleBookings = async (req, res) => {
 exports.getAcceptedVehicleBookings = async (req, res) => {
   try {
     const acceptedBookings = await VehicleBooking.find({
-      status: 'Confirmed'  // Use status from enum: Pending, Confirmed, Rejected
+      status: 'Confirmed'
     }).sort({ createdAt: -1 });
     res.json(acceptedBookings);
   } catch (err) {
@@ -81,5 +83,16 @@ exports.deleteVehicleBooking = async (req, res) => {
   } catch (err) {
     console.error("❌ Error deleting booking:", err);
     res.status(500).json({ error: 'Failed to delete booking.' });
+  }
+};
+
+// ✅ New: Get count of new vehicle bookings (for badge)
+exports.getNewVehicleBookingCount = async (req, res) => {
+  try {
+    const count = await VehicleBooking.countDocuments({ newBooking: true });
+    res.json({ count });
+  } catch (err) {
+    console.error("❌ Error fetching new vehicle booking count:", err);
+    res.status(500).json({ error: 'Failed to fetch new vehicle booking count.' });
   }
 };

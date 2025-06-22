@@ -83,6 +83,10 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     default: '',
     trim: true
+  },
+  newBooking: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true // createdAt, updatedAt fields

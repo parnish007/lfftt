@@ -8,7 +8,7 @@ exports.createBooking = async (req, res) => {
     data.startDate = new Date(data.startDate);
     data.people = Math.max(1, parseInt(data.people) || 1);
     data.total = Math.max(0, parseFloat(data.total) || 0);
-    data.status = 'Pending'; // ✅ Capitalized to match enum
+    data.status = 'Pending';
     data.billed = false;
 
     const booking = new Booking(data);
@@ -20,10 +20,14 @@ exports.createBooking = async (req, res) => {
   }
 };
 
-// ✅ Get all bookings (Admin)
+// ✅ Get all bookings (Admin) + mark as seen
 exports.getAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.find().sort({ createdAt: -1 });
+
+    // 👉 Mark new bookings as seen (newBooking: false)
+    await Booking.updateMany({ newBooking: true }, { newBooking: false });
+
     res.json(bookings);
   } catch (err) {
     console.error('❌ Error fetching bookings:', err);
@@ -89,5 +93,16 @@ exports.getAcceptedBookingsForBilling = async (req, res) => {
   } catch (err) {
     console.error('❌ Error fetching accepted bookings for billing:', err);
     res.status(500).json({ error: 'Failed to fetch billing-ready bookings' });
+  }
+};
+
+// ✅ New: Get count of new tour bookings (for badge)
+exports.getNewBookingCount = async (req, res) => {
+  try {
+    const count = await Booking.countDocuments({ newBooking: true });
+    res.json({ count });
+  } catch (err) {
+    console.error('❌ Error fetching new booking count:', err);
+    res.status(500).json({ error: 'Failed to fetch new booking count' });
   }
 };
