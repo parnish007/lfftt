@@ -138,7 +138,9 @@
         vehicles.forEach((vehicle) => {
           let imageUrl = "/images/vehicles/default.jpg";
           if (vehicle.images && vehicle.images.length > 0) {
-            imageUrl = `/uploads/${vehicle.images[0]}`;
+            imageUrl = vehicle.images[0].startsWith('uploads')
+              ? `/${vehicle.images[0]}`
+              : vehicle.images[0];
           }
 
           const symbol = currencySymbols[vehicle.currency] || '₨';
