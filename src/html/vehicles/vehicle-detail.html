@@ -149,81 +149,62 @@
     <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
   </footer>
 
-<script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    const params = new URLSearchParams(window.location.search);
-    const slug = params.get('slug');
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
 
-    if (!slug) {
-      document.querySelector('.vehicle-title').textContent = "Vehicle Not Found";
-      return;
-    }
+      if (!slug) {
+        document.querySelector('.vehicle-title').textContent = "Vehicle Not Found";
+        return;
+      }
 
-    const currencySymbols = {
-      'NPR': '₨',
-      'INR': '₹',
-      'USD': '$',
-      'EUR': '€',
-      'DKK': 'kr'
-    };
+      const currencySymbols = {
+        'NPR': '₨',
+        'INR': '₹',
+        'USD': '$',
+        'EUR': '€',
+        'DKK': 'kr'
+      };
 
-    try {
-      const res = await fetch(`/api/vehicles/${slug}`);
-      if (!res.ok) throw new Error(`Server error ${res.status}`);
-      const vehicle = await res.json();
+      try {
+        const res = await fetch(`/api/vehicles/${slug}`);
+        const vehicle = await res.json();
 
-      document.querySelector('.vehicle-title').textContent = vehicle.name;
-      document.querySelector('.vehicle-description').textContent = vehicle.description || '';
-      document.querySelector('.vehicle-type').textContent = vehicle.vehicleType || 'N/A';
-      document.querySelector('.vehicle-seats').textContent = vehicle.seatingCapacity || 'N/A';
-      document.querySelector('.vehicle-price').textContent = vehicle.pricePerDay || 'N/A';
-      document.querySelector('.vehicle-currency').textContent = currencySymbols[vehicle.currency] || '₨';
-      document.querySelector('.vehicle-notes').textContent = `Origin: ${vehicle.origin || 'N/A'}, Destination: ${vehicle.destination || 'N/A'}`;
+        document.querySelector('.vehicle-title').textContent = vehicle.name;
+        document.querySelector('.vehicle-description').textContent = vehicle.description || '';
+        document.querySelector('.vehicle-type').textContent = vehicle.vehicleType;
+        document.querySelector('.vehicle-seats').textContent = vehicle.seatingCapacity;
+        document.querySelector('.vehicle-price').textContent = vehicle.pricePerDay;
+        document.querySelector('.vehicle-currency').textContent = currencySymbols[vehicle.currency] || '₨';
+        document.querySelector('.vehicle-notes').textContent = `Origin: ${vehicle.origin || 'N/A'}, Destination: ${vehicle.destination || 'N/A'}`;
 
-      const slideTrack = document.getElementById('slideTrack');
+        const slideTrack = document.getElementById('slideTrack');
 
-      if (vehicle.images && vehicle.images.length > 0) {
-        // Append images
-        vehicle.images.forEach(imgPath => {
-          const img = document.createElement('img');
-          img.src = imgPath.startsWith('uploads') ? `/${imgPath}` : imgPath;
-          img.alt = vehicle.name;
-          slideTrack.appendChild(img);
-        });
-
-        // Duplicate for smooth looping
-        if (vehicle.images.length > 1) {
+        if (vehicle.images && vehicle.images.length > 0) {
           vehicle.images.forEach(imgPath => {
             const img = document.createElement('img');
-            img.src = imgPath.startsWith('uploads') ? `/${imgPath}` : imgPath;
+            img.src = `/uploads/${imgPath}`;
             img.alt = vehicle.name;
             slideTrack.appendChild(img);
           });
 
-          // Slider animation logic
-          let index = 0;
-          setInterval(() => {
-            index++;
-            if (index >= vehicle.images.length) index = 0;
-            slideTrack.style.transform = `translateX(-${index * 100}%)`;
-          }, 3000);
+          if (vehicle.images.length > 1) {
+            vehicle.images.forEach(imgPath => {
+              const img = document.createElement('img');
+              img.src = `/uploads/${imgPath}`;
+              img.alt = vehicle.name;
+              slideTrack.appendChild(img);
+            });
+          }
         }
 
-      } else {
-        // Fallback default image
-        const img = document.createElement('img');
-        img.src = "/images/vehicles/default.jpg";
-        img.alt = "Default Vehicle";
-        slideTrack.appendChild(img);
+      } catch (err) {
+        console.error("❌ Error loading vehicle details:", err);
+        document.querySelector('.vehicle-title').textContent = "Failed to load vehicle details.";
       }
-
-    } catch (err) {
-      console.error("❌ Error loading vehicle details:", err);
-      document.querySelector('.vehicle-title').textContent = "Failed to load vehicle details.";
-    }
-  });
-</script>
-
+    });
+  </script>
 
 </body>
 </html>
