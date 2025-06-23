@@ -5,17 +5,18 @@ const path = require('path');
 exports.updateImageSetting = async (req, res) => {
   try {
     const { sectionId } = req.params;
-    const useDefault = req.body.useDefault === 'true';
 
     let update = {};
 
-    if (useDefault) {
+    // ✅ Handle mode: 'default' sent by frontend
+    if (req.body.mode === 'default') {
       update = {
         useDefault: true,
         imagePath: getDefaultPathFor(sectionId)
       };
     }
 
+    // ✅ Handle uploaded file
     if (req.file) {
       update = {
         useDefault: false,
@@ -57,8 +58,9 @@ function getDefaultPathFor(sectionId) {
     hero: '/public/images/backgrounds/mountain.jpeg',
     tour: '/public/images/backgrounds/back.png',
     vehicle: '/public/images/backgrounds/vehicle.png',
-    trek: '/public/images/backgrounds/trek.png',
-    flight: '/public/images/backgrounds/flight.png'
+    trekking: '/public/images/backgrounds/trek.png',
+    flight: '/public/images/backgrounds/flight.png',
+    logo: '/public/images/backgrounds/logo.jpeg'
   };
 
   return defaultPaths[sectionId] || '/public/images/backgrounds/default.jpg';

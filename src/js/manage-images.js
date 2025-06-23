@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <img src="${section.defaultPath}" alt="${section.label}" style="width: 100%; max-height: 180px; object-fit: cover; margin-top: 10px;" />
       </div>
 
-      <button class="btn" onclick="saveImageSetting('${section.id}')">Save</button>
+      <button class="btn" onclick="saveImageSetting('${section.id}', '${section.defaultPath}')">Save</button>
       <hr style="margin: 30px 0;">
     `;
     container.appendChild(block);
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-async function saveImageSetting(sectionId) {
+async function saveImageSetting(sectionId, defaultPath) {
   const mode = document.getElementById(`${sectionId}-mode`).value;
   const fileInput = document.getElementById(`${sectionId}-file`);
 
@@ -106,6 +106,12 @@ async function saveImageSetting(sectionId) {
       }
 
       alert("✅ Default image selected for " + sectionId);
+
+      // ✅ Update preview to default after successful save
+      const previewImg = document.querySelector(`#${sectionId}-preview img`);
+      if (previewImg) {
+        previewImg.src = defaultPath;
+      }
 
     } else if (fileInput.files[0]) {
       const formData = new FormData();
