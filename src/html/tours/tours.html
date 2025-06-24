@@ -15,18 +15,21 @@
 
     .tours-header {
       text-align: center;
-      padding: 40px 20px;
+      padding: 50px 20px;
       background: linear-gradient(135deg, #004a99, #0077cc);
       color: white;
     }
 
     .tours-header h1 {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       margin-bottom: 10px;
+      text-shadow: 0 0 10px #00f0ff, 0 0 20px #00bfff;
+      letter-spacing: 1px;
     }
 
     .tours-header p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
     }
 
     .tours-list {
@@ -55,7 +58,7 @@
 
     .tour-card img {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
     }
 
@@ -68,7 +71,7 @@
     }
 
     .tour-info h2 {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       margin: 0 0 8px 0;
       color: #004a99;
     }
@@ -77,13 +80,6 @@
       margin: 6px 0;
       color: #555;
       font-size: 0.95rem;
-    }
-
-    .tour-info .overview-preview {
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
     }
 
     .btn {
@@ -147,7 +143,7 @@
       const res = await fetch("/api/tours");
       const tours = await res.json();
 
-      if (tours.length === 0) {
+      if (!Array.isArray(tours) || tours.length === 0) {
         container.innerHTML = "<p>No tours available right now. Please check back later!</p>";
         return;
       }
@@ -158,24 +154,22 @@
           ? (rawPath.startsWith('/uploads/') ? rawPath : `/uploads/${rawPath}`)
           : "/images/tour-packages/default.jpg";
 
+        const shortDesc = tour.description
+          ? (tour.description.length > 120 ? tour.description.substring(0, 120) + '...' : tour.description)
+          : 'No description available.';
+
         const card = document.createElement("div");
         card.className = "tour-card";
-
-        const shortDesc = tour.overview
-          ? (tour.overview.length > 150 ? tour.overview.substring(0, 150) + '...' : tour.overview)
-          : 'No overview available.';
-
         card.innerHTML = `
           <img src="${imageUrl}" alt="${tour.name}" onerror="this.src='/images/tour-packages/default.jpg'" />
           <div class="tour-info">
             <h2>${tour.name || 'Untitled Tour'}</h2>
-            <p class="overview-preview">${shortDesc}</p>
+            <p>${shortDesc}</p>
             <p><strong>Price:</strong> ${tour.currency || 'NPR'} ${tour.price || 'N/A'}</p>
             <p><strong>Duration:</strong> ${tour.duration || 'N/A'} days</p>
             <a class="btn" href="/tour/tour-detail.html?slug=${tour.slug}">View Details</a>
           </div>
         `;
-
         container.appendChild(card);
       });
     } catch (err) {

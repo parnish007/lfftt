@@ -16,6 +16,23 @@ document.addEventListener("DOMContentLoaded", () => {
     'DKK': 'kr'
   };
 
+  // ✅ Image preview
+  form.images.addEventListener("change", (e) => {
+    if (imagePreviewContainer) {
+      imagePreviewContainer.innerHTML = "";
+      Array.from(e.target.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = document.createElement("img");
+          img.src = reader.result;
+          img.style = "width: 100px; height: 100px; object-fit: cover; margin-right: 5px; border-radius: 6px;";
+          imagePreviewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -39,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loadTours();
     } catch (err) {
       console.error("❌ Error adding tour:", err);
-      alert("❌ Failed to add tour. See console for details.");
+      alert(`❌ Failed to add tour: ${err.message}`);
     }
   });
 
@@ -60,16 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const card = document.createElement("div");
         card.className = "tour-card";
 
-        const imageUrl = tour.images && tour.images.length > 0
+        const imageUrl = (tour.images && tour.images.length > 0)
           ? (tour.images[0].startsWith('/') ? tour.images[0] : `/uploads/${tour.images[0]}`)
           : "/public/images/tour-packages/default.jpg";
 
         const symbol = currencySymbols[tour.currency] || '₨';
+        const shortDesc = tour.description
+          ? (tour.description.length > 100 ? tour.description.slice(0, 100) + '...' : tour.description)
+          : 'N/A';
 
         card.innerHTML = `
-          <img src="${imageUrl}" alt="${tour.name || 'Tour'}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;" />
+          <img src="${imageUrl}" alt="${tour.name || 'Tour'}"
+            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;" />
           <h3>${tour.name || 'N/A'}</h3>
-          <p>${tour.description || 'N/A'}</p>
+          <p>${shortDesc}</p>
           <p>Price: ${symbol} ${tour.price || 'N/A'}</p>
           <p>Duration: ${tour.duration || 'N/A'} days</p>
           <p>Accommodation: ${tour.accommodation || 'N/A'}</p>
@@ -127,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loadTours();
     } catch (err) {
       console.error("❌ Error updating tour:", err);
-      alert("❌ Failed to update tour. See console for details.");
+      alert(`❌ Failed to update tour: ${err.message}`);
     }
   };
 
@@ -145,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loadTours();
     } catch (err) {
       console.error("❌ Error deleting tour:", err);
-      alert("❌ Failed to delete tour. See console for details.");
+      alert(`❌ Failed to delete tour: ${err.message}`);
     }
   };
 

@@ -37,8 +37,17 @@ exports.getTourBySlug = async (req, res) => {
 // ✅ Create a new tour
 exports.createTour = async (req, res) => {
   try {
+    console.log("➡ Received body:", req.body);
+    console.log("➡ Received files:", req.files);
+
     const images = req.files
-      ? req.files.map(file => `/uploads/${file.filename}`)
+      ? req.files.map(file => file.relativePath || `/uploads/${file.filename}`)
+      : [];
+
+    const activities = req.body.activities
+      ? (Array.isArray(req.body.activities)
+        ? req.body.activities
+        : JSON.parse(req.body.activities))
       : [];
 
     const newTour = new Tour({
@@ -48,11 +57,7 @@ exports.createTour = async (req, res) => {
       currency: req.body.currency || 'NPR',
       price: Number(req.body.price),
       duration: Number(req.body.duration),
-      activities: req.body.activities
-        ? Array.isArray(req.body.activities)
-          ? req.body.activities
-          : JSON.parse(req.body.activities)
-        : [],
+      activities,
       accommodation: req.body.accommodation,
       meals: req.body.meals,
       overview: req.body.overview,
@@ -61,30 +66,38 @@ exports.createTour = async (req, res) => {
 
     await newTour.save();
     console.log(`✅ New tour saved: ${newTour.name}`);
-    res.status(201).json(newTour);
+    res.status(201).json({
+      ...newTour.toObject(),
+      images: newTour.images?.map(img => img.replace(/\\/g, '/')) || []
+    });
   } catch (err) {
     console.error("❌ Error creating tour:", err);
     res.status(400).json({ error: 'Failed to create tour', details: err.message });
   }
 };
 
-// ✅ Update a tour (now supports image update if provided)
+// ✅ Update a tour (with optional image update)
 exports.updateTour = async (req, res) => {
   try {
+    console.log("➡ Update body:", req.body);
+    console.log("➡ Update files:", req.files);
+
+    const activities = req.body.activities
+      ? (Array.isArray(req.body.activities)
+        ? req.body.activities
+        : JSON.parse(req.body.activities))
+      : [];
+
     const updateData = {
       ...req.body,
       currency: req.body.currency || 'NPR',
       price: Number(req.body.price),
       duration: Number(req.body.duration),
-      activities: req.body.activities
-        ? Array.isArray(req.body.activities)
-          ? req.body.activities
-          : JSON.parse(req.body.activities)
-        : []
+      activities
     };
 
     if (req.files && req.files.length > 0) {
-      updateData.images = req.files.map(f => `/uploads/${f.filename}`);
+      updateData.images = req.files.map(f => f.relativePath || `/uploads/${f.filename}`);
     }
 
     if (req.body.name) {
