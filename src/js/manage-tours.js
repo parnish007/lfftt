@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("addTourForm");
   const tourList = document.getElementById("tourList");
+  const imagePreviewContainer = document.getElementById("imagePreviewContainer");
 
   if (!form || !tourList) {
     console.warn("⚠️ addTourForm or tourList not found on this page.");
@@ -31,8 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const result = await res.json();
         throw new Error(result.error || 'Unknown error');
       }
+
       alert("✅ Tour added!");
       form.reset();
+      if (imagePreviewContainer) imagePreviewContainer.innerHTML = "";
       loadTours();
     } catch (err) {
       console.error("❌ Error adding tour:", err);

@@ -18,11 +18,10 @@ router.get('/', getAllTours);
 router.get('/:slug', getTourBySlug);
 
 // 🔹 POST create new tour with up to 10 images
-// ✅ backend saves path as /uploads/filename.jpg
 router.post('/', upload.array('images', 10), createTour);
 
-// 🔹 PUT update tour details (without changing images here)
-router.put('/:id', updateTour);
+// 🔹 PUT update tour details (future-proof: can accept images if needed)
+router.put('/:id', upload.array('images', 10), updateTour);
 
 // 🔹 DELETE a tour by ID
 router.delete('/:id', deleteTour);

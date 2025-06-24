@@ -37,13 +37,13 @@ const vehicleSchema = new mongoose.Schema({
   images: [
     {
       type: String,
-      trim: true // e.g., uploads/filename.jpg
+      trim: true // Stored as /uploads/filename.jpg
     }
   ],
   videos: [
     {
       type: String,
-      trim: true // e.g., uploads/video.mp4
+      trim: true // Stored as /uploads/video.mp4
     }
   ],
   available: {
@@ -73,5 +73,13 @@ const vehicleSchema = new mongoose.Schema({
     ref: 'Admin'
   }
 }, { timestamps: true });
+
+// Ensure slashes in image paths are forward slashes when returned
+vehicleSchema.methods.toCleanObject = function() {
+  const obj = this.toObject();
+  obj.images = obj.images?.map(img => img.replace(/\\/g, '/')) || [];
+  obj.videos = obj.videos?.map(vid => vid.replace(/\\/g, '/')) || [];
+  return obj;
+};
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

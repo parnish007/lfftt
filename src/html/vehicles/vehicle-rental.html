@@ -1,169 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vehicle Rental - Life For Fun Travel & Tours</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tour Packages - Life For Fun Travel & Tours</title>
+  <link rel="stylesheet" href="/css/shared.css" />
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(to bottom right, #eef7fb, #dceffc);
-      color: #333;
-      padding: 30px;
-      animation: fadeInPage 1s ease;
+      background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
+      margin: 0;
+      padding: 0;
     }
-    @keyframes fadeInPage {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .vehicle-header {
+
+    .tours-header {
       text-align: center;
-      margin-bottom: 40px;
-      animation: fadeInTitle 1s ease;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #004a99, #0077cc);
+      color: white;
     }
-    @keyframes fadeInTitle {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .vehicle-header h1 {
-      font-size: 2.8rem;
-      color: #004a99;
+
+    .tours-header h1 {
+      font-size: 2.2rem;
       margin-bottom: 10px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    .vehicle-header p {
+
+    .tours-header p {
       font-size: 1.1rem;
-      color: #555;
     }
-    .vehicle-list {
+
+    .tours-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
+      gap: 20px;
+      padding: 30px;
       max-width: 1200px;
       margin: 0 auto;
     }
-    .vehicle-card {
+
+    .tour-card {
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
       overflow: hidden;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
       display: flex;
       flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
-    .vehicle-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+
+    .tour-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
     }
-    .vehicle-card img {
+
+    .tour-card img {
       width: 100%;
-      height: 200px;
+      height: 180px;
       object-fit: cover;
     }
-    .vehicle-info {
-      padding: 20px;
+
+    .tour-info {
+      padding: 15px;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    .vehicle-info h2 {
+
+    .tour-info h2 {
+      font-size: 1.3rem;
+      margin: 0 0 8px 0;
       color: #004a99;
-      font-size: 1.4rem;
+    }
+
+    .tour-info p {
+      margin: 6px 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .tour-info .overview-preview {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #004a99;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #0066cc;
+    }
+
+    .customize-call {
+      text-align: center;
+      padding: 30px;
+      background: #f5faff;
+    }
+
+    .customize-call h2 {
+      color: #004a99;
       margin-bottom: 10px;
     }
-    .vehicle-info p {
-      font-size: 1rem;
-      color: #555;
-      margin-bottom: 12px;
-    }
-    .vehicle-card .btn {
-      padding: 12px;
-      background: linear-gradient(45deg, #004a99, #0077cc);
-      color: white;
-      border-radius: 8px;
-      text-align: center;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-    .vehicle-card .btn:hover {
-      background: linear-gradient(45deg, #0066cc, #0099ff);
-      transform: translateY(-2px);
-    }
+
     footer {
       text-align: center;
       padding: 20px;
-      margin-top: 50px;
-      background-color: #f1f6fc;
+      background: #f1f6fc;
       color: #666;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header class="vehicle-header">
-    <h1>Rent a Vehicle</h1>
-    <p>Choose from a wide range of vehicles for your journey across Nepal.</p>
+
+  <header class="tours-header">
+    <h1>Our Tour Packages</h1>
+    <p>Explore, compare, and book your ideal adventure across Nepal.</p>
   </header>
 
-  <section class="vehicle-list" id="vehicleList"></section>
+  <section class="tours-list" id="toursList"></section>
+
+  <section class="customize-call">
+    <h2>Didn't Find What You’re Looking For?</h2>
+    <a href="/tour/customize-tour.html" class="btn">Customize Your Tour</a>
+  </section>
 
   <footer>
     <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
   </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const container = document.getElementById("vehicleList");
+  document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("toursList");
 
-      const currencySymbols = {
-        'NPR': '₨',
-        'INR': '₹',
-        'USD': '$',
-        'EUR': '€',
-        'DKK': 'kr'
-      };
+    try {
+      const res = await fetch("/api/tours");
+      const tours = await res.json();
 
-      try {
-        const res = await fetch("/api/vehicles");
-        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-        const vehicles = await res.json();
-
-        if (!Array.isArray(vehicles) || vehicles.length === 0) {
-          container.innerHTML = "<p>No vehicles available right now. Please check back later!</p>";
-          return;
-        }
-
-        vehicles.forEach((vehicle) => {
-          let imageUrl = "/images/vehicles/default.jpg";
-          if (vehicle.images && vehicle.images.length > 0) {
-            imageUrl = vehicle.images[0].startsWith('uploads')
-              ? `/${vehicle.images[0]}`
-              : vehicle.images[0];
-          }
-
-          const symbol = currencySymbols[vehicle.currency] || '₨';
-          const priceText = vehicle.pricePerDay ? `${symbol} ${vehicle.pricePerDay}` : 'N/A';
-
-          const card = document.createElement("div");
-          card.className = "vehicle-card";
-          card.innerHTML = `
-            <img src="${imageUrl}" alt="${vehicle.name}" />
-            <div class="vehicle-info">
-              <h2>${vehicle.name || "Unnamed Vehicle"}</h2>
-              <p>Type: ${vehicle.vehicleType || "Unknown"} | Seats: ${vehicle.seatingCapacity || "N/A"}</p>
-              <p>From ${priceText}</p>
-              <a class="btn" href="/vehicles/vehicle-detail.html?slug=${vehicle.slug || ""}">View Details</a>
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      } catch (err) {
-        console.error("❌ Error loading vehicles:", err);
-        container.innerHTML = "<p>Failed to load vehicles. Please try again later.</p>";
+      if (tours.length === 0) {
+        container.innerHTML = "<p>No tours available right now. Please check back later!</p>";
+        return;
       }
-    });
+
+      tours.forEach(tour => {
+        const rawPath = tour.images && tour.images.length > 0 ? tour.images[0] : null;
+        const imageUrl = rawPath
+          ? (rawPath.startsWith('/uploads/') ? rawPath : `/uploads/${rawPath}`)
+          : "/images/tour-packages/default.jpg";
+
+        const card = document.createElement("div");
+        card.className = "tour-card";
+
+        const shortDesc = tour.overview
+          ? (tour.overview.length > 150 ? tour.overview.substring(0, 150) + '...' : tour.overview)
+          : 'No overview available.';
+
+        card.innerHTML = `
+          <img src="${imageUrl}" alt="${tour.name}" onerror="this.src='/images/tour-packages/default.jpg'" />
+          <div class="tour-info">
+            <h2>${tour.name || 'Untitled Tour'}</h2>
+            <p class="overview-preview">${shortDesc}</p>
+            <p><strong>Price:</strong> ${tour.currency || 'NPR'} ${tour.price || 'N/A'}</p>
+            <p><strong>Duration:</strong> ${tour.duration || 'N/A'} days</p>
+            <a class="btn" href="/tour/tour-detail.html?slug=${tour.slug}">View Details</a>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    } catch (err) {
+      console.error("❌ Error loading tours:", err);
+      container.innerHTML = "<p>Failed to load tours. Please try again later.</p>";
+    }
+  });
   </script>
 </body>
 </html>

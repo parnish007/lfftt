@@ -14,6 +14,7 @@ const io = socketIo(server, {
   cors: { origin: '*' }
 });
 
+// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -22,11 +23,9 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
+app.use(express.static(path.join(__dirname, '../src'))); // Serve frontend files
 
-// ✅ Serve static frontend files (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, '../src')));
-
-// ✅ Database connection
+// ✅ MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -51,15 +50,14 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket setup
 require('./socket')(io);
 
-// ✅ Serve index.html for root
+// ✅ Serve root index
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve any .html dynamically from proper folders
+// ✅ Serve .html dynamically from folders
 app.get('/*.html', (req, res, next) => {
   const file = path.basename(req.path);
-
   const tryPaths = [
     path.join(__dirname, '../src/html', file),
     path.join(__dirname, '../src/html/tour', file),
@@ -84,7 +82,7 @@ app.get('/*.html', (req, res, next) => {
   tryNext();
 });
 
-// ✅ 404 handler
+// ✅ 404 fallback
 app.use((req, res) => {
   res.status(404).send('404 Not Found');
 });

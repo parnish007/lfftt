@@ -13,273 +13,223 @@
     }
 
     header.tour-detail-header {
-      background: linear-gradient(135deg, #004a99, #005ecc);
+      background: linear-gradient(45deg, #004a99, #0077cc);
       color: white;
-      padding: 40px 20px;
+      padding: 50px 20px;
       text-align: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .tour-detail-header h1 {
-      font-size: 2.6rem;
+    header.tour-detail-header h1 {
+      font-size: 2.8rem;
       margin-bottom: 10px;
-      letter-spacing: 1px;
     }
 
-    .tour-detail-header p {
+    header.tour-detail-header p {
       font-size: 1.2rem;
     }
 
+    .slider {
+      max-width: 1000px;
+      margin: 30px auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .slider img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 500px;
+    }
+
     .summary-box {
-      max-width: 1200px;
-      margin: 40px auto;
+      max-width: 1100px;
+      margin: 30px auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 10px;
+    }
+
+    .summary-card {
+      background: #fff;
       padding: 20px;
-    }
-
-    .summary-card, .price-box {
-      background-color: #fff;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .summary-card:hover, .price-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
     }
 
     .summary-card h4 {
       color: #004a99;
-      margin-bottom: 12px;
-      font-size: 1.2rem;
+      margin-bottom: 8px;
     }
 
-    .summary-card p, .summary-card ul {
-      margin: 0;
-      font-size: 1rem;
-      color: #555;
+    .overview-section {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
     }
 
-    .summary-card ul {
-      padding-left: 20px;
-      list-style: disc;
+    .overview-section h2 {
+      color: #004a99;
+      margin-bottom: 10px;
+    }
+
+    .overview-section p {
+      line-height: 1.7;
     }
 
     .price-box {
       background: linear-gradient(135deg, #008000, #00a000);
       color: white;
+      padding: 20px;
+      border-radius: 10px;
       text-align: center;
     }
 
     .price-box h2 {
-      margin: 15px 0;
-      font-size: 1.8rem;
-    }
-
-    .price-box p {
-      font-size: 1rem;
-      margin-bottom: 12px;
+      margin: 10px 0;
     }
 
     .price-box a {
-      display: inline-block;
-      background-color: #ffa500;
+      background: #ffa500;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .price-box a:hover {
+      background: #ff8c00;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #ff6b6b, #ff4757);
       color: white;
       padding: 12px 24px;
       border-radius: 8px;
       text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .price-box a:hover {
-      background-color: #ff8c00;
-    }
-
-    .overview-section {
-      max-width: 1000px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 14px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    }
-
-    .overview-section h2 {
-      color: #004a99;
-      margin-bottom: 15px;
-      font-size: 1.8rem;
-    }
-
-    .overview-section p {
-      line-height: 1.7;
-      font-size: 1rem;
-      color: #444;
-    }
-
-    .btn {
-      background-color: #004a99;
-      color: white;
-      border: none;
-      padding: 12px 26px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 500;
       display: inline-block;
-      margin-top: 25px;
-      transition: background 0.3s, transform 0.2s;
+      margin-top: 20px;
     }
 
     .btn:hover {
-      background-color: #0066cc;
-      transform: translateY(-3px);
+      background: linear-gradient(45deg, #ff4757, #ff6b6b);
     }
 
     footer {
+      background: #f1f6fc;
       text-align: center;
-      padding: 25px;
-      margin-top: 50px;
-      background-color: #f1f6fc;
+      padding: 20px;
       color: #666;
       font-size: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      .tour-detail-header h1 {
-        font-size: 2rem;
-      }
-      .price-box h2 {
-        font-size: 1.5rem;
-      }
     }
   </style>
 </head>
 <body>
 
-  <!-- ✅ Header -->
   <header class="tour-detail-header">
-    <h1 class="tour-title">Tour Package Title</h1>
-    <p class="tour-days">Duration: X Days</p>
+    <h1 class="tour-title">Loading...</h1>
+    <p class="tour-days"></p>
   </header>
 
-  <!-- ✅ Summary Section -->
+  <div class="slider" id="slider">
+    <!-- Dynamic images here -->
+  </div>
+
   <section class="summary-box">
     <div class="summary-card">
       <h4>Duration</h4>
-      <p><span class="tour-duration">X Days</span></p>
+      <p class="tour-duration"></p>
     </div>
     <div class="summary-card">
       <h4>Activities</h4>
-      <ul class="activities-list">
-        <!-- Injected by JS -->
-      </ul>
+      <ul class="activities-list"></ul>
     </div>
     <div class="summary-card">
       <h4>Accommodation</h4>
-      <p><span class="accommodation">Hotel Details Here</span></p>
+      <p class="accommodation"></p>
     </div>
     <div class="summary-card">
       <h4>Meals</h4>
-      <p><span class="meals">Breakfast Only</span></p>
+      <p class="meals"></p>
     </div>
-
-    <!-- ✅ Price Box Updated -->
     <div class="price-box">
       <p>Price starts from</p>
-      <h2><span class="currency-symbol">$</span><span class="price-value">400</span></h2>
-      <p>10% Discount for Group</p>
-      <a href="/contact.html">Contact Us</a>
+      <h2><span class="currency-symbol"></span><span class="price-value"></span></h2>
+      <p>Group discounts available</p>
+      <a href="/contact.html">Request Rate</a>
     </div>
   </section>
 
-  <!-- ✅ Overview Section -->
   <section class="overview-section">
     <h2>Overview & Highlights</h2>
-    <p class="overview">
-      <!-- Injected overview goes here (e.g. cultural, religious, and scenic highlights) -->
-    </p>
+    <p class="overview-text"></p>
     <a href="/booking.html" class="btn">Book Now</a>
   </section>
 
   <footer>
-    <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
+    &copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.
   </footer>
 
-  <!-- ✅ Sample Script -->
-<script>
-(async () => {
-  const symbols = {
-    'NPR': '₨',
-    'INR': '₹',
-    'USD': '$',
-    'EUR': '€',
-    'DKK': 'kr'
-  };
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const slug = urlParams.get('slug');
-
-  if (!slug) {
-    alert("❌ No tour slug provided in URL.");
-    return;
-  }
-
-  try {
-    const res = await fetch(`/api/tours/${slug}`);
-    if (!res.ok) throw new Error("Tour not found");
-
-    const tour = await res.json();
-
-    document.querySelector('.tour-title').textContent = tour.name || "Untitled Tour";
-    document.querySelector('.tour-days').textContent = `Duration: ${tour.duration || 'N/A'} Days`;
-    document.querySelector('.tour-duration').textContent = `${tour.duration || 'N/A'} Days`;
-    document.querySelector('.accommodation').textContent = tour.accommodation || 'N/A';
-    document.querySelector('.meals').textContent = tour.meals || 'N/A';
-    document.querySelector('.overview').textContent = tour.overview || 'No overview available';
-    document.querySelector('.price-value').textContent = tour.price || '0';
-    document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
-
-    const activitiesEl = document.querySelector('.activities-list');
-    activitiesEl.innerHTML = '';
-    (tour.activities || []).forEach(activity => {
-      const li = document.createElement('li');
-      li.textContent = activity;
-      activitiesEl.appendChild(li);
-    });
-
-    // Optional: Render main image if needed
-    if (tour.images && tour.images.length > 0) {
-      const firstImage = tour.images[0].startsWith('/uploads/')
-        ? tour.images[0]
-        : `/uploads/${tour.images[0]}`;
-
-      const imageEl = document.createElement("img");
-      imageEl.src = firstImage;
-      imageEl.alt = tour.name || "Tour Image";
-      Object.assign(imageEl.style, {
-        width: "100%",
-        maxHeight: "400px",
-        objectFit: "cover",
-        borderRadius: "12px",
-        margin: "20px auto",
-        display: "block"
-      });
-
-      const overviewSection = document.querySelector(".overview-section");
-      overviewSection.parentNode.insertBefore(imageEl, overviewSection);
+  <script>
+  (async () => {
+    const symbols = { NPR: '₨', INR: '₹', USD: '$', EUR: '€', DKK: 'kr' };
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    if (!slug) {
+      document.querySelector('.tour-title').textContent = "Tour Not Found";
+      return;
     }
 
-  } catch (err) {
-    console.error("❌ Error loading tour:", err);
-    document.querySelector('.overview').textContent = 'Failed to load tour details.';
-  }
-})();
-</script>
+    try {
+      const res = await fetch(`/api/tours/${slug}`);
+      if (!res.ok) throw new Error("Tour not found");
+      const tour = await res.json();
 
-  <script src="/js/tour-detail.js"></script>
+      document.querySelector('.tour-title').textContent = tour.name || "Untitled Tour";
+      document.querySelector('.tour-days').textContent = `Duration: ${tour.duration || 'N/A'} Days`;
+      document.querySelector('.tour-duration').textContent = `${tour.duration || 'N/A'} Days`;
+      document.querySelector('.accommodation').textContent = tour.accommodation || 'N/A';
+      document.querySelector('.meals').textContent = tour.meals || 'N/A';
+      document.querySelector('.price-value').textContent = tour.price || 'N/A';
+      document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
+      document.querySelector('.overview-text').textContent = tour.overview || 'No overview available';
+
+      const activitiesList = document.querySelector('.activities-list');
+      (tour.activities || []).forEach(act => {
+        const li = document.createElement('li');
+        li.textContent = act;
+        activitiesList.appendChild(li);
+      });
+
+      const slider = document.getElementById('slider');
+      if (tour.images && tour.images.length > 0) {
+        tour.images.forEach(imgPath => {
+          const img = document.createElement('img');
+          img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
+          img.alt = tour.name;
+          slider.appendChild(img);
+        });
+      } else {
+        const img = document.createElement('img');
+        img.src = "/images/tours/default.jpg";
+        img.alt = "Default Tour Image";
+        slider.appendChild(img);
+      }
+
+    } catch (err) {
+      console.error("❌ Error loading tour:", err);
+      document.querySelector('.overview-text').textContent = "Failed to load tour details.";
+    }
+  })();
+  </script>
+
 </body>
 </html>

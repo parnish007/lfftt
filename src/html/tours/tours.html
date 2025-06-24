@@ -4,67 +4,137 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tour Packages - Life For Fun Travel & Tours</title>
-  <link rel="stylesheet" href="/css/tours.css" />
   <link rel="stylesheet" href="/css/shared.css" />
   <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
+      margin: 0;
+      padding: 0;
+    }
+
+    .tours-header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #004a99, #0077cc);
+      color: white;
+    }
+
+    .tours-header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .tours-header p {
+      font-size: 1.1rem;
+    }
+
+    .tours-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
     .tour-card {
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
       overflow: hidden;
-      margin: 15px;
-      transition: transform 0.3s;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
+
     .tour-card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
     }
+
     .tour-card img {
       width: 100%;
-      height: 200px;
+      height: 180px;
       object-fit: cover;
     }
+
     .tour-info {
       padding: 15px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
+
     .tour-info h2 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
+      font-size: 1.3rem;
+      margin: 0 0 8px 0;
+      color: #004a99;
     }
+
+    .tour-info p {
+      margin: 6px 0;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .tour-info .overview-preview {
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
     .btn {
-      display: inline-block;
       margin-top: 10px;
       padding: 10px 20px;
       background: #004a99;
       color: #fff;
       border-radius: 6px;
       text-decoration: none;
+      text-align: center;
       transition: background 0.3s;
     }
+
     .btn:hover {
       background: #0066cc;
     }
+
+    .customize-call {
+      text-align: center;
+      padding: 30px;
+      background: #f5faff;
+    }
+
+    .customize-call h2 {
+      color: #004a99;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #f1f6fc;
+      color: #666;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
-
 <body>
-  <!-- ✅ Header -->
+
   <header class="tours-header">
     <h1>Our Tour Packages</h1>
     <p>Explore, compare, and book your ideal adventure across Nepal.</p>
   </header>
 
-  <!-- ✅ Tour Cards Section (dynamic) -->
-  <section class="tours-list" id="toursList">
-    <!-- Dynamic content injected here -->
-  </section>
+  <section class="tours-list" id="toursList"></section>
 
-  <!-- ✅ Customize Button -->
   <section class="customize-call">
     <h2>Didn't Find What You’re Looking For?</h2>
-    <a href="/tour/customize-tour.html" class="btn secondary">Customize Your Tour</a>
+    <a href="/tour/customize-tour.html" class="btn">Customize Your Tour</a>
   </section>
 
-  <!-- ✅ Footer -->
   <footer>
     <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
   </footer>
@@ -90,13 +160,18 @@
 
         const card = document.createElement("div");
         card.className = "tour-card";
+
+        const shortDesc = tour.overview
+          ? (tour.overview.length > 150 ? tour.overview.substring(0, 150) + '...' : tour.overview)
+          : 'No overview available.';
+
         card.innerHTML = `
           <img src="${imageUrl}" alt="${tour.name}" onerror="this.src='/images/tour-packages/default.jpg'" />
           <div class="tour-info">
-            <h2>${tour.name}</h2>
-            <p>${tour.description}</p>
-            <p><strong>Price:</strong> NPR ${tour.price}</p>
-            <p><strong>Duration:</strong> ${tour.duration} days</p>
+            <h2>${tour.name || 'Untitled Tour'}</h2>
+            <p class="overview-preview">${shortDesc}</p>
+            <p><strong>Price:</strong> ${tour.currency || 'NPR'} ${tour.price || 'N/A'}</p>
+            <p><strong>Duration:</strong> ${tour.duration || 'N/A'} days</p>
             <a class="btn" href="/tour/tour-detail.html?slug=${tour.slug}">View Details</a>
           </div>
         `;

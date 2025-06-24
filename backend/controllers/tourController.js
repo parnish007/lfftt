@@ -5,7 +5,12 @@ const slugify = require('slugify');
 exports.getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find().sort({ createdAt: -1 });
-    res.json(tours);
+    res.json(
+      tours.map(t => ({
+        ...t.toObject(),
+        images: t.images?.map(img => img.replace(/\\/g, '/')) || []
+      }))
+    );
   } catch (err) {
     console.error("❌ Error fetching tours:", err);
     res.status(500).json({ error: 'Failed to fetch tours', details: err.message });
@@ -19,7 +24,10 @@ exports.getTourBySlug = async (req, res) => {
     if (!tour) {
       return res.status(404).json({ error: 'Tour not found' });
     }
-    res.json(tour);
+    res.json({
+      ...tour.toObject(),
+      images: tour.images?.map(img => img.replace(/\\/g, '/')) || []
+    });
   } catch (err) {
     console.error("❌ Error fetching tour by slug:", err);
     res.status(500).json({ error: 'Server error', details: err.message });
@@ -43,7 +51,7 @@ exports.createTour = async (req, res) => {
       activities: req.body.activities
         ? Array.isArray(req.body.activities)
           ? req.body.activities
-          : req.body.activities.split(',').map(a => a.trim())
+          : JSON.parse(req.body.activities)
         : [],
       accommodation: req.body.accommodation,
       meals: req.body.meals,
@@ -60,7 +68,7 @@ exports.createTour = async (req, res) => {
   }
 };
 
-// ✅ Update a tour
+// ✅ Update a tour (now supports image update if provided)
 exports.updateTour = async (req, res) => {
   try {
     const updateData = {
@@ -71,9 +79,17 @@ exports.updateTour = async (req, res) => {
       activities: req.body.activities
         ? Array.isArray(req.body.activities)
           ? req.body.activities
-          : req.body.activities.split(',').map(a => a.trim())
+          : JSON.parse(req.body.activities)
         : []
     };
+
+    if (req.files && req.files.length > 0) {
+      updateData.images = req.files.map(f => `/uploads/${f.filename}`);
+    }
+
+    if (req.body.name) {
+      updateData.slug = slugify(req.body.name, { lower: true, strict: true });
+    }
 
     const updatedTour = await Tour.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
@@ -82,7 +98,10 @@ exports.updateTour = async (req, res) => {
     }
 
     console.log(`✅ Tour updated: ${updatedTour.name}`);
-    res.json(updatedTour);
+    res.json({
+      ...updatedTour.toObject(),
+      images: updatedTour.images?.map(img => img.replace(/\\/g, '/')) || []
+    });
   } catch (err) {
     console.error("❌ Error updating tour:", err);
     res.status(400).json({ error: 'Failed to update tour', details: err.message });

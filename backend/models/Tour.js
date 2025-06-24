@@ -4,17 +4,20 @@ const tourSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 150
   },
   slug: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true
+    lowercase: true,
+    trim: true
   },
   description: {
     type: String,
-    required: true
+    required: true,
+    maxlength: 2000
   },
   currency: {
     type: String,
@@ -37,19 +40,30 @@ const tourSchema = new mongoose.Schema({
   },
   accommodation: {
     type: String,
-    default: 'Standard Hotel'
+    default: 'Standard Hotel',
+    trim: true
   },
   meals: {
     type: String,
-    default: 'Breakfast'
+    default: 'Breakfast',
+    trim: true
   },
   overview: {
     type: String,
-    maxlength: 2000
+    maxlength: 2000,
+    trim: true
   },
   images: [{
-    type: String // uploads/filename.jpg (relative path)
+    type: String,
+    trim: true // e.g., /uploads/filename.jpg
   }]
 }, { timestamps: true });
+
+// ✅ Method to clean image paths before sending to frontend
+tourSchema.methods.toCleanObject = function() {
+  const obj = this.toObject();
+  obj.images = obj.images?.map(img => img.replace(/\\/g, '/')) || [];
+  return obj;
+};
 
 module.exports = mongoose.model('Tour', tourSchema);

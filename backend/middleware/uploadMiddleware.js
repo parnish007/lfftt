@@ -33,44 +33,42 @@ const upload = multer({
 module.exports = {
   single: field => (req, res, next) => {
     upload.single(field)(req, res, function (err) {
-      if (req.file) {
-        req.file.relativePath = `uploads/${req.file.filename}`;
-      }
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
+      }
+      if (req.file) {
+        req.file.relativePath = `/uploads/${req.file.filename}`;
       }
       next();
     });
   },
   array: (field, maxCount) => (req, res, next) => {
     upload.array(field, maxCount)(req, res, function (err) {
-      if (req.files && req.files.length > 0) {
-        req.files = req.files.map(file => ({
-          ...file,
-          relativePath: `uploads/${file.filename}`
-        }));
-      }
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
+      }
+      if (req.files && req.files.length > 0) {
+        req.files.forEach(file => {
+          file.relativePath = `/uploads/${file.filename}`;
+        });
       }
       next();
     });
   },
   fields: specs => (req, res, next) => {
     upload.fields(specs)(req, res, function (err) {
-      if (req.files) {
-        Object.keys(req.files).forEach(field => {
-          req.files[field] = req.files[field].map(file => ({
-            ...file,
-            relativePath: `uploads/${file.filename}`
-          }));
-        });
-      }
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
+      }
+      if (req.files) {
+        Object.keys(req.files).forEach(field => {
+          req.files[field].forEach(file => {
+            file.relativePath = `/uploads/${file.filename}`;
+          });
+        });
       }
       next();
     });
