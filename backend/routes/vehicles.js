@@ -25,8 +25,15 @@ router.post(
   createVehicle
 );
 
-// ✅ PUT update vehicle by ID
-router.put('/:id', updateVehicle);
+// ✅ PUT update vehicle with optional images/videos
+router.put(
+  '/:id',
+  upload.fields([
+    { name: 'images', maxCount: 5 },
+    { name: 'videos', maxCount: 2 }
+  ]),
+  updateVehicle
+);
 
 // ✅ DELETE vehicle by ID
 router.delete('/:id', deleteVehicle);

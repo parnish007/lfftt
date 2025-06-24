@@ -47,15 +47,15 @@ app.use('/api/vehicle-bookings', require('./routes/vehicleBookings'));
 app.use('/api/image-settings', require('./routes/imageSettings'));
 app.use('/api/bills', require('./routes/bills'));
 
-// ✅ WebSocket setup
+// ✅ WebSocket
 require('./socket')(io);
 
-// ✅ Serve root index
+// ✅ Serve index
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve .html dynamically from folders
+// ✅ Serve .html dynamically
 app.get('/*.html', (req, res, next) => {
   const file = path.basename(req.path);
   const tryPaths = [

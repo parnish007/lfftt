@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         reader.onload = () => {
           const img = document.createElement("img");
           img.src = reader.result;
-          img.style = "width: 100px; height: 100px; object-fit: cover; margin-right: 5px; border-radius: 6px;";
+          img.style = "width: 90px; height: 70px; object-fit: cover; margin-right: 5px; border-radius: 6px;";
           imagePreviewContainer.appendChild(img);
         };
         reader.readAsDataURL(file);
@@ -37,11 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const formData = new FormData(form);
-    const activitiesInput = form.elements['activities'].value;
-    const activities = activitiesInput
-      ? activitiesInput.split(',').map(item => item.trim())
-      : [];
-    formData.set('activities', JSON.stringify(activities));
+    formData.set('activities', form.elements['activities'].value.trim());
 
     try {
       const res = await fetch("/api/tours", { method: "POST", body: formData });
@@ -78,25 +74,27 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "tour-card";
 
         const imageUrl = (tour.images && tour.images.length > 0)
-          ? (tour.images[0].startsWith('/') ? tour.images[0] : `/uploads/${tour.images[0]}`)
+          ? tour.images[0]
           : "/public/images/tour-packages/default.jpg";
 
         const symbol = currencySymbols[tour.currency] || '₨';
         const shortDesc = tour.description
           ? (tour.description.length > 100 ? tour.description.slice(0, 100) + '...' : tour.description)
-          : 'N/A';
+          : 'No description';
 
         card.innerHTML = `
           <img src="${imageUrl}" alt="${tour.name || 'Tour'}"
-            style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;" />
+            style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;" />
           <h3>${tour.name || 'N/A'}</h3>
           <p>${shortDesc}</p>
           <p>Price: ${symbol} ${tour.price || 'N/A'}</p>
           <p>Duration: ${tour.duration || 'N/A'} days</p>
           <p>Accommodation: ${tour.accommodation || 'N/A'}</p>
           <p>Meals: ${tour.meals || 'N/A'}</p>
-          <button onclick="editTour('${tour._id}')">Edit</button>
-          <button onclick="deleteTour('${tour._id}')">Delete</button>
+          <div>
+            <button onclick="editTour('${tour._id}')">Edit</button>
+            <button onclick="deleteTour('${tour._id}')">Delete</button>
+          </div>
         `;
         tourList.appendChild(card);
       });

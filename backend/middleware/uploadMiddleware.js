@@ -16,6 +16,7 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   const allowedExtensions = ['.png', '.jpg', '.jpeg', '.mp4', '.mov'];
   const ext = path.extname(file.originalname).toLowerCase();
+
   if (allowedExtensions.includes(ext)) {
     cb(null, true);
   } else {
@@ -27,12 +28,12 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // Max 10 MB
+  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB max
 });
 
 module.exports = {
   single: field => (req, res, next) => {
-    upload.single(field)(req, res, function (err) {
+    upload.single(field)(req, res, err => {
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
@@ -43,13 +44,14 @@ module.exports = {
       next();
     });
   },
+
   array: (field, maxCount) => (req, res, next) => {
-    upload.array(field, maxCount)(req, res, function (err) {
+    upload.array(field, maxCount)(req, res, err => {
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
       }
-      if (req.files && req.files.length > 0) {
+      if (req.files) {
         req.files.forEach(file => {
           file.relativePath = `/uploads/${file.filename}`;
         });
@@ -57,8 +59,9 @@ module.exports = {
       next();
     });
   },
+
   fields: specs => (req, res, next) => {
-    upload.fields(specs)(req, res, function (err) {
+    upload.fields(specs)(req, res, err => {
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });

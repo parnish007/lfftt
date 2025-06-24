@@ -37,18 +37,22 @@ exports.getTourBySlug = async (req, res) => {
 // ✅ Create a new tour
 exports.createTour = async (req, res) => {
   try {
-    console.log("➡ Received body:", req.body);
-    console.log("➡ Received files:", req.files);
-
     const images = req.files
       ? req.files.map(file => file.relativePath || `/uploads/${file.filename}`)
       : [];
 
-    const activities = req.body.activities
-      ? (Array.isArray(req.body.activities)
-        ? req.body.activities
-        : JSON.parse(req.body.activities))
-      : [];
+    let activities = [];
+    if (req.body.activities) {
+      if (Array.isArray(req.body.activities)) {
+        activities = req.body.activities;
+      } else {
+        try {
+          activities = JSON.parse(req.body.activities);
+        } catch {
+          activities = req.body.activities.split(',').map(a => a.trim()).filter(Boolean);
+        }
+      }
+    }
 
     const newTour = new Tour({
       name: req.body.name.trim(),
@@ -76,17 +80,21 @@ exports.createTour = async (req, res) => {
   }
 };
 
-// ✅ Update a tour (with optional image update)
+// ✅ Update tour (supports image + slug update)
 exports.updateTour = async (req, res) => {
   try {
-    console.log("➡ Update body:", req.body);
-    console.log("➡ Update files:", req.files);
-
-    const activities = req.body.activities
-      ? (Array.isArray(req.body.activities)
-        ? req.body.activities
-        : JSON.parse(req.body.activities))
-      : [];
+    let activities = [];
+    if (req.body.activities) {
+      if (Array.isArray(req.body.activities)) {
+        activities = req.body.activities;
+      } else {
+        try {
+          activities = JSON.parse(req.body.activities);
+        } catch {
+          activities = req.body.activities.split(',').map(a => a.trim()).filter(Boolean);
+        }
+      }
+    }
 
     const updateData = {
       ...req.body,
@@ -121,7 +129,7 @@ exports.updateTour = async (req, res) => {
   }
 };
 
-// ✅ Delete a tour
+// ✅ Delete tour
 exports.deleteTour = async (req, res) => {
   try {
     const deleted = await Tour.findByIdAndDelete(req.params.id);

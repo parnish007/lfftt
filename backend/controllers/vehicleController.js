@@ -59,8 +59,8 @@ exports.createVehicle = async (req, res) => {
 
     const slug = slugify(name, { lower: true, strict: true });
 
-    const images = req.files?.images?.map(f => `uploads/${f.filename}`) || [];
-    const videos = req.files?.videos?.map(f => `uploads/${f.filename}`) || [];
+    const images = req.files?.images?.map(f => f.relativePath || `/uploads/${f.filename}`) || [];
+    const videos = req.files?.videos?.map(f => f.relativePath || `/uploads/${f.filename}`) || [];
 
     console.log("📦 Creating vehicle with:", { name, images, videos });
 
@@ -80,7 +80,11 @@ exports.createVehicle = async (req, res) => {
 
     await vehicle.save();
     console.log(`✅ Vehicle saved to DB: ${vehicle.name} (ID: ${vehicle._id})`);
-    res.status(201).json(vehicle);
+    res.status(201).json({
+      ...vehicle.toObject(),
+      images: vehicle.images?.map(f => f.replace(/\\/g, '/')) || [],
+      videos: vehicle.videos?.map(f => f.replace(/\\/g, '/')) || []
+    });
   } catch (err) {
     console.error("❌ Error creating vehicle:", err);
     res.status(500).json({ error: "Create failed", details: err.message });
@@ -94,6 +98,18 @@ exports.updateVehicle = async (req, res) => {
       currency: req.body.currency || 'NPR'
     };
 
+    if (req.files?.images?.length) {
+      updateData.images = req.files.images.map(f => f.relativePath || `/uploads/${f.filename}`);
+    }
+
+    if (req.files?.videos?.length) {
+      updateData.videos = req.files.videos.map(f => f.relativePath || `/uploads/${f.filename}`);
+    }
+
+    if (req.body.name) {
+      updateData.slug = slugify(req.body.name, { lower: true, strict: true });
+    }
+
     const updated = await Vehicle.findByIdAndUpdate(req.params.id, updateData, { new: true });
 
     if (!updated) {
@@ -101,10 +117,14 @@ exports.updateVehicle = async (req, res) => {
     }
 
     console.log(`✅ Vehicle updated: ${updated.name} (ID: ${updated._id})`);
-    res.json(updated);
+    res.json({
+      ...updated.toObject(),
+      images: updated.images?.map(f => f.replace(/\\/g, '/')) || [],
+      videos: updated.videos?.map(f => f.replace(/\\/g, '/')) || []
+    });
   } catch (err) {
     console.error("❌ Error updating vehicle:", err);
-    res.status(400).json({ error: "Failed to update vehicle" });
+    res.status(400).json({ error: "Failed to update vehicle", details: err.message });
   }
 };
 
@@ -118,6 +138,6 @@ exports.deleteVehicle = async (req, res) => {
     res.json({ message: "Vehicle deleted" });
   } catch (err) {
     console.error("❌ Error deleting vehicle:", err);
-    res.status(400).json({ error: "Failed to delete vehicle" });
+    res.status(400).json({ error: "Failed to delete vehicle", details: err.message });
   }
 };
