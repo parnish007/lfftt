@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector('.price-value').textContent = tour.price || 'N/A';
     document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
 
-    // ✅ Render overviewHTML if present; fallback to plain overview
+    // ✅ Render overviewHTML with fallback to plain overview
     const overviewText = document.querySelector('.overview-text');
     if (tour.overviewHTML && tour.overviewHTML.trim()) {
       overviewText.innerHTML = tour.overviewHTML;
