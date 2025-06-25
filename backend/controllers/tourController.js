@@ -104,28 +104,33 @@ exports.updateTour = async (req, res) => {
       }
     }
 
-    const itineraryDays = req.body.itineraryDays
-      ? Array.isArray(req.body.itineraryDays)
-        ? req.body.itineraryDays
-        : [req.body.itineraryDays]
-      : [];
+    // ✅ Extract itineraryDays[] from dynamically named keys (itineraryDay0, itineraryDay1, etc.)
+    let itineraryDays = [];
+    const count = parseInt(req.body.itineraryCount || 0);
+    for (let i = 0; i < count; i++) {
+      const key = `itineraryDay${i}`;
+      if (req.body[key]) {
+        itineraryDays.push(req.body[key].trim());
+      }
+    }
 
     const updateData = {
-      ...req.body,
+      name: req.body.name.trim(),
+      slug: slugify(req.body.name, { lower: true, strict: true }),
+      description: req.body.description,
       currency: req.body.currency || 'NPR',
       price: req.body.price,
       duration: Number(req.body.duration),
       activities,
+      accommodation: req.body.accommodation,
+      meals: req.body.meals,
+      overview: req.body.overview,
       overviewHTML: req.body.overviewHTML || "",
       itineraryDays
     };
 
     if (req.files && req.files.length > 0) {
       updateData.images = req.files.map(f => f.relativePath || `/uploads/${f.filename}`);
-    }
-
-    if (req.body.name) {
-      updateData.slug = slugify(req.body.name, { lower: true, strict: true });
     }
 
     const updatedTour = await Tour.findOneAndUpdate(

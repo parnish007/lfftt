@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!res.ok) throw new Error("Tour not found");
     const tour = await res.json();
 
-    // Fill form fields
     form.name.value = tour.name || '';
     form.description.value = tour.description || '';
     form.currency.value = tour.currency || 'NPR';
@@ -26,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     form.meals.value = tour.meals || '';
     overviewHTMLDiv.innerHTML = tour.overviewHTML || tour.overview || '';
 
-    // Display itinerary
     (tour.itineraryDays || []).forEach((day, index) => {
       const div = document.createElement('div');
       div.className = 'day-itinerary';
@@ -37,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       itineraryContainer.appendChild(div);
     });
 
-    // Preview old images
     (tour.images || []).forEach(imgPath => {
       const img = document.createElement("img");
       img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
@@ -45,11 +42,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("❌ Failed to load tour:", err);
     alert("Failed to load tour details.");
   }
 
-  // Handle image preview
   document.getElementById('images').addEventListener('change', function () {
     imagePreviewContainer.innerHTML = '';
     Array.from(this.files).forEach(file => {
@@ -63,7 +59,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Submit update
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -78,14 +73,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("overviewHTML", overviewHTMLDiv.innerHTML.trim());
     formData.append("activities", form.activities.value.trim());
 
-    // Append itinerary days
     const itineraryTexts = document.querySelectorAll('textarea[name="itineraryDay"]');
     itineraryTexts.forEach((textarea, index) => {
       formData.append(`itineraryDay${index}`, textarea.value.trim());
     });
     formData.append('itineraryCount', itineraryTexts.length);
 
-    // Append new images
     const newImages = form.images.files;
     for (let i = 0; i < newImages.length; i++) {
       formData.append("images", newImages[i]);
@@ -106,3 +99,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+// ✅ Fix: Enable "Add Day" itinerary button
+window.addDayItinerary = () => {
+  const itineraryContainer = document.getElementById("itineraryContainer");
+  const dayCount = itineraryContainer.querySelectorAll('.day-itinerary').length + 1;
+
+  const div = document.createElement('div');
+  div.className = 'day-itinerary';
+  div.innerHTML = `
+    <label>Day ${dayCount} Itinerary</label>
+    <textarea name="itineraryDay" data-day="${dayCount}" required></textarea>
+  `;
+  itineraryContainer.appendChild(div);
+};
