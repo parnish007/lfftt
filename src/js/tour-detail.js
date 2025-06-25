@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       slider.appendChild(img);
     }
 
-    // ✅ Itinerary
+    // ✅ Itinerary with fallback and debug
     const itinerarySection = document.getElementById('itinerary-container');
     itinerarySection.innerHTML = "";
     if (tour.itineraryDays && Array.isArray(tour.itineraryDays) && tour.itineraryDays.length > 0) {
@@ -68,8 +68,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         itinerarySection.appendChild(p);
       });
     } else {
+      console.warn("⚠️ No itineraryDays[] found in tour object. Logging full object ⬇️");
+      console.warn(tour);
       itinerarySection.innerHTML = "<p>No itinerary available.</p>";
-      console.warn("⚠️ No itinerary data found for this tour.");
     }
 
     // ✅ Customize Link

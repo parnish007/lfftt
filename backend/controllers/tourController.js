@@ -75,7 +75,7 @@ exports.createTour = async (req, res) => {
       accommodation: req.body.accommodation,
       meals: req.body.meals,
       overview: req.body.overview,
-      overviewHTML: req.body.overviewHTML || "",
+      overviewHTML: req.body.overviewHTML || (req.body.overview?.includes('<') ? req.body.overview : ""),
       itineraryDays,
       images
     });
@@ -128,7 +128,7 @@ exports.updateTour = async (req, res) => {
       accommodation: req.body.accommodation,
       meals: req.body.meals,
       overview: req.body.overview,
-      overviewHTML: req.body.overviewHTML || "",
+      overviewHTML: req.body.overviewHTML || (req.body.overview?.includes('<') ? req.body.overview : ""),
       itineraryDays
     };
 

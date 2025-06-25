@@ -210,8 +210,9 @@
       const meals = this.meals.value;
       const overview = document.getElementById('overviewHTML').innerHTML;
 
-      const itinerary = Array.from(document.querySelectorAll('#itineraryContainer textarea'))
-        .map(t => t.value);
+      const itinerary = Array.from(document.querySelectorAll('#itineraryContainer textarea')).map(t => t.value);
+      form.append('itineraryCount', itinerary.length);
+      itinerary.forEach((day, i) => form.append(`itineraryDay${i}`, day));
 
       form.append('name', name);
       form.append('description', description);
@@ -222,13 +223,13 @@
       form.append('accommodation', accommodation);
       form.append('meals', meals);
       form.append('overview', overview);
-      itinerary.forEach(day => form.append('itineraryDays[]', day));
       Array.from(this.images.files).forEach(file => form.append('images', file));
 
       const res = await fetch('/api/tours', {
         method: 'POST',
         body: form
       });
+
       if (res.ok) {
         alert('Tour added successfully');
         this.reset();
