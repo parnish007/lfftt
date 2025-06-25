@@ -198,7 +198,7 @@
 
   <section class="overview-section">
     <h2>Overview & Highlights</h2>
-    <p class="overview-text"></p>
+    <div class="overview-text"></div>
   </section>
 
   <section class="overview-section">
@@ -236,16 +236,22 @@
         document.querySelector('.meals').textContent = tour.meals || 'N/A';
         document.querySelector('.price-value').textContent = tour.price || 'N/A';
         document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
-        document.querySelector('.overview-text').textContent = tour.overview || 'No overview available';
 
+        // ✅ Render overview as HTML (not textContent)
+        document.querySelector('.overview-text').innerHTML = tour.overview || 'No overview available';
+
+        // ✅ Render activities
         const activitiesList = document.querySelector('.activities-list');
+        activitiesList.innerHTML = "";
         (tour.activities || []).forEach(act => {
           const li = document.createElement('li');
           li.textContent = act;
           activitiesList.appendChild(li);
         });
 
+        // ✅ Render images
         const slider = document.getElementById('slider');
+        slider.innerHTML = "";
         if (tour.images && tour.images.length > 0) {
           tour.images.forEach(imgPath => {
             const img = document.createElement('img');
@@ -260,7 +266,9 @@
           slider.appendChild(img);
         }
 
+        // ✅ Render itinerary
         const itinerarySection = document.getElementById('itinerary-container');
+        itinerarySection.innerHTML = "";
         if (tour.itineraryDays && tour.itineraryDays.length > 0) {
           itinerarySection.innerHTML = tour.itineraryDays.map((day, i) =>
             `<p><span class="day-title">Day ${i + 1}:</span> ${day}</p>`
@@ -269,11 +277,13 @@
           itinerarySection.innerHTML = "<p>No itinerary available.</p>";
         }
 
-        document.getElementById('customize-link').href = `./customize-tour.html?slug=${slug}`;
+        // ✅ Link to customization
+        document.getElementById('customize-link').href = `/tour/customize-tour.html?slug=${slug}`;
+
 
       } catch (err) {
         console.error("❌ Error loading tour:", err);
-        document.querySelector('.overview-text').textContent = "Failed to load tour details.";
+        document.querySelector('.overview-text').innerHTML = "Failed to load tour details.";
       }
     })();
   </script>
