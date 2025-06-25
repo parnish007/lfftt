@@ -21,9 +21,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector('.meals').textContent = tour.meals || 'N/A';
     document.querySelector('.price-value').textContent = tour.price || 'N/A';
     document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
-    document.querySelector('.overview-text').innerHTML = tour.overview || 'No overview available';
 
-    // Activities
+    // ✅ Render overviewHTML if present; fallback to plain overview
+    const overviewText = document.querySelector('.overview-text');
+    if (tour.overviewHTML && tour.overviewHTML.trim()) {
+      overviewText.innerHTML = tour.overviewHTML;
+    } else if (tour.overview && tour.overview.trim()) {
+      overviewText.innerHTML = `<p>${tour.overview}</p>`;
+    } else {
+      overviewText.innerHTML = "<p>No overview available.</p>";
+    }
+
+    // ✅ Activities
     const activitiesList = document.querySelector('.activities-list');
     activitiesList.innerHTML = '';
     (tour.activities || []).forEach(act => {
@@ -32,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       activitiesList.appendChild(li);
     });
 
-    // Images
+    // ✅ Images
     const slider = document.getElementById('slider');
     slider.innerHTML = "";
     if (tour.images && tour.images.length > 0) {
@@ -49,10 +58,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       slider.appendChild(img);
     }
 
-    // Itinerary
+    // ✅ Itinerary
     const itinerarySection = document.getElementById('itinerary-container');
     itinerarySection.innerHTML = "";
-    if (tour.itineraryDays && tour.itineraryDays.length > 0) {
+    if (tour.itineraryDays && Array.isArray(tour.itineraryDays) && tour.itineraryDays.length > 0) {
       tour.itineraryDays.forEach((day, i) => {
         const p = document.createElement('p');
         p.innerHTML = `<span class="day-title">Day ${i + 1}:</span> ${day}`;
@@ -63,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.warn("⚠️ No itinerary data found for this tour.");
     }
 
-    // Customize link
+    // ✅ Customize Link
     document.getElementById('customize-link').href = `/tour/customize-tour.html?slug=${slug}`;
 
   } catch (err) {

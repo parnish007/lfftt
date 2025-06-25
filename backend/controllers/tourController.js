@@ -54,11 +54,15 @@ exports.createTour = async (req, res) => {
       }
     }
 
-    const itineraryDays = req.body["itineraryDays[]"]
-      ? Array.isArray(req.body["itineraryDays[]"])
-        ? req.body["itineraryDays[]"]
-        : [req.body["itineraryDays[]"]]
-      : [];
+    // ✅ Extract itineraryDays[] from dynamically named fields
+    let itineraryDays = [];
+    const count = parseInt(req.body.itineraryCount || 0);
+    for (let i = 0; i < count; i++) {
+      const key = `itineraryDay${i}`;
+      if (req.body[key]) {
+        itineraryDays.push(req.body[key].trim());
+      }
+    }
 
     const newTour = new Tour({
       name: req.body.name.trim(),
@@ -104,7 +108,6 @@ exports.updateTour = async (req, res) => {
       }
     }
 
-    // ✅ Extract itineraryDays[] from dynamically named keys (itineraryDay0, itineraryDay1, etc.)
     let itineraryDays = [];
     const count = parseInt(req.body.itineraryCount || 0);
     for (let i = 0; i < count; i++) {
