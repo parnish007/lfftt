@@ -1,80 +1,73 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const tourSlug = urlParams.get("slug");
-
-  if (!tourSlug) {
-    alert("❌ No tour slug found in URL.");
+  const slug = urlParams.get("slug");
+  if (!slug) {
+    console.error("❌ Missing slug in URL");
+    document.querySelector('.tour-title').textContent = "Tour Not Found";
     return;
   }
 
   try {
-    const response = await fetch(`/api/tours/${tourSlug}`);
-    if (!response.ok) throw new Error(`Tour not found (status ${response.status})`);
+    const res = await fetch(`/api/tours/${slug}`);
+    if (!res.ok) throw new Error("Tour not found");
+    const tour = await res.json();
 
-    const tour = await response.json();
+    const symbols = { NPR: '₨', INR: '₹', USD: '$', EUR: '€', DKK: 'kr' };
 
-    const titleEl = document.querySelector(".tour-title");
-    const daysEl = document.querySelector(".tour-days");
-    const overviewEl = document.querySelector(".overview");
-    const priceValueEl = document.querySelector(".price-value");
-    const currencySymbolEl = document.querySelector(".currency-symbol");
-    const accommodationEl = document.querySelector(".accommodation");
-    const mealsEl = document.querySelector(".meals");
-    const activitiesList = document.querySelector(".activities-list");
-    const overviewSection = document.querySelector(".overview-section");
+    document.querySelector('.tour-title').textContent = tour.name || "Untitled Tour";
+    document.querySelector('.tour-days').textContent = `Duration: ${tour.duration || 'N/A'} Days`;
+    document.querySelector('.tour-duration').textContent = `${tour.duration || 'N/A'} Days`;
+    document.querySelector('.accommodation').textContent = tour.accommodation || 'N/A';
+    document.querySelector('.meals').textContent = tour.meals || 'N/A';
+    document.querySelector('.price-value').textContent = tour.price || 'N/A';
+    document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
+    document.querySelector('.overview-text').innerHTML = tour.overview || 'No overview available';
 
-    if (!titleEl || !daysEl || !overviewEl || !priceValueEl || !currencySymbolEl || !accommodationEl || !mealsEl || !activitiesList || !overviewSection) {
-      console.warn("⚠️ One or more required elements are missing on this page.");
-      return;
-    }
+    // Activities
+    const activitiesList = document.querySelector('.activities-list');
+    activitiesList.innerHTML = '';
+    (tour.activities || []).forEach(act => {
+      const li = document.createElement('li');
+      li.textContent = act;
+      activitiesList.appendChild(li);
+    });
 
-    const currencySymbols = { 'NPR': '₨', 'INR': '₹', 'USD': '$', 'EUR': '€', 'DKK': 'kr' };
-
-    titleEl.textContent = tour.name || "Untitled Tour";
-    daysEl.textContent = `Duration: ${tour.duration || 'N/A'} Days`;
-    overviewEl.textContent = tour.overview || "No overview available.";
-    priceValueEl.textContent = tour.price || '0';
-    currencySymbolEl.textContent = currencySymbols[tour.currency] || '₨';
-    accommodationEl.textContent = tour.accommodation || "Standard Hotel";
-    mealsEl.textContent = tour.meals || "Breakfast Included";
-
-    // Render activities
-    activitiesList.innerHTML = "";
-    if (Array.isArray(tour.activities) && tour.activities.length > 0) {
-      tour.activities.forEach(activity => {
-        const li = document.createElement("li");
-        li.textContent = activity;
-        activitiesList.appendChild(li);
+    // Images
+    const slider = document.getElementById('slider');
+    slider.innerHTML = "";
+    if (tour.images && tour.images.length > 0) {
+      tour.images.forEach(imgPath => {
+        const img = document.createElement('img');
+        img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
+        img.alt = tour.name;
+        slider.appendChild(img);
       });
     } else {
-      const li = document.createElement("li");
-      li.textContent = "No listed activities.";
-      activitiesList.appendChild(li);
+      const img = document.createElement('img');
+      img.src = "/images/tours/default.jpg";
+      img.alt = "Default Tour Image";
+      slider.appendChild(img);
     }
 
-    // Render main image
-    if (tour.images && tour.images.length > 0) {
-      const firstImage = tour.images[0].startsWith('/uploads/')
-        ? tour.images[0]
-        : `/uploads/${tour.images[0]}`;
-
-      const imageEl = document.createElement("img");
-      imageEl.src = firstImage;
-      imageEl.alt = tour.name || "Tour Image";
-      Object.assign(imageEl.style, {
-        width: "100%",
-        maxHeight: "400px",
-        objectFit: "cover",
-        borderRadius: "12px",
-        margin: "20px auto",
-        display: "block"
+    // Itinerary
+    const itinerarySection = document.getElementById('itinerary-container');
+    itinerarySection.innerHTML = "";
+    if (tour.itineraryDays && tour.itineraryDays.length > 0) {
+      tour.itineraryDays.forEach((day, i) => {
+        const p = document.createElement('p');
+        p.innerHTML = `<span class="day-title">Day ${i + 1}:</span> ${day}`;
+        itinerarySection.appendChild(p);
       });
-
-      overviewSection.parentNode.insertBefore(imageEl, overviewSection);
+    } else {
+      itinerarySection.innerHTML = "<p>No itinerary available.</p>";
+      console.warn("⚠️ No itinerary data found for this tour.");
     }
+
+    // Customize link
+    document.getElementById('customize-link').href = `/tour/customize-tour.html?slug=${slug}`;
 
   } catch (err) {
-    console.error("❌ Failed to load tour details:", err);
-    alert("Failed to load tour details. Please try again later.");
+    console.error("❌ Error loading tour:", err);
+    document.querySelector('.overview-text').innerHTML = "Failed to load tour details.";
   }
 });
