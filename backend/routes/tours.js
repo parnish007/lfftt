@@ -11,19 +11,19 @@ const {
 
 const upload = require('../middleware/uploadMiddleware');
 
-// 🔹 GET all tours (for frontend tour list)
+// 🔹 GET all tours
 router.get('/', getAllTours);
 
-// 🔹 GET single tour by slug (for tour detail page and editing)
+// 🔹 GET single tour by slug
 router.get('/:slug', getTourBySlug);
 
-// 🔹 POST create new tour with up to 10 images
+// 🔹 POST: Create new tour (accepts up to 10 images)
 router.post('/', upload.array('images', 10), createTour);
 
-// ✅ PATCH update tour using slug (used by edit-tour.js)
+// 🔹 PATCH: Update tour using slug
 router.patch('/:slug', upload.array('images', 10), updateTour);
 
-// 🔹 DELETE a tour by ID
+// 🔹 DELETE: Remove tour by ID
 router.delete('/:id', deleteTour);
 
 module.exports = router;
