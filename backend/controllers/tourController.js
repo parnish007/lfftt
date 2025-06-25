@@ -65,7 +65,7 @@ exports.createTour = async (req, res) => {
       slug: slugify(req.body.name, { lower: true, strict: true }),
       description: req.body.description,
       currency: req.body.currency || 'NPR',
-      price: req.body.price, // ✅ string like "Negotiable" or "5000"
+      price: req.body.price,
       duration: Number(req.body.duration),
       activities,
       accommodation: req.body.accommodation,
@@ -88,7 +88,7 @@ exports.createTour = async (req, res) => {
   }
 };
 
-// ✅ Update tour (supports image + slug update)
+// ✅ Update tour by slug
 exports.updateTour = async (req, res) => {
   try {
     let activities = [];
@@ -113,7 +113,7 @@ exports.updateTour = async (req, res) => {
     const updateData = {
       ...req.body,
       currency: req.body.currency || 'NPR',
-      price: req.body.price, // ✅ allow "Negotiable" or actual number as string
+      price: req.body.price,
       duration: Number(req.body.duration),
       activities,
       overviewHTML: req.body.overviewHTML || "",
@@ -128,7 +128,11 @@ exports.updateTour = async (req, res) => {
       updateData.slug = slugify(req.body.name, { lower: true, strict: true });
     }
 
-    const updatedTour = await Tour.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    const updatedTour = await Tour.findOneAndUpdate(
+      { slug: req.params.slug },
+      updateData,
+      { new: true }
+    );
 
     if (!updatedTour) {
       return res.status(404).json({ error: 'Tour not found' });
@@ -145,7 +149,7 @@ exports.updateTour = async (req, res) => {
   }
 };
 
-// ✅ Delete tour
+// ✅ Delete tour by ID
 exports.deleteTour = async (req, res) => {
   try {
     const deleted = await Tour.findByIdAndDelete(req.params.id);
