@@ -41,6 +41,7 @@ exports.createTour = async (req, res) => {
       ? req.files.map(file => file.relativePath || `/uploads/${file.filename}`)
       : [];
 
+    // ✅ Fix activities
     let activities = [];
     if (req.body.activities) {
       if (Array.isArray(req.body.activities)) {
@@ -54,13 +55,19 @@ exports.createTour = async (req, res) => {
       }
     }
 
-    // ✅ Extract itineraryDays[] from dynamically named fields
+    // ✅ Handle itineraryDays
     let itineraryDays = [];
-    const count = parseInt(req.body.itineraryCount || 0);
-    for (let i = 0; i < count; i++) {
-      const key = `itineraryDay${i}`;
-      if (req.body[key]) {
-        itineraryDays.push(req.body[key].trim());
+    if (Array.isArray(req.body['itineraryDays[]'])) {
+      itineraryDays = req.body['itineraryDays[]'];
+    } else if (req.body['itineraryDays[]']) {
+      itineraryDays = [req.body['itineraryDays[]']];
+    } else {
+      const count = parseInt(req.body.itineraryCount || 0);
+      for (let i = 0; i < count; i++) {
+        const key = `itineraryDay${i}`;
+        if (req.body[key]) {
+          itineraryDays.push(req.body[key].trim());
+        }
       }
     }
 
@@ -109,11 +116,17 @@ exports.updateTour = async (req, res) => {
     }
 
     let itineraryDays = [];
-    const count = parseInt(req.body.itineraryCount || 0);
-    for (let i = 0; i < count; i++) {
-      const key = `itineraryDay${i}`;
-      if (req.body[key]) {
-        itineraryDays.push(req.body[key].trim());
+    if (Array.isArray(req.body['itineraryDays[]'])) {
+      itineraryDays = req.body['itineraryDays[]'];
+    } else if (req.body['itineraryDays[]']) {
+      itineraryDays = [req.body['itineraryDays[]']];
+    } else {
+      const count = parseInt(req.body.itineraryCount || 0);
+      for (let i = 0; i < count; i++) {
+        const key = `itineraryDay${i}`;
+        if (req.body[key]) {
+          itineraryDays.push(req.body[key].trim());
+        }
       }
     }
 
