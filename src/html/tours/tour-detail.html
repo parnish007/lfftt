@@ -4,163 +4,171 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tour Details</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      margin: 0;
-      background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
-      color: #333;
-    }
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
+    color: #333;
+  }
 
-    header.tour-detail-header {
-      background: linear-gradient(45deg, #004a99, #0077cc);
-      color: white;
-      padding: 50px 20px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+  header.tour-detail-header {
+    background: linear-gradient(45deg, #004a99, #0077cc);
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
 
-    header.tour-detail-header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-    }
+  header.tour-detail-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+  }
 
-    header.tour-detail-header p {
-      font-size: 1.2rem;
-    }
+  header.tour-detail-header p {
+    font-size: 1.2rem;
+  }
 
-    .slider {
-      max-width: 1000px;
-      margin: 30px auto;
-      overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    }
+  .slider {
+    max-width: 1000px;
+    margin: 30px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  }
 
-    .slider img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      max-height: 500px;
-    }
+  .slider img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    max-height: 500px;
+  }
 
-    .summary-box {
-      max-width: 1100px;
-      margin: 30px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 10px;
-    }
+  .summary-box {
+    max-width: 1100px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 10px;
+  }
 
-    .summary-card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    }
+  .summary-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
 
-    .summary-card h4 {
-      color: #004a99;
-      margin-bottom: 8px;
-    }
+  .summary-card h4 {
+    color: #004a99;
+    margin-bottom: 8px;
+  }
 
-    .overview-section {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    }
+  .overview-section {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
 
-    .overview-section h2 {
-      color: #004a99;
-      margin-bottom: 10px;
-    }
+  .overview-section h2 {
+    color: #004a99;
+    margin-bottom: 10px;
+  }
 
-    .overview-section p {
-      line-height: 1.7;
-    }
+  .overview-section p {
+    line-height: 1.7;
+  }
 
-    .price-box {
-      background: linear-gradient(135deg, #008000, #00a000);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-    }
+  .price-box {
+    background: linear-gradient(135deg, #008000, #00a000);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 50px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
 
-    .price-box h2 {
-      margin: 10px 0;
-    }
+  .price-box h2 {
+    margin: 10px 0;
+  }
 
-    .price-box a {
-      background: #ffa500;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+  .price-box a {
+    background: #ffa500;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+  }
 
-    .price-box a:hover {
-      background: #ff8c00;
-    }
+  .price-box a:hover {
+    background: #ff8c00;
+  }
 
-    .btn {
-      background: linear-gradient(45deg, #ff6b6b, #ff4757);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 20px;
-    }
+  .btn {
+    background: linear-gradient(45deg, #ff6b6b, #ff4757);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    transition: 0.3s ease;
+  }
 
-    .btn:hover {
-      background: linear-gradient(45deg, #ff4757, #ff6b6b);
-    }
+  .btn:hover {
+    background: linear-gradient(45deg, #ff4757, #ff6b6b);
+  }
 
-    .customize-section {
-      max-width: 1000px;
-      margin: 40px auto 60px;
-      text-align: center;
-    }
+  .customize-section {
+    text-align: center;
+    padding: 40px 20px;
+  }
 
-    .customize-btn {
-      background: linear-gradient(45deg, #28a745, #218838);
-      color: white;
-      padding: 14px 32px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
+  .customize-btn,
+  .customize-section .btn {
+    background: linear-gradient(45deg, #28a745, #218838);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 30px;
+  }
 
-    .customize-btn:hover {
-      background: linear-gradient(45deg, #218838, #28a745);
-    }
+  .customize-btn:hover,
+  .customize-section .btn:hover {
+    background: linear-gradient(45deg, #218838, #28a745);
+  }
 
-    .day-title {
-      font-weight: bold;
-      color: #0d6efd;
-      margin-right: 8px;
-    }
+  .day-title {
+    font-weight: bold;
+    color: #0d6efd;
+    margin-right: 8px;
+  }
 
-    #itinerary-container p {
-      margin: 10px 0;
-      line-height: 1.6;
-    }
+  #itinerary-container p {
+    margin: 10px 0;
+    line-height: 1.6;
+  }
 
-    footer {
-      background: #f1f6fc;
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.9rem;
-    }
-  </style>
+  footer {
+    background: #f1f6fc;
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 0.9rem;
+  }
+</style>
+
 </head>
 <body>
 
@@ -188,12 +196,6 @@
       <h4>Meals</h4>
       <p class="meals"></p>
     </div>
-    <div class="price-box">
-      <p>Price starts from</p>
-      <h2><span class="currency-symbol"></span><span class="price-value"></span></h2>
-      <p>Group discounts available</p>
-      <a href="/booking.html">Book Now</a>
-    </div>
   </section>
 
   <section class="overview-section">
@@ -206,15 +208,21 @@
     <div id="itinerary-container"></div>
   </section>
 
+  <section class="price-box">
+    <p>Price starts from</p>
+    <h2><span class="currency-symbol"></span><span class="price-value"></span></h2>
+    <p>Group discounts available</p>
+    <a href="/booking.html">Book Now</a>
+  </section>
+
   <section class="customize-section">
-    <a id="customize-link" class="customize-btn">Customize This Tour</a>
+    <a href="/tour/customize-tour.html" class="btn">Customize Your Tour</a>
   </section>
 
   <footer>
     &copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.
   </footer>
 
-  <!-- ✅ External JS file -->
   <script src="/js/tour-detail.js"></script>
 </body>
 </html>

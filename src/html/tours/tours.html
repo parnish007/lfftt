@@ -5,131 +5,152 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tour Packages - Life For Fun Travel & Tours</title>
   <link rel="stylesheet" href="/css/shared.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
 
-    .tours-header {
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(135deg, #004a99, #0077cc);
-      color: white;
-    }
+  .tours-header {
+    position: relative;
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #004a99, #0077cc);
+    color: white;
+    overflow: hidden;
+  }
 
-    .tours-header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-      text-shadow: 0 0 8px rgba(255,255,255,0.5);
-    }
+  /* Glowing white effect above the header */
+  .tours-header::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    filter: blur(20px);
+    z-index: 1;
+  }
 
-    .tours-header p {
-      font-size: 1.2rem;
-      text-shadow: 0 0 6px rgba(255,255,255,0.3);
-    }
+  .tours-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    position: relative;
+    z-index: 2;
+  }
 
-    .tours-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      padding: 40px 30px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  .tours-header p {
+    font-size: 1.2rem;
+    text-shadow: 0 0 6px rgba(255,255,255,0.3);
+    position: relative;
+    z-index: 2;
+  }
 
-    .tour-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s ease-in-out;
-    }
+  .tours-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 40px 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    .tour-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
-    }
+  .tour-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease-in-out;
+  }
 
-    .tour-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-bottom: 1px solid #eee;
-    }
+  .tour-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+  }
 
-    .tour-info {
-      padding: 18px 16px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+  .tour-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
 
-    .tour-info h2 {
-      font-size: 1.3rem;
-      color: #004a99;
-      margin: 0 0 8px;
-    }
+  .tour-info {
+    padding: 18px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .tour-info p {
-      margin: 6px 0;
-      font-size: 0.95rem;
-      color: #555;
-    }
+  .tour-info h2 {
+    font-size: 1.3rem;
+    color: #004a99;
+    margin: 0 0 8px;
+  }
 
-    .tour-info p strong {
-      color: #000;
-    }
+  .tour-info p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
 
-    .btn {
-      margin-top: auto;
-      padding: 10px 16px;
-      background: linear-gradient(45deg, #004a99, #0077cc);
-      color: white;
-      border-radius: 6px;
-      text-align: center;
-      text-decoration: none;
-      transition: background 0.3s ease;
-      font-weight: 500;
-    }
+  .tour-info p strong {
+    color: #000;
+  }
 
-    .btn:hover {
-      background: linear-gradient(45deg, #0059b3, #0094e8);
-    }
+  .btn {
+    margin-top: auto;
+    padding: 10px 16px;
+    background: linear-gradient(45deg, #004a99, #0077cc);
+    color: white;
+    border-radius: 6px;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    font-weight: 500;
+  }
 
-    .customize-call {
-      text-align: center;
-      padding: 50px 20px;
-      background: #f5faff;
-      border-top: 1px solid #ddeeff;
-    }
+  .btn:hover {
+    background: linear-gradient(45deg, #0059b3, #0094e8);
+  }
 
-    .customize-call h2 {
-      font-size: 1.6rem;
-      color: #004a99;
-      margin-bottom: 16px;
-    }
+  .customize-call {
+    text-align: center;
+    padding: 50px 20px;
+    background: #f5faff;
+    border-top: 1px solid #ddeeff;
+  }
 
-    .customize-call .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      font-size: 1rem;
-    }
+  .customize-call h2 {
+    font-size: 1.6rem;
+    color: #004a99;
+    margin-bottom: 16px;
+  }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #f1f6fc;
-      color: #666;
-      font-size: 0.9rem;
-    }
-  </style>
+  .customize-call .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: #f1f6fc;
+    color: #666;
+    font-size: 0.9rem;
+  }
+</style>
+
 </head>
 <body>
 
