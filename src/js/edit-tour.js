@@ -78,18 +78,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     formData.append("overviewHTML", overviewHTMLDiv.innerHTML.trim());
     formData.append("activities", form.activities.value.trim());
 
-    // Append new images if any
+    // Append itinerary days
+    const itineraryTexts = document.querySelectorAll('textarea[name="itineraryDay"]');
+    itineraryTexts.forEach((textarea, index) => {
+      formData.append(`itineraryDay${index}`, textarea.value.trim());
+    });
+    formData.append('itineraryCount', itineraryTexts.length);
+
+    // Append new images
     const newImages = form.images.files;
     for (let i = 0; i < newImages.length; i++) {
       formData.append("images", newImages[i]);
     }
-
-    // Append itinerary days
-    const itineraryTexts = document.querySelectorAll('textarea[name="itineraryDay"]');
-    itineraryTexts.forEach((textarea, index) => {
-      formData.append(`itineraryDay${index}`, textarea.value);
-    });
-    formData.append('itineraryCount', itineraryTexts.length);
 
     try {
       const res = await fetch(`/api/tours/${slug}`, {
