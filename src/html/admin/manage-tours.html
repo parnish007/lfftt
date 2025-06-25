@@ -25,7 +25,7 @@
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     }
-    form input, form textarea, form select {
+    form input, form textarea, form select, .day-itinerary textarea {
       width: 100%;
       padding: 12px;
       margin: 12px 0;
@@ -87,18 +87,17 @@
       color: #555;
       font-size: 0.95rem;
     }
-    .tour-card button {
+    .tour-card a {
       margin-right: 6px;
       padding: 8px 14px;
       border-radius: 6px;
       background: #004a99;
       color: #fff;
-      border: none;
-      cursor: pointer;
+      text-decoration: none;
       font-size: 0.9rem;
       transition: background 0.2s;
     }
-    .tour-card button:hover {
+    .tour-card a:hover {
       background: #0066cc;
     }
     #imagePreviewContainer {
@@ -113,6 +112,14 @@
       object-fit: cover;
       border-radius: 6px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .day-itinerary {
+      margin: 12px 0;
+    }
+    .day-itinerary label {
+      display: block;
+      margin-top: 8px;
+      color: #004a99;
     }
   </style>
 </head>
@@ -136,8 +143,8 @@
       <option value="DKK">DKK (kr)</option>
     </select>
 
-    <label>Price</label>
-    <input type="number" name="price" placeholder="Price" required min="0" />
+    <label>Price <small style="color: #555;">(e.g. 5000 or "Negotiable")</small></label>
+    <input type="text" name="price" placeholder='5000 or "Negotiable"' required />
 
     <label>Duration (Days)</label>
     <input type="number" name="duration" placeholder="Duration" required min="1" />
@@ -151,8 +158,12 @@
     <label>Meals</label>
     <input type="text" name="meals" placeholder="Breakfast, Lunch, Dinner" />
 
-    <label>Overview</label>
-    <textarea name="overview" placeholder="Overview and highlights"></textarea>
+    <label>Overview (Formatted HTML)</label>
+    <div contenteditable="true" id="overviewHTML" style="border:1px solid #ccc; padding:12px; min-height:120px; border-radius:8px;"></div>
+
+    <label>Itinerary (Day-wise)</label>
+    <div id="itineraryContainer"></div>
+    <button type="button" onclick="addDayItinerary()">+ Add Day</button>
 
     <label>Upload Images <small style="color: #666;">(You can select multiple)</small></label>
     <input type="file" name="images" id="images" multiple accept="image/*" />
@@ -178,7 +189,20 @@
         reader.readAsDataURL(file);
       });
     });
+
+    function addDayItinerary() {
+      const container = document.getElementById('itineraryContainer');
+      const dayNum = container.children.length + 1;
+      const div = document.createElement('div');
+      div.className = 'day-itinerary';
+      div.innerHTML = `
+        <label>Day ${dayNum} Itinerary</label>
+        <textarea name="itineraryDay" data-day="${dayNum}" placeholder="Enter itinerary for Day ${dayNum}" required></textarea>
+      `;
+      container.appendChild(div);
+    }
   </script>
+
   <script src="/js/manage-tours.js"></script>
 </body>
 </html>

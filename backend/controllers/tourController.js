@@ -54,17 +54,25 @@ exports.createTour = async (req, res) => {
       }
     }
 
+    const itineraryDays = req.body["itineraryDays[]"]
+      ? Array.isArray(req.body["itineraryDays[]"])
+        ? req.body["itineraryDays[]"]
+        : [req.body["itineraryDays[]"]]
+      : [];
+
     const newTour = new Tour({
       name: req.body.name.trim(),
       slug: slugify(req.body.name, { lower: true, strict: true }),
       description: req.body.description,
       currency: req.body.currency || 'NPR',
-      price: Number(req.body.price),
+      price: req.body.price, // ✅ string like "Negotiable" or "5000"
       duration: Number(req.body.duration),
       activities,
       accommodation: req.body.accommodation,
       meals: req.body.meals,
       overview: req.body.overview,
+      overviewHTML: req.body.overviewHTML || "",
+      itineraryDays,
       images
     });
 
@@ -96,12 +104,20 @@ exports.updateTour = async (req, res) => {
       }
     }
 
+    const itineraryDays = req.body.itineraryDays
+      ? Array.isArray(req.body.itineraryDays)
+        ? req.body.itineraryDays
+        : [req.body.itineraryDays]
+      : [];
+
     const updateData = {
       ...req.body,
       currency: req.body.currency || 'NPR',
-      price: Number(req.body.price),
+      price: req.body.price, // ✅ allow "Negotiable" or actual number as string
       duration: Number(req.body.duration),
-      activities
+      activities,
+      overviewHTML: req.body.overviewHTML || "",
+      itineraryDays
     };
 
     if (req.files && req.files.length > 0) {

@@ -1,46 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("customTourForm");
+  const form = document.querySelector("form[action='/api/custom-tour-request']");
+
   if (!form) {
-    console.warn("⚠️ customTourForm not found on this page.");
+    console.warn("⚠️ Customize form not found.");
     return;
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const formData = new FormData(form);
+
     const requestData = {
-      name: (prompt("Enter your name:") || "").trim(),
-      phone: (prompt("Enter your phone number:") || "").trim(),
-      origin: form.origin.value.trim(),
-      destination: form.destination.value.trim(),
-      budget: form.budget.value.trim(),
-      days: form.days.value.trim(),
-      vehicle: form.vehicle.value.trim(),
-      message: form.message.value.trim()
+      name: formData.get("name")?.trim(),
+      email: formData.get("email")?.trim(),
+      phone: formData.get("phone")?.trim(),
+      origin: formData.get("origin")?.trim(),
+      destination: formData.get("destination")?.trim(),
+      budget: formData.get("budget")?.trim(),
+      duration: formData.get("duration")?.trim(),
+      vehicle: formData.get("vehicle")?.trim(),
+      other: formData.get("other")?.trim()
     };
 
-    if (!requestData.name || !requestData.phone || !requestData.origin || !requestData.destination || !requestData.budget || !requestData.days || !requestData.vehicle) {
-      alert("⚠ Please fill all required fields.");
+    // Basic client-side validation
+    if (!requestData.name || !requestData.email || !requestData.phone) {
+      alert("❗Please fill in your name, email, and phone number.");
       return;
     }
 
     try {
-      const res = await fetch("/api/customize", {
+      const res = await fetch("/api/custom-tour-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData)
       });
 
       if (res.ok) {
-        alert("Customization submitted successfully!");
-        window.location.href = "/html/booking.html"; // ✅ Use root-relative path for Render safety
+        alert("✅ Your custom tour request has been submitted!");
+        form.reset(); // Optional reset
+        window.location.href = "/index.html"; // Or redirect to confirmation page
       } else {
         const error = await res.json();
-        alert("Error: " + (error.message || "Unknown error"));
+        alert("❌ Error: " + (error.message || "Submission failed."));
       }
     } catch (err) {
-      console.error("❌ Submission error:", err);
-      alert("Failed to submit customization.");
+      console.error("❌ Request error:", err);
+      alert("❌ Network or server error occurred.");
     }
   });
 });

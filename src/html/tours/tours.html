@@ -11,11 +11,12 @@
       background: linear-gradient(to bottom right, #eef5fc, #dbe9f7);
       margin: 0;
       padding: 0;
+      color: #333;
     }
 
     .tours-header {
       text-align: center;
-      padding: 50px 20px;
+      padding: 60px 20px;
       background: linear-gradient(135deg, #004a99, #0077cc);
       color: white;
     }
@@ -24,98 +25,101 @@
       font-size: 2.8rem;
       margin-bottom: 12px;
       letter-spacing: 1px;
-      color: #fff;
-      text-shadow: 
-        0 0 15px #fff, 
-        0 0 25px #fff, 
-        0 0 35px #fff, 
-        0 0 45px #00bfff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.5);
     }
 
     .tours-header p {
-      font-size: 1.3rem;
-      color: #fff;
-      text-shadow: 
-        0 0 10px #fff, 
-        0 0 20px #fff;
+      font-size: 1.2rem;
+      text-shadow: 0 0 6px rgba(255,255,255,0.3);
     }
 
     .tours-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 30px;
+      gap: 24px;
+      padding: 40px 30px;
       max-width: 1200px;
       margin: 0 auto;
     }
 
     .tour-card {
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: all 0.3s ease-in-out;
     }
 
     .tour-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
     }
 
     .tour-card img {
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
+      border-bottom: 1px solid #eee;
     }
 
     .tour-info {
-      padding: 15px;
+      padding: 18px 16px;
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
 
     .tour-info h2 {
-      font-size: 1.4rem;
-      margin: 0 0 8px 0;
+      font-size: 1.3rem;
       color: #004a99;
+      margin: 0 0 8px;
     }
 
     .tour-info p {
       margin: 6px 0;
-      color: #555;
       font-size: 0.95rem;
-      line-height: 1.4;
+      color: #555;
+    }
+
+    .tour-info p strong {
+      color: #000;
     }
 
     .btn {
-      margin-top: 10px;
-      padding: 10px 20px;
+      margin-top: auto;
+      padding: 10px 16px;
       background: linear-gradient(45deg, #004a99, #0077cc);
-      color: #fff;
+      color: white;
       border-radius: 6px;
-      text-decoration: none;
       text-align: center;
-      transition: background 0.3s, transform 0.2s;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      font-weight: 500;
     }
 
     .btn:hover {
-      background: linear-gradient(45deg, #0066cc, #0099ff);
-      transform: translateY(-2px);
+      background: linear-gradient(45deg, #0059b3, #0094e8);
     }
 
     .customize-call {
       text-align: center;
-      padding: 30px;
+      padding: 50px 20px;
       background: #f5faff;
+      border-top: 1px solid #ddeeff;
     }
 
     .customize-call h2 {
+      font-size: 1.6rem;
       color: #004a99;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
+    }
+
+    .customize-call .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1rem;
     }
 
     footer {
@@ -142,12 +146,13 @@
   </section>
 
   <footer>
-    <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
+    &copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.
   </footer>
 
   <script>
   document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("toursList");
+    const symbols = { NPR: '₨', INR: '₹', USD: '$', EUR: '€', DKK: 'kr' };
 
     try {
       const res = await fetch("/api/tours");
@@ -159,7 +164,7 @@
       }
 
       tours.forEach(tour => {
-        const rawPath = tour.images && tour.images.length > 0 ? tour.images[0] : null;
+        const rawPath = tour.images?.[0] || null;
         const imageUrl = rawPath
           ? (rawPath.startsWith('/uploads/') ? rawPath : `/uploads/${rawPath}`)
           : "/images/tour-packages/default.jpg";
@@ -175,7 +180,7 @@
           <div class="tour-info">
             <h2>${tour.name || 'Untitled Tour'}</h2>
             <p>${shortDesc}</p>
-            <p><strong>Price:</strong> ${tour.currency || 'NPR'} ${tour.price || 'N/A'}</p>
+            <p><strong>Price:</strong> ${symbols[tour.currency] || '₨'} ${tour.price || 'N/A'}</p>
             <p><strong>Duration:</strong> ${tour.duration || 'N/A'} days</p>
             <a class="btn" href="/tour/tour-detail.html?slug=${tour.slug}">View Details</a>
           </div>

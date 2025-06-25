@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     'DKK': 'kr'
   };
 
-  // ✅ Image preview
   form.images.addEventListener("change", (e) => {
     if (imagePreviewContainer) {
       imagePreviewContainer.innerHTML = "";
@@ -38,6 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const formData = new FormData(form);
     formData.set('activities', form.elements['activities'].value.trim());
+
+    const overviewHTML = document.getElementById("overviewHTML")?.innerHTML || "";
+    formData.append("overviewHTML", overviewHTML);
+
+    const dayTextareas = document.querySelectorAll(".day-itinerary textarea");
+    const itineraryDays = [];
+    dayTextareas.forEach(day => itineraryDays.push(day.value.trim()));
+    itineraryDays.forEach((val, idx) => formData.append("itineraryDays[]", val));
 
     try {
       const res = await fetch("/api/tours", { method: "POST", body: formData });
@@ -106,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.editTour = async (id) => {
     const newName = prompt("Enter new tour name:");
-    const newPrice = prompt("Enter new price:");
+    const newPrice = prompt("Enter new price (e.g. 5000 or Negotiable):");
     const newCurrency = prompt("Enter currency code (NPR, INR, USD, EUR, DKK):", "NPR");
     const newDescription = prompt("Enter new description:");
     const newDuration = prompt("Enter new duration (days):");
@@ -114,6 +121,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const newMeals = prompt("Enter new meals:");
     const newActivities = prompt("Enter new activities (comma-separated):");
     const newOverview = prompt("Enter new overview:");
+    const newOverviewHTML = prompt("Enter new overview (HTML supported):");
+    const newItinerary = prompt("Enter itinerary (use || separator for days):");
+
+    const itineraryDays = newItinerary ? newItinerary.split("||").map(d => d.trim()) : [];
 
     if (!newName || !newPrice || !newDescription) {
       alert("⚠ Update cancelled: Name, price, and description are required.");
@@ -126,14 +137,16 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newName,
-          price: Number(newPrice),
+          price: newPrice, // ✅ Keep price as string
           currency: newCurrency || 'NPR',
           description: newDescription,
           duration: Number(newDuration),
           accommodation: newAccommodation,
           meals: newMeals,
           activities: newActivities ? newActivities.split(',').map(item => item.trim()) : [],
-          overview: newOverview
+          overview: newOverview,
+          overviewHTML: newOverviewHTML,
+          itineraryDays
         })
       });
 

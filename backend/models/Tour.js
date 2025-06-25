@@ -25,9 +25,8 @@ const tourSchema = new mongoose.Schema({
     default: 'NPR'
   },
   price: {
-    type: Number,
-    required: true,
-    min: 0
+    type: String, // ✅ NOW STRING: allows "Negotiable" or "5000"
+    required: true
   },
   duration: {
     type: Number,
@@ -50,17 +49,25 @@ const tourSchema = new mongoose.Schema({
   },
   overview: {
     type: String,
-    maxlength: 2000,
+    maxlength: 20000,
     trim: true
+  },
+  overviewHTML: {
+    type: String,
+    trim: true
+  },
+  itineraryDays: {
+    type: [String],
+    default: []
   },
   images: [{
     type: String,
-    trim: true // e.g., /uploads/filename.jpg
+    trim: true
   }]
 }, { timestamps: true });
 
-// ✅ Method to clean image paths before sending to frontend
-tourSchema.methods.toCleanObject = function() {
+// ✅ Clean paths before sending
+tourSchema.methods.toCleanObject = function () {
   const obj = this.toObject();
   obj.images = obj.images?.map(img => img.replace(/\\/g, '/')) || [];
   return obj;
