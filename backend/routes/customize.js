@@ -8,16 +8,16 @@ const {
   deleteRequest
 } = require('../controllers/customizeController');
 
-// ✅ Create a new customization request (public)
+// ✅ POST: Create a new customization request (user-facing form)
 router.post('/', createRequest);
 
-// ✅ Get all customization requests (admin view)
+// ✅ GET: Fetch all requests (for admin panel)
 router.get('/', getRequests);
 
-// ✅ Update the status of a specific request (approve/reject)
+// ✅ PATCH: Update request status (Approved / Rejected / Pending)
 router.patch('/:id/status', updateRequestStatus);
 
-// ✅ Delete a request permanently (admin)
+// ✅ DELETE: Remove a request (admin use only)
 router.delete('/:id', deleteRequest);
 
 module.exports = router;

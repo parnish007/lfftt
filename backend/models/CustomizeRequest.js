@@ -4,11 +4,16 @@ const customizeRequestSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    default: null // For guest users
+    default: null // Guest users allowed
   },
   name: {
     type: String,
     required: true,
+    trim: true,
+    maxlength: 100
+  },
+  email: {
+    type: String,
     trim: true,
     maxlength: 100
   },
@@ -20,36 +25,33 @@ const customizeRequestSchema = new mongoose.Schema({
   },
   origin: {
     type: String,
-    required: true,
     trim: true,
     maxlength: 100
   },
   destination: {
     type: String,
-    required: true,
     trim: true,
     maxlength: 100
   },
   budget: {
-    type: Number,
-    required: true,
-    min: 0
+    type: String, // allows ranges, text, or numeric values
+    trim: true,
+    maxlength: 50
   },
-  days: {
+  duration: {
     type: Number,
-    required: true,
     min: 1
   },
   vehicle: {
     type: String,
-    enum: ['Car', 'Scorpio', 'Bus', 'Van', 'Any'],
+    trim: true,
+    maxlength: 50,
     default: 'Any'
   },
   message: {
     type: String,
     trim: true,
-    maxlength: 2000,
-    default: ''
+    maxlength: 2000
   },
   status: {
     type: String,

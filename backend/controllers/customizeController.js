@@ -6,28 +6,31 @@ exports.createRequest = async (req, res) => {
   try {
     const {
       name = 'Guest',
-      phone = 'N/A',
-      origin,
-      destination,
-      budget,
-      days,
-      vehicle,
-      message = '',
+      email = '',
+      phone = '',
+      origin = '',
+      destination = '',
+      budget = '',
+      duration,
+      vehicle = 'Any',
+      other = '',
     } = req.body;
 
-    if (!origin || !destination || !budget || !days || !vehicle) {
-      return res.status(400).json({ error: 'Origin, destination, budget, days, and vehicle are required.' });
+    // Minimal required field validation
+    if (!name || !phone || !email) {
+      return res.status(400).json({ error: 'Name, email, and phone are required.' });
     }
 
     const request = new CustomizeRequest({
       name: name.trim(),
+      email: email.trim(),
       phone: phone.trim(),
       origin: origin.trim(),
       destination: destination.trim(),
-      budget: parseFloat(budget),
-      days: parseInt(days, 10),
+      budget: budget.trim(),
+      duration: parseInt(duration, 10),
       vehicle: vehicle.trim(),
-      message: message.trim(),
+      message: other.trim(),
       status: 'Pending',
     });
 
