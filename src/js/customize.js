@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form[action='/api/custom-tour-request']");
+  const form = document.querySelector("form[action='/api/customize']");
 
   if (!form) {
     console.warn("⚠️ Customize form not found.");
