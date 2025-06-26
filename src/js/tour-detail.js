@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // ✅ Images (updated to use /images/tour-packages/)
+    // ✅ Images (UPDATED to use /uploads/)
     const slider = document.getElementById('slider');
     if (slider) {
       slider.innerHTML = "";
@@ -56,13 +56,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         tour.images.forEach(imgPath => {
           const img = document.createElement('img');
           const cleanPath = imgPath.replace(/\\/g, '/');
-          img.src = cleanPath.startsWith('/images') ? cleanPath : `/images/tour-packages/${cleanPath}`;
+          img.src = cleanPath.startsWith('/uploads') ? cleanPath : `/uploads/${cleanPath}`;
           img.alt = tour.name;
           slider.appendChild(img);
         });
       } else {
         const img = document.createElement('img');
-        img.src = "/images/tours/default.jpg";
+        img.src = "/public/images/tours/default.jpg";
         img.alt = "Default Tour Image";
         slider.appendChild(img);
       }
