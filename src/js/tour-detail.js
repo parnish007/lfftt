@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get("slug");
+
   if (!slug) {
     console.error("❌ Missing slug in URL");
     document.querySelector('.tour-title').textContent = "Tour Not Found";
@@ -22,62 +23,79 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector('.price-value').textContent = tour.price || 'N/A';
     document.querySelector('.currency-symbol').textContent = symbols[tour.currency] || '₨';
 
-    // ✅ Render overviewHTML with fallback to plain overview
+    // ✅ Render overviewHTML with fallback
     const overviewText = document.querySelector('.overview-text');
-    if (tour.overviewHTML && tour.overviewHTML.trim()) {
-      overviewText.innerHTML = tour.overviewHTML;
-    } else if (tour.overview && tour.overview.trim()) {
-      overviewText.innerHTML = `<p>${tour.overview}</p>`;
+    if (overviewText) {
+      if (tour.overviewHTML && tour.overviewHTML.trim()) {
+        overviewText.innerHTML = tour.overviewHTML;
+      } else if (tour.overview && tour.overview.trim()) {
+        overviewText.innerHTML = `<p>${tour.overview}</p>`;
+      } else {
+        overviewText.innerHTML = "<p>No overview available.</p>";
+      }
     } else {
-      overviewText.innerHTML = "<p>No overview available.</p>";
+      console.warn("⚠️ .overview-text element not found in DOM.");
     }
 
     // ✅ Activities
     const activitiesList = document.querySelector('.activities-list');
-    activitiesList.innerHTML = '';
-    (tour.activities || []).forEach(act => {
-      const li = document.createElement('li');
-      li.textContent = act;
-      activitiesList.appendChild(li);
-    });
+    if (activitiesList) {
+      activitiesList.innerHTML = '';
+      (tour.activities || []).forEach(act => {
+        const li = document.createElement('li');
+        li.textContent = act;
+        activitiesList.appendChild(li);
+      });
+    }
 
     // ✅ Images
     const slider = document.getElementById('slider');
-    slider.innerHTML = "";
-    if (tour.images && tour.images.length > 0) {
-      tour.images.forEach(imgPath => {
+    if (slider) {
+      slider.innerHTML = "";
+      if (tour.images && tour.images.length > 0) {
+        tour.images.forEach(imgPath => {
+          const img = document.createElement('img');
+          img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
+          img.alt = tour.name;
+          slider.appendChild(img);
+        });
+      } else {
         const img = document.createElement('img');
-        img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
-        img.alt = tour.name;
+        img.src = "/images/tours/default.jpg";
+        img.alt = "Default Tour Image";
         slider.appendChild(img);
-      });
-    } else {
-      const img = document.createElement('img');
-      img.src = "/images/tours/default.jpg";
-      img.alt = "Default Tour Image";
-      slider.appendChild(img);
+      }
     }
 
-    // ✅ Itinerary with fallback and debug
+    // ✅ Itinerary
     const itinerarySection = document.getElementById('itinerary-container');
-    itinerarySection.innerHTML = "";
-    if (tour.itineraryDays && Array.isArray(tour.itineraryDays) && tour.itineraryDays.length > 0) {
-      tour.itineraryDays.forEach((day, i) => {
-        const p = document.createElement('p');
-        p.innerHTML = `<span class="day-title">Day ${i + 1}:</span> ${day}`;
-        itinerarySection.appendChild(p);
-      });
-    } else {
-      console.warn("⚠️ No itineraryDays[] found in tour object. Logging full object ⬇️");
-      console.warn(tour);
-      itinerarySection.innerHTML = "<p>No itinerary available.</p>";
+    if (itinerarySection) {
+      itinerarySection.innerHTML = "";
+      if (tour.itineraryDays && Array.isArray(tour.itineraryDays) && tour.itineraryDays.length > 0) {
+        tour.itineraryDays.forEach((day, i) => {
+          const p = document.createElement('p');
+          p.innerHTML = `<span class="day-title">Day ${i + 1}:</span> ${day}`;
+          itinerarySection.appendChild(p);
+        });
+      } else {
+        console.warn("⚠️ No itineraryDays[] found in tour object:", tour);
+        itinerarySection.innerHTML = "<p>No itinerary available.</p>";
+      }
     }
 
-    // ✅ Customize Link
-    document.getElementById('customize-link').href = `/tour/customize-tour.html?slug=${slug}`;
+    // ✅ Safe customize link setup
+    const customizeLink = document.querySelector('.customize-btn') || document.getElementById('customize-link');
+    if (customizeLink) {
+      customizeLink.href = `/tour/customize-tour.html?slug=${slug}`;
+    } else {
+      console.warn("⚠️ Customize link not found.");
+    }
 
   } catch (err) {
     console.error("❌ Error loading tour:", err);
-    document.querySelector('.overview-text').innerHTML = "Failed to load tour details.";
+    const overviewText = document.querySelector('.overview-text');
+    if (overviewText) {
+      overviewText.innerHTML = "Failed to load tour details.";
+    }
   }
 });
