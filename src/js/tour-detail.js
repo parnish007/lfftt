@@ -48,14 +48,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // ✅ Images
+    // ✅ Images (updated to use /images/tour-packages/)
     const slider = document.getElementById('slider');
     if (slider) {
       slider.innerHTML = "";
       if (tour.images && tour.images.length > 0) {
         tour.images.forEach(imgPath => {
           const img = document.createElement('img');
-          img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
+          const cleanPath = imgPath.replace(/\\/g, '/');
+          img.src = cleanPath.startsWith('/images') ? cleanPath : `/images/tour-packages/${cleanPath}`;
           img.alt = tour.name;
           slider.appendChild(img);
         });

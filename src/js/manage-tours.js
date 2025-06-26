@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "tour-card";
 
         const imageUrl = (tour.images && tour.images.length > 0)
-          ? tour.images[0]
+          ? (tour.images[0].startsWith("/uploads/") ? tour.images[0] : `/uploads/${tour.images[0]}`)
           : "/public/images/tour-packages/default.jpg";
 
         const symbol = currencySymbols[tour.currency] || '₨';
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newName,
-          price: newPrice, // ✅ Keep price as string
+          price: newPrice,
           currency: newCurrency || 'NPR',
           description: newDescription,
           duration: Number(newDuration),

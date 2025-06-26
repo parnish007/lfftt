@@ -8,7 +8,10 @@ exports.getAllTours = async (req, res) => {
     res.json(
       tours.map(t => ({
         ...t.toObject(),
-        images: t.images?.map(img => img.replace(/\\/g, '/')) || []
+        images: t.images?.map(img => {
+          const clean = img.replace(/\\/g, '/');
+          return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
+        }) || []
       }))
     );
   } catch (err) {
@@ -26,7 +29,10 @@ exports.getTourBySlug = async (req, res) => {
     }
     res.json({
       ...tour.toObject(),
-      images: tour.images?.map(img => img.replace(/\\/g, '/')) || []
+      images: tour.images?.map(img => {
+        const clean = img.replace(/\\/g, '/');
+        return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
+      }) || []
     });
   } catch (err) {
     console.error("❌ Error fetching tour by slug:", err);
@@ -91,7 +97,10 @@ exports.createTour = async (req, res) => {
     console.log(`✅ New tour saved: ${newTour.name}`);
     res.status(201).json({
       ...newTour.toObject(),
-      images: newTour.images?.map(img => img.replace(/\\/g, '/')) || []
+      images: newTour.images?.map(img => {
+        const clean = img.replace(/\\/g, '/');
+        return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
+      }) || []
     });
   } catch (err) {
     console.error("❌ Error creating tour:", err);
@@ -162,7 +171,10 @@ exports.updateTour = async (req, res) => {
     console.log(`✅ Tour updated: ${updatedTour.name}`);
     res.json({
       ...updatedTour.toObject(),
-      images: updatedTour.images?.map(img => img.replace(/\\/g, '/')) || []
+      images: updatedTour.images?.map(img => {
+        const clean = img.replace(/\\/g, '/');
+        return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
+      }) || []
     });
   } catch (err) {
     console.error("❌ Error updating tour:", err);

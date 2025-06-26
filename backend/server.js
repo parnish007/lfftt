@@ -31,6 +31,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
+app.use('/images/tour-packages', express.static(path.join(__dirname, '../public/images/tour-packages'))); // ✅ Add direct alias to avoid 404
 app.use(express.static(path.join(__dirname, '../src'))); // Serve frontend files
 
 // ✅ MongoDB connection
