@@ -30,7 +30,7 @@ const vehicleSchema = new mongoose.Schema({
     default: 'NPR'
   },
   pricePerDay: {
-    type: Number,
+    type: String,
     required: true,
     min: 0
   },

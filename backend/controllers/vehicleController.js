@@ -70,7 +70,7 @@ exports.createVehicle = async (req, res) => {
       vehicleType: vehicleType.trim(),
       seatingCapacity: Number(seatingCapacity),
       currency: currency || 'NPR',
-      pricePerDay: Number(pricePerDay),
+      pricePerDay: pricePerDay?.toString().trim(),
       description: description?.trim(),
       origin: origin?.trim(),
       destination: destination?.trim(),
@@ -97,6 +97,10 @@ exports.updateVehicle = async (req, res) => {
       ...req.body,
       currency: req.body.currency || 'NPR'
     };
+
+    if (req.body.pricePerDay) {
+      updateData.pricePerDay = req.body.pricePerDay.toString().trim();
+    }
 
     if (req.files?.images?.length) {
       updateData.images = req.files.images.map(f => f.relativePath || `/uploads/${f.filename}`);

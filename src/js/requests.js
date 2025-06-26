@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch("/api/customize");
       if (!res.ok) throw new Error(`Server responded ${res.status}`);
-      
+
       const requests = await res.json();
       requestList.innerHTML = "";
 
@@ -27,28 +27,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const card = document.createElement("div");
         card.className = "request-card";
-        Object.assign(card.style, {
-          border: "1px solid #ccc",
-          padding: "16px",
-          margin: "12px 0",
-          borderRadius: "8px",
-          background: "#f9f9f9",
-          boxShadow: "0 2px 5px rgba(0,0,0,0.05)"
-        });
-
         card.innerHTML = `
-          <h3>${req.origin} → ${req.destination}</h3>
+          <h3>${req.origin || "N/A"} → ${req.destination || "N/A"}</h3>
           <p><strong>Name:</strong> ${req.name || 'N/A'}</p>
+          <p><strong>Email:</strong> ${req.email || 'N/A'}</p>
           <p><strong>Phone:</strong> ${req.phone || 'N/A'}</p>
-          <p><strong>Budget:</strong> NPR ${req.budget || 'N/A'}</p>
-          <p><strong>Days:</strong> ${req.days || 'N/A'}</p>
+          <p><strong>Budget:</strong> ${req.budget ? "NPR " + req.budget : 'N/A'}</p>
+          <p><strong>Duration (days):</strong> ${req.duration || 'N/A'}</p>
           <p><strong>Vehicle:</strong> ${req.vehicle || 'N/A'}</p>
-          <p><strong>Special Requirements:</strong> ${req.message || 'N/A'}</p>
-          <p><strong>Status:</strong> 
+          <p><strong>Additional Notes:</strong> ${req.message || 'None'}</p>
+          <p class="status"><strong>Status:</strong> 
             <span style="font-weight:bold; color:${
               req.status === 'Approved' ? '#28a745' :
               req.status === 'Rejected' ? '#dc3545' : '#333'
-            }">${req.status || 'Pending'}</span>
+            }">${req.status}</span>
           </p>
           <button class="approve" onclick="approveRequest('${req._id}')">Approve</button>
           <button class="reject" onclick="rejectRequest('${req._id}')">Reject</button>
@@ -65,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.approveRequest = async (id) => {
-    if (!confirm("Approve this request?")) return;
+    if (!confirm("✅ Approve this request?")) return;
     try {
       const res = await fetch(`/api/customize/${id}/status`, {
         method: "PATCH",
@@ -82,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.rejectRequest = async (id) => {
-    if (!confirm("Reject this request?")) return;
+    if (!confirm("🚫 Reject this request?")) return;
     try {
       const res = await fetch(`/api/customize/${id}/status`, {
         method: "PATCH",
@@ -90,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ status: "Rejected" })
       });
       if (!res.ok) throw new Error("Failed to reject request");
-      alert("✅ Request rejected!");
+      alert("🚫 Request rejected!");
       loadRequests();
     } catch (err) {
       console.error("❌ Error rejecting request:", err);
@@ -99,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.deleteRequest = async (id) => {
-    if (!confirm("⚠ Are you sure you want to delete this request permanently?")) return;
+    if (!confirm("🗑️ Are you sure you want to permanently delete this request?")) return;
     try {
       const res = await fetch(`/api/customize/${id}`, { method: "DELETE" });
       if (!res.ok) {
