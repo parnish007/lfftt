@@ -138,9 +138,9 @@
         vehicles.forEach((vehicle) => {
           let imageUrl = "/images/vehicles/default.jpg";
           if (vehicle.images && vehicle.images.length > 0) {
-            imageUrl = vehicle.images[0].startsWith('/')
-              ? vehicle.images[0]
-              : `/uploads/${vehicle.images[0]}`;
+            const rawPath = vehicle.images[0];
+            imageUrl = rawPath.includes("res.cloudinary.com") ? rawPath :
+                      rawPath.startsWith("/") ? rawPath : `/uploads/${rawPath}`;
           }
 
           const symbol = currencySymbols[vehicle.currency] || '₨';
