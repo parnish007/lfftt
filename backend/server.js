@@ -8,6 +8,16 @@ const path = require('path');
 
 dotenv.config();
 
+// ✅ Cloudinary ping check
+const cloudinary = require('./config/cloudinary');
+cloudinary.api.ping((err, res) => {
+  if (err) {
+    console.error("❌ Cloudinary connection failed:", err.message);
+  } else {
+    console.log("✅ Cloudinary connected:", res);
+  }
+});
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
