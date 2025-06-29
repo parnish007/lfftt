@@ -1,7 +1,6 @@
 const Tour = require('../models/Tour');
 const slugify = require('slugify');
 
-// ✅ Get all tours
 exports.getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find().sort({ createdAt: -1 });
@@ -12,7 +11,6 @@ exports.getAllTours = async (req, res) => {
   }
 };
 
-// ✅ Get single tour by slug
 exports.getTourBySlug = async (req, res) => {
   try {
     const tour = await Tour.findOne({ slug: req.params.slug });
@@ -26,10 +24,9 @@ exports.getTourBySlug = async (req, res) => {
   }
 };
 
-// ✅ Create a new tour
 exports.createTour = async (req, res) => {
   try {
-    const images = req.files ? req.files.map(file => file.path) : [];
+    const images = req.files ? req.files.map(file => file.path || file.secure_url) : [];
 
     let activities = [];
     if (req.body.activities) {
@@ -84,7 +81,6 @@ exports.createTour = async (req, res) => {
   }
 };
 
-// ✅ Update tour by slug
 exports.updateTour = async (req, res) => {
   try {
     let activities = [];
@@ -131,7 +127,7 @@ exports.updateTour = async (req, res) => {
     };
 
     if (req.files && req.files.length > 0) {
-      updateData.images = req.files.map(f => f.path); // ⬅️ Cloudinary paths
+      updateData.images = req.files.map(f => f.path || f.secure_url);
     }
 
     const updatedTour = await Tour.findOneAndUpdate(
@@ -152,7 +148,6 @@ exports.updateTour = async (req, res) => {
   }
 };
 
-// ✅ Delete tour by ID
 exports.deleteTour = async (req, res) => {
   try {
     const deleted = await Tour.findByIdAndDelete(req.params.id);
