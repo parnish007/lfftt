@@ -55,8 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
       banners.forEach(banner => {
         const card = document.createElement("div");
         card.className = "banner-card";
+
+        const imageURL = banner.image && banner.image.startsWith("http")
+          ? banner.image
+          : `/${banner.image}`;
+
         card.innerHTML = `
-          ${banner.image ? `<img src="/${banner.image}" alt="${banner.headline}" style="max-width: 100%; height: auto;">` : ''}
+          ${banner.image ? `<img src="${imageURL}" alt="${banner.headline}" style="max-width: 100%; height: auto;">` : ''}
           <h3>${banner.headline || 'No headline'}</h3>
           <p>${banner.description || ''}</p>
           <button class="delete-btn" data-id="${banner._id}">🗑 Delete</button>

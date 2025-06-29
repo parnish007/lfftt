@@ -14,7 +14,7 @@ const io = socketIo(server, {
   cors: { origin: '*' }
 });
 
-// ✅ Force HTTPS (on Render)
+// ✅ Force HTTPS (Render-specific)
 app.use((req, res, next) => {
   if (req.headers['x-forwarded-proto'] !== 'https') {
     return res.redirect('https://' + req.headers.host + req.url);
@@ -26,12 +26,12 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static assets
+// ✅ Serve static assets (local fallback only)
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
-app.use('/images/tour-packages', express.static(path.join(__dirname, '../public/images/tour-packages'))); // ✅ Add direct alias to avoid 404
+app.use('/images/tour-packages', express.static(path.join(__dirname, '../public/images/tour-packages')));
 app.use(express.static(path.join(__dirname, '../src'))); // Serve frontend files
 
 // ✅ MongoDB connection
@@ -59,12 +59,12 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket
 require('./socket')(io);
 
-// ✅ Serve index
+// ✅ Serve index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/html/index.html'));
 });
 
-// ✅ Serve .html dynamically
+// ✅ Dynamic .html file handler
 app.get('/*.html', (req, res, next) => {
   const file = path.basename(req.path);
   const tryPaths = [

@@ -1,6 +1,5 @@
 const Banner = require('../models/Banner');
-const path = require('path');
-const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
 
 // ✅ Get all banners
 exports.getBanners = async (req, res) => {
@@ -13,7 +12,7 @@ exports.getBanners = async (req, res) => {
   }
 };
 
-// ✅ Add new banner
+// ✅ Add new banner with Cloudinary image
 exports.addBanner = async (req, res) => {
   try {
     const { headline, description } = req.body;
@@ -22,12 +21,22 @@ exports.addBanner = async (req, res) => {
       return res.status(400).json({ error: "Headline and description are required" });
     }
 
-    const image = req.file ? `uploads/${req.file.filename}` : null;
+    let imageUrl = null;
+    let imagePublicId = null;
+
+    if (req.file) {
+      const uploadResult = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'lfftt/banners'
+      });
+      imageUrl = uploadResult.secure_url;
+      imagePublicId = uploadResult.public_id;
+    }
 
     const newBanner = new Banner({
       headline: headline.trim(),
       description: description.trim(),
-      image: image
+      image: imageUrl,
+      imagePublicId: imagePublicId
     });
 
     await newBanner.save();
@@ -40,7 +49,7 @@ exports.addBanner = async (req, res) => {
   }
 };
 
-// ✅ Delete banner (and remove image file if exists)
+// ✅ Delete banner and remove from Cloudinary
 exports.deleteBanner = async (req, res) => {
   try {
     const banner = await Banner.findById(req.params.id);
@@ -48,16 +57,14 @@ exports.deleteBanner = async (req, res) => {
       return res.status(404).json({ error: "Banner not found" });
     }
 
-    // Delete associated image file if exists
-    if (banner.image) {
-      const imagePath = path.join(__dirname, '../../public', banner.image);
-      fs.unlink(imagePath, (err) => {
-        if (err) {
-          console.warn(`⚠ Failed to delete image file: ${imagePath} — ${err.message}`);
-        } else {
-          console.log(`🗑 Deleted image file: ${imagePath}`);
-        }
-      });
+    // ✅ Remove Cloudinary image if available
+    if (banner.imagePublicId) {
+      try {
+        await cloudinary.uploader.destroy(banner.imagePublicId);
+        console.log(`🗑 Deleted Cloudinary image: ${banner.imagePublicId}`);
+      } catch (cloudErr) {
+        console.warn(`⚠ Failed to delete Cloudinary image: ${cloudErr.message}`);
+      }
     }
 
     await Banner.findByIdAndDelete(req.params.id);

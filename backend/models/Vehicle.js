@@ -52,7 +52,7 @@ const vehicleSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    maxlength: 1000,
+    maxlength: 3000,
     trim: true
   },
   origin: {

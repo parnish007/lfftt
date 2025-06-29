@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (Array.isArray(vehicle.images)) {
       vehicle.images.forEach(img => {
         const imageEl = document.createElement("img");
-        imageEl.src = img.startsWith("/uploads/") ? img : `/uploads/${img}`;
+        imageEl.src = img;
         imageEl.alt = vehicle.name || "Vehicle image";
         imageEl.style.maxWidth = "100%";
         imageEl.style.borderRadius = "8px";
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (Array.isArray(vehicle.videos)) {
       vehicle.videos.forEach(video => {
         const videoEl = document.createElement("video");
-        videoEl.src = video.startsWith("/uploads/") ? video : `/uploads/${video}`;
+        videoEl.src = video;
         videoEl.controls = true;
         videoEl.style.maxWidth = "100%";
         videoEl.style.margin = "10px 0";

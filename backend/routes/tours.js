@@ -17,10 +17,10 @@ router.get('/', getAllTours);
 // 🔹 GET single tour by slug
 router.get('/:slug', getTourBySlug);
 
-// 🔹 POST: Create new tour (accepts up to 10 images)
+// 🔹 POST: Create new tour (Cloudinary image support via middleware)
 router.post('/', upload.array('images', 10), createTour);
 
-// 🔹 PATCH: Update tour using slug
+// 🔹 PATCH: Update tour by slug (Cloudinary image support)
 router.patch('/:slug', upload.array('images', 10), updateTour);
 
 // 🔹 DELETE: Remove tour by ID

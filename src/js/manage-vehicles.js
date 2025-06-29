@@ -53,9 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       vehicles.forEach(v => {
-        const imageUrl = v.images && v.images.length > 0
-          ? (v.images[0].startsWith('/') ? v.images[0] : `/${v.images[0]}`)
-          : '/public/images/vehicles/default.jpg';
+        let imagePath = (v.images?.[0] || "").replace(/\\/g, "/");
+        const imageUrl = imagePath.startsWith("http")
+          ? imagePath
+          : (imagePath ? `/uploads/${imagePath}` : "/public/images/vehicles/default.jpg");
 
         const symbol = currencySymbols[v.currency] || '₨';
 

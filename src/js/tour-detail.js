@@ -48,15 +48,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // ✅ Images (UPDATED to use /uploads/)
+    // ✅ Images (UPDATED for Cloudinary support)
     const slider = document.getElementById('slider');
     if (slider) {
       slider.innerHTML = "";
       if (tour.images && tour.images.length > 0) {
         tour.images.forEach(imgPath => {
-          const img = document.createElement('img');
           const cleanPath = imgPath.replace(/\\/g, '/');
-          img.src = cleanPath.startsWith('/uploads') ? cleanPath : `/uploads/${cleanPath}`;
+          const isCloudinary = cleanPath.startsWith("http");
+          const imageUrl = isCloudinary
+            ? cleanPath
+            : (cleanPath.startsWith('/uploads') ? cleanPath : `/uploads/${cleanPath}`);
+
+          const img = document.createElement('img');
+          img.src = imageUrl;
           img.alt = tour.name;
           slider.appendChild(img);
         });

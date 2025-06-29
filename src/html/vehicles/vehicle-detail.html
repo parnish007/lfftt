@@ -4,167 +4,174 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vehicle Details</title>
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #f0f8ff, #dceffc);
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
-
-  .vehicle-detail-header {
-    text-align: center;
-    background: linear-gradient(45deg, #004a99, #0077cc);
-    color: white;
-    padding: 40px 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
-
-  .vehicle-detail-header h1 {
-    font-size: 2.6rem;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  }
-
-  .vehicle-detail-header p {
-    font-size: 1.1rem;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .vehicle-detail {
-    max-width: 1100px;
-    margin: 40px auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    background: #fff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    align-items: center;
-  }
-
-  .slider {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-
-  .slide-track {
-    display: inline-flex;
-    padding: 10px 0;
-  }
-
-  .slide-track img {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    object-fit: cover;
-    flex-shrink: 0;
-    border-radius: 8px;
-    margin-right: 10px;
-  }
-
-  .vehicle-info h3 {
-    margin-bottom: 10px;
-    color: #004a99;
-    font-size: 1.2rem;
-  }
-
-  .vehicle-info p {
-    margin-bottom: 10px;
-    color: #555;
-    line-height: 1.6;
-  }
-
-  .book-now-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    background: linear-gradient(45deg, #ff6b6b, #ff4757);
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .book-now-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    background: linear-gradient(45deg, #ff4757, #ff6b6b);
-  }
-
-  footer {
-    text-align: center;
-    padding: 25px;
-    background-color: #f1f6fc;
-    color: #666;
-    margin-top: 50px;
-    font-size: 0.95rem;
-  }
-
-  /* ✅ Tablet Responsiveness */
-  @media (max-width: 800px) {
-    .vehicle-detail {
-      grid-template-columns: 1fr;
-      padding: 25px;
-      gap: 25px;
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f0f8ff, #dceffc);
+      color: #333;
+      margin: 0;
+      padding: 0;
     }
 
-    .slide-track img {
-      max-width: 100%;
-    }
-  }
-
-  /* ✅ Mobile Responsiveness */
-  @media (max-width: 500px) {
-    .vehicle-detail {
-      padding: 20px;
-    }
-
-    .vehicle-info {
+    .vehicle-detail-header {
       text-align: center;
+      background: linear-gradient(45deg, #004a99, #0077cc);
+      color: white;
+      padding: 40px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .vehicle-detail-header h1 {
+      font-size: 2.6rem;
+      margin: 0;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .vehicle-detail {
+      max-width: 1100px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      align-items: center;
+    }
+
+    .vehicle-media {
+      width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+      scroll-behavior: smooth;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .vehicle-media img, .vehicle-media video {
+      display: inline-block;
+      width: 100%;
+      max-width: 400px;
+      margin-right: 10px;
+      border-radius: 8px;
+      vertical-align: top;
     }
 
     .vehicle-info h3 {
-      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: #004a99;
+      font-size: 1.2rem;
+    }
+
+    .vehicle-info p {
+      margin-bottom: 10px;
+      color: #555;
+      line-height: 1.6;
     }
 
     .book-now-btn {
-      display: block;
-      margin: 20px auto 0;
-      width: fit-content;
-      font-size: 1rem;
-      padding: 10px 20px;
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #ff6b6b, #ff4757);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-  }
-</style>
 
+    .book-now-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
 
+    .vehicle-description-section {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffffd9;
+      padding: 25px 30px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .vehicle-description-section h2 {
+      margin-bottom: 12px;
+      color: #004a99;
+    }
+
+    .vehicle-description-section p {
+      line-height: 1.7;
+      color: #444;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background-color: #f1f6fc;
+      color: #666;
+      margin-top: 50px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 800px) {
+      .vehicle-detail {
+        grid-template-columns: 1fr;
+        padding: 25px;
+        gap: 25px;
+      }
+
+      .vehicle-info {
+        text-align: center;
+      }
+
+      .vehicle-media img, .vehicle-media video {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .vehicle-detail {
+        padding: 20px;
+      }
+
+      .vehicle-info h3 {
+        font-size: 1.1rem;
+      }
+
+      .book-now-btn {
+        display: block;
+        margin: 20px auto 0;
+        font-size: 1rem;
+        padding: 10px 20px;
+        width: fit-content;
+      }
+
+      .vehicle-description-section {
+        margin: 20px 10px;
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
   <header class="vehicle-detail-header">
     <h1 class="vehicle-title">Loading...</h1>
-    <p class="vehicle-description"></p>
   </header>
 
+  <section class="vehicle-description-section">
+    <h2>Vehicle Description</h2>
+    <p class="vehicle-description"></p>
+  </section>
+
   <section class="vehicle-detail">
-    <div class="slider">
-      <div class="slide-track" id="slideTrack"></div>
-    </div>
+    <div class="vehicle-media" id="mediaContainer"></div>
 
     <div class="vehicle-info">
       <h3>Type: <span class="vehicle-type"></span></h3>
@@ -178,62 +185,66 @@
   <footer>
     <p>&copy; 2025 Life For Fun Travel & Tours Pvt. Ltd.</p>
   </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    if (!slug) {
+      document.querySelector('.vehicle-title').textContent = "Vehicle Not Found";
+      return;
+    }
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get('slug');
+    const currencySymbols = {
+      'NPR': '₨',
+      'INR': '₹',
+      'USD': '$',
+      'EUR': '€',
+      'DKK': 'kr'
+    };
 
-      if (!slug) {
-        document.querySelector('.vehicle-title').textContent = "Vehicle Not Found";
-        return;
+    try {
+      const res = await fetch(`/api/vehicles/${slug}`);
+      if (!res.ok) throw new Error(`Server responded ${res.status}`);
+      const vehicle = await res.json();
+
+      document.querySelector('.vehicle-title').textContent = vehicle.name || "Unnamed Vehicle";
+      document.querySelector('.vehicle-description').textContent = vehicle.description || 'No description available.';
+      document.querySelector('.vehicle-type').textContent = vehicle.vehicleType || "N/A";
+      document.querySelector('.vehicle-seats').textContent = vehicle.seatingCapacity || "N/A";
+      document.querySelector('.vehicle-price').textContent = vehicle.pricePerDay || "N/A";
+      document.querySelector('.vehicle-currency').textContent = currencySymbols[vehicle.currency] || '₨';
+      document.querySelector('.vehicle-notes').textContent = `Origin: ${vehicle.origin || 'N/A'}, Destination: ${vehicle.destination || 'N/A'}`;
+
+      const mediaContainer = document.getElementById('mediaContainer');
+      mediaContainer.innerHTML = '';
+
+      if (vehicle.images?.length) {
+        vehicle.images.forEach(img => {
+          const image = document.createElement('img');
+          image.src = img;
+          image.alt = "Vehicle Image";
+          image.onerror = () => image.src = "/images/vehicles/default.jpg";
+          mediaContainer.appendChild(image);
+        });
       }
 
-      const currencySymbols = {
-        'NPR': '₨',
-        'INR': '₹',
-        'USD': '$',
-        'EUR': '€',
-        'DKK': 'kr'
-      };
-
-      try {
-        const res = await fetch(`/api/vehicles/${slug}`);
-        if (!res.ok) throw new Error(`Server responded ${res.status}`);
-        const vehicle = await res.json();
-
-        document.querySelector('.vehicle-title').textContent = vehicle.name || "Unnamed Vehicle";
-        document.querySelector('.vehicle-description').textContent = vehicle.description || '';
-        document.querySelector('.vehicle-type').textContent = vehicle.vehicleType || "N/A";
-        document.querySelector('.vehicle-seats').textContent = vehicle.seatingCapacity || "N/A";
-        document.querySelector('.vehicle-price').textContent = vehicle.pricePerDay || "N/A";
-        document.querySelector('.vehicle-currency').textContent = currencySymbols[vehicle.currency] || '₨';
-        document.querySelector('.vehicle-notes').textContent = `Origin: ${vehicle.origin || 'N/A'}, Destination: ${vehicle.destination || 'N/A'}`;
-
-        const slideTrack = document.getElementById('slideTrack');
-
-        if (vehicle.images && vehicle.images.length > 0) {
-          vehicle.images.concat(vehicle.images).forEach(imgPath => {
-            const cleanPath = imgPath.replace(/\\/g, '/');
-            const img = document.createElement('img');
-            img.src = cleanPath.startsWith('/uploads') ? cleanPath : `/uploads/${cleanPath}`;
-            img.alt = vehicle.name || "Vehicle";
-            img.onerror = () => { img.src = '/images/vehicles/default.jpg'; };
-            slideTrack.appendChild(img);
-          });
-        } else {
-          const img = document.createElement('img');
-          img.src = '/images/vehicles/default.jpg';
-          img.alt = "Default vehicle image";
-          slideTrack.appendChild(img);
-        }
-
-      } catch (err) {
-        console.error("❌ Error loading vehicle details:", err);
-        document.querySelector('.vehicle-title').textContent = "Failed to load vehicle details.";
+      if (vehicle.videos?.length) {
+        vehicle.videos.forEach(video => {
+          const videoEl = document.createElement('video');
+          videoEl.src = video;
+          videoEl.controls = true;
+          mediaContainer.appendChild(videoEl);
+        });
       }
-    });
-  </script>
+
+    } catch (err) {
+      console.error("❌ Error loading vehicle details:", err);
+      document.querySelector('.vehicle-title').textContent = "Failed to load vehicle details.";
+    }
+  });
+</script>
+
+
 
 </body>
 </html>

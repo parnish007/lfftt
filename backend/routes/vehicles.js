@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/uploadMiddleware');
+
 const {
   getAllVehicles,
   getVehicleBySlug,
@@ -15,7 +16,7 @@ router.get('/', getAllVehicles);
 // ✅ GET single vehicle by slug
 router.get('/:slug', getVehicleBySlug);
 
-// ✅ POST create new vehicle with images/videos
+// ✅ POST create new vehicle with Cloudinary-backed uploads
 router.post(
   '/',
   upload.fields([
@@ -25,7 +26,7 @@ router.post(
   createVehicle
 );
 
-// ✅ PUT update vehicle with optional images/videos
+// ✅ PUT update vehicle with optional Cloudinary uploads
 router.put(
   '/:id',
   upload.fields([

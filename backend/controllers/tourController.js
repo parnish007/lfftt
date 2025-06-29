@@ -5,15 +5,7 @@ const slugify = require('slugify');
 exports.getAllTours = async (req, res) => {
   try {
     const tours = await Tour.find().sort({ createdAt: -1 });
-    res.json(
-      tours.map(t => ({
-        ...t.toObject(),
-        images: t.images?.map(img => {
-          const clean = img.replace(/\\/g, '/');
-          return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
-        }) || []
-      }))
-    );
+    res.json(tours);
   } catch (err) {
     console.error("❌ Error fetching tours:", err);
     res.status(500).json({ error: 'Failed to fetch tours', details: err.message });
@@ -27,13 +19,7 @@ exports.getTourBySlug = async (req, res) => {
     if (!tour) {
       return res.status(404).json({ error: 'Tour not found' });
     }
-    res.json({
-      ...tour.toObject(),
-      images: tour.images?.map(img => {
-        const clean = img.replace(/\\/g, '/');
-        return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
-      }) || []
-    });
+    res.json(tour);
   } catch (err) {
     console.error("❌ Error fetching tour by slug:", err);
     res.status(500).json({ error: 'Server error', details: err.message });
@@ -43,11 +29,8 @@ exports.getTourBySlug = async (req, res) => {
 // ✅ Create a new tour
 exports.createTour = async (req, res) => {
   try {
-    const images = req.files
-      ? req.files.map(file => file.relativePath || `/uploads/${file.filename}`)
-      : [];
+    const images = req.files ? req.files.map(file => file.path) : [];
 
-    // ✅ Fix activities
     let activities = [];
     if (req.body.activities) {
       if (Array.isArray(req.body.activities)) {
@@ -61,7 +44,6 @@ exports.createTour = async (req, res) => {
       }
     }
 
-    // ✅ Handle itineraryDays
     let itineraryDays = [];
     if (Array.isArray(req.body['itineraryDays[]'])) {
       itineraryDays = req.body['itineraryDays[]'];
@@ -95,13 +77,7 @@ exports.createTour = async (req, res) => {
 
     await newTour.save();
     console.log(`✅ New tour saved: ${newTour.name}`);
-    res.status(201).json({
-      ...newTour.toObject(),
-      images: newTour.images?.map(img => {
-        const clean = img.replace(/\\/g, '/');
-        return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
-      }) || []
-    });
+    res.status(201).json(newTour);
   } catch (err) {
     console.error("❌ Error creating tour:", err);
     res.status(400).json({ error: 'Failed to create tour', details: err.message });
@@ -155,7 +131,7 @@ exports.updateTour = async (req, res) => {
     };
 
     if (req.files && req.files.length > 0) {
-      updateData.images = req.files.map(f => f.relativePath || `/uploads/${f.filename}`);
+      updateData.images = req.files.map(f => f.path); // ⬅️ Cloudinary paths
     }
 
     const updatedTour = await Tour.findOneAndUpdate(
@@ -169,13 +145,7 @@ exports.updateTour = async (req, res) => {
     }
 
     console.log(`✅ Tour updated: ${updatedTour.name}`);
-    res.json({
-      ...updatedTour.toObject(),
-      images: updatedTour.images?.map(img => {
-        const clean = img.replace(/\\/g, '/');
-        return clean.startsWith('/uploads') ? clean : `/uploads/${clean}`;
-      }) || []
-    });
+    res.json(updatedTour);
   } catch (err) {
     console.error("❌ Error updating tour:", err);
     res.status(400).json({ error: 'Failed to update tour', details: err.message });

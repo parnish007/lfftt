@@ -7,8 +7,8 @@ exports.getAllVehicles = async (req, res) => {
 
     const cleanedData = data.map(vehicle => ({
       ...vehicle.toObject(),
-      images: vehicle.images?.map(f => f.replace(/\\/g, '/')) || [],
-      videos: vehicle.videos?.map(f => f.replace(/\\/g, '/')) || []
+      images: vehicle.images || [],
+      videos: vehicle.videos || []
     }));
 
     console.log(`✅ Sending ${cleanedData.length} vehicles to frontend.`);
@@ -26,8 +26,8 @@ exports.getVehicleBySlug = async (req, res) => {
       console.log(`✅ Found vehicle by slug: ${v.slug}`);
       res.json({
         ...v.toObject(),
-        images: v.images?.map(f => f.replace(/\\/g, '/')) || [],
-        videos: v.videos?.map(f => f.replace(/\\/g, '/')) || []
+        images: v.images || [],
+        videos: v.videos || []
       });
     } else {
       console.warn(`⚠ No vehicle found for slug: ${req.params.slug}`);
@@ -59,8 +59,8 @@ exports.createVehicle = async (req, res) => {
 
     const slug = slugify(name, { lower: true, strict: true });
 
-    const images = req.files?.images?.map(f => f.relativePath || `/uploads/${f.filename}`) || [];
-    const videos = req.files?.videos?.map(f => f.relativePath || `/uploads/${f.filename}`) || [];
+    const images = req.files?.images?.map(f => f.path) || [];
+    const videos = req.files?.videos?.map(f => f.path) || [];
 
     console.log("📦 Creating vehicle with:", { name, images, videos });
 
@@ -82,8 +82,8 @@ exports.createVehicle = async (req, res) => {
     console.log(`✅ Vehicle saved to DB: ${vehicle.name} (ID: ${vehicle._id})`);
     res.status(201).json({
       ...vehicle.toObject(),
-      images: vehicle.images?.map(f => f.replace(/\\/g, '/')) || [],
-      videos: vehicle.videos?.map(f => f.replace(/\\/g, '/')) || []
+      images: vehicle.images || [],
+      videos: vehicle.videos || []
     });
   } catch (err) {
     console.error("❌ Error creating vehicle:", err);
@@ -103,11 +103,11 @@ exports.updateVehicle = async (req, res) => {
     }
 
     if (req.files?.images?.length) {
-      updateData.images = req.files.images.map(f => f.relativePath || `/uploads/${f.filename}`);
+      updateData.images = req.files.images.map(f => f.path);
     }
 
     if (req.files?.videos?.length) {
-      updateData.videos = req.files.videos.map(f => f.relativePath || `/uploads/${f.filename}`);
+      updateData.videos = req.files.videos.map(f => f.path);
     }
 
     if (req.body.name) {
@@ -123,8 +123,8 @@ exports.updateVehicle = async (req, res) => {
     console.log(`✅ Vehicle updated: ${updated.name} (ID: ${updated._id})`);
     res.json({
       ...updated.toObject(),
-      images: updated.images?.map(f => f.replace(/\\/g, '/')) || [],
-      videos: updated.videos?.map(f => f.replace(/\\/g, '/')) || []
+      images: updated.images || [],
+      videos: updated.videos || []
     });
   } catch (err) {
     console.error("❌ Error updating vehicle:", err);

@@ -64,8 +64,10 @@ function showBanner(index) {
   const banner = banners[index];
 
   let imagePath = banner.image;
-  if (imagePath && !imagePath.startsWith('/uploads/')) {
-    imagePath = `/${imagePath}`;
+
+  // ✅ Fix: Support Cloudinary or /uploads/ or fallback to /uploads prefix
+  if (imagePath && !imagePath.startsWith('http') && !imagePath.startsWith('/uploads/')) {
+    imagePath = `/uploads/${imagePath}`;
   }
 
   const slideContainer = document.createElement('div');

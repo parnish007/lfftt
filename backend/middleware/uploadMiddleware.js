@@ -1,34 +1,44 @@
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../../public/uploads/'));
-  },
-  filename: (req, file, cb) => {
+// ✅ Cloudinary config from .env
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// ✅ Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const folder = 'lfftt-uploads';
     const timestamp = Date.now();
     const safeName = file.originalname.replace(/\s+/g, '-').toLowerCase();
-    const uniqueName = `${timestamp}-${safeName}`;
-    cb(null, uniqueName);
+    return {
+      folder,
+      public_id: `${timestamp}-${safeName}`,
+      resource_type: file.mimetype.startsWith('video') ? 'video' : 'image'
+    };
   }
 });
 
+// ✅ File filter
 const fileFilter = (req, file, cb) => {
-  const allowedExtensions = ['.png', '.jpg', '.jpeg', '.mp4', '.mov'];
-  const ext = path.extname(file.originalname).toLowerCase();
-
-  if (allowedExtensions.includes(ext)) {
+  const allowed = ['image/png', 'image/jpeg', 'image/jpg', 'video/mp4', 'video/quicktime'];
+  if (allowed.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    console.warn(`⚠ Upload blocked: unsupported file type ${ext}`);
-    cb(new Error('Unsupported file type. Only PNG, JPG, JPEG, MP4, MOV allowed.'), false);
+    cb(new Error('Only PNG, JPG, JPEG, MP4, MOV files are allowed.'), false);
   }
 };
 
+// ✅ Multer upload setup
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10 MB max
+  limits: { fileSize: 20 * 1024 * 1024 } // 20 MB max
 });
 
 module.exports = {
@@ -37,9 +47,6 @@ module.exports = {
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
-      }
-      if (req.file) {
-        req.file.relativePath = `/uploads/${req.file.filename}`;
       }
       next();
     });
@@ -51,11 +58,6 @@ module.exports = {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
       }
-      if (req.files) {
-        req.files.forEach(file => {
-          file.relativePath = `/uploads/${file.filename}`;
-        });
-      }
       next();
     });
   },
@@ -65,13 +67,6 @@ module.exports = {
       if (err) {
         console.error('❌ Upload error:', err.message);
         return res.status(400).json({ error: err.message });
-      }
-      if (req.files) {
-        Object.keys(req.files).forEach(field => {
-          req.files[field].forEach(file => {
-            file.relativePath = `/uploads/${file.filename}`;
-          });
-        });
       }
       next();
     });

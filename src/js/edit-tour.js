@@ -37,7 +37,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     (tour.images || []).forEach(imgPath => {
       const img = document.createElement("img");
-      img.src = imgPath.startsWith('/uploads') ? imgPath : `/uploads/${imgPath}`;
+      const finalPath = imgPath.startsWith("http") ? imgPath : `/uploads/${imgPath}`;
+      img.src = finalPath;
+      img.alt = "Tour Image";
+      img.style.maxWidth = "120px";
+      img.style.marginRight = "8px";
+      img.style.borderRadius = "4px";
       imagePreviewContainer.appendChild(img);
     });
 
@@ -53,6 +58,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       reader.onload = e => {
         const img = document.createElement('img');
         img.src = e.target.result;
+        img.alt = "Preview";
+        img.style.maxWidth = "120px";
+        img.style.marginRight = "8px";
+        img.style.borderRadius = "4px";
         imagePreviewContainer.appendChild(img);
       };
       reader.readAsDataURL(file);
