@@ -101,7 +101,7 @@ exports.sendBillToUser = async (req, res) => {
       await transporter.sendMail({
         from: `"Life For Fun Travel" <${process.env.EMAIL_USER}>`,
         to: booking.email,
-        subject: 'Your Travel Bill from Life For Fun Travel',
+        subject: 'Your Travel/ vehicle Bill from Life For Fun Travel',
         text: 'Please find your attached bill below. Thank you!',
         attachments: [{ filename: `bill-${billId}.pdf`, path: pdfPath }]
       });
@@ -149,13 +149,14 @@ exports.sendCustomBill = async (req, res) => {
     doc.image(path.join(__dirname, '../../public/images/backgrounds/logo.jpeg'), 50, 40, { width: 80 });
     doc.fontSize(22).fillColor('#004a99').text('LIFE FOR FUN TRAVELS TOURS Pvt.Ltd', 150, 50, { align: 'center' });
     doc.moveDown(2);
-    doc.fontSize(16).fillColor('black').text('Custom Bill Receipt', { align: 'center' });
+    doc.fontSize(16).fillColor('black').text('Bill Receipt', { align: 'center' });
     doc.moveDown(1);
     doc.fontSize(12).fillColor('black');
     doc.text(`Bill ID: ${billId}`);
     doc.text(`Date: ${moment().format("YYYY-MM-DD HH:mm")}`);
     doc.text(`Customer: ${customerName}`);
     doc.text(`Email: ${customerEmail}`);
+    doc.text(`Booking Type: ${booking.type}`);
     doc.text(`Package: ${packageName}`);
     doc.text(`Amount: ${currencySymbol}${amount}`);
     if (description) doc.moveDown().text(`Note: ${description}`);
@@ -178,8 +179,8 @@ exports.sendCustomBill = async (req, res) => {
       await transporter.sendMail({
         from: `"Life For Fun Travel" <${process.env.EMAIL_USER}>`,
         to: customerEmail,
-        subject: 'Custom Travel Bill - Life For Fun Travel',
-        text: 'Attached is your custom bill. Thank you!',
+        subject: ' Bill - Life For Fun Travel',
+        text: 'Attached is your bill. Thank you!',
         attachments: [{ filename: `custom-bill-${billId}.pdf`, path: pdfPath }]
       });
 
