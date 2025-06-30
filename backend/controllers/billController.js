@@ -204,3 +204,31 @@ exports.sendCustomBill = async (req, res) => {
     res.status(500).json({ error: "Failed to send custom bill" });
   }
 };
+// 📥 Get only confirmed bookings (tours & vehicles) that are not yet billed
+exports.getUnbilledConfirmedBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } });
+
+    const enriched = await Promise.all(bookings.map(async (b) => {
+      const model = b.type === 'Vehicle' ? Vehicle : Tour;
+      const matched = await model.findOne({ title: b.title });
+
+      return {
+        _id: b._id,
+        name: b.name,
+        email: b.email,
+        type: b.type,
+        title: b.title,
+        currency: matched?.currency || 'NPR',
+        currencySymbol: currencySymbols[matched?.currency] || '₨',
+        price: matched?.pricePerDay || matched?.price || 'Negotiable',
+        phone: b.phone || 'N/A'
+      };
+    }));
+
+    res.json(enriched);
+  } catch (err) {
+    console.error("❌ Error in getUnbilledConfirmedBookings:", err);
+    res.status(500).json({ error: "Failed to fetch unbilled bookings" });
+  }
+};

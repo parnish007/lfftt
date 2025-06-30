@@ -11,4 +11,7 @@ router.post('/send/:id', billController.sendBillToUser);
 // ✅ POST custom bill (manually entered by admin)
 router.post('/', billController.sendCustomBill);
 
+// ✅ NEW: Get confirmed bookings with no bill yet
+router.get('/unbilled', billController.getUnbilledConfirmedBookings);
+
 module.exports = router;

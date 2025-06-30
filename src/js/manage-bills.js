@@ -8,26 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchAcceptedBookings() {
     try {
-      const [tourRes, vehicleRes] = await Promise.all([
-        fetch("/api/bookings"),
-        fetch("/api/vehicle-bookings")
-      ]);
+      const res = await fetch("/api/bills/unbilled");
 
-      if (!tourRes.ok || !vehicleRes.ok) {
-        throw new Error(`Server responded ${tourRes.status} / ${vehicleRes.status}`);
+      if (!res.ok) {
+        throw new Error(`Server responded ${res.status}`);
       }
 
-      const [tourData, vehicleData] = await Promise.all([
-        tourRes.json(),
-        vehicleRes.json()
-      ]);
+      const bookings = await res.json();
 
-      const accepted = [
-        ...tourData.filter(b => b.status === "Accepted"),
-        ...vehicleData.filter(b => b.status === "Accepted")
-      ];
-
-      displayBookings(accepted);
+      displayBookings(bookings);
     } catch (err) {
       console.error("Failed to fetch bookings:", err);
       bookingContainer.innerHTML = "<p style='text-align:center;'>Failed to load accepted bookings.</p>";
@@ -51,12 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Name:</strong> ${b.name || 'N/A'}</p>
         <p><strong>Email:</strong> ${b.email || 'N/A'}</p>
         <p><strong>Phone:</strong> ${b.phone || 'N/A'}</p>
-        <p><strong>Origin:</strong> ${b.origin || 'N/A'}</p>
-        <p><strong>Destination:</strong> ${b.destination || 'N/A'}</p>
         <p><strong>Type:</strong> ${b.type || 'Tour / Vehicle'}</p>
+        <p><strong>Price:</strong> ${b.currencySymbol || '₨'}${b.price || 'Negotiable'}</p>
 
         <div class="actions">
-          <button class="btn default-bill" onclick="processDefaultBill('${b.name}', '${b.email}', '${b.title}')">Process Bill</button>
+          <button class="btn default-bill" onclick="processDefaultBill('${b._id}')">Process Bill</button>
           <button class="btn custom-bill" onclick="redirectToCustomBill('${b.name}', '${b.email}', '${b.title}')">Custom Bill</button>
         </div>
       `;
@@ -75,33 +63,17 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/html/custom-bill.html?" + query; // ✅ Root-relative for Render
   };
 
-  window.processDefaultBill = async (name, email, title) => {
-    const currency = (prompt("Enter currency (e.g., NPR, INR, USD, EUR, DKK):", "NPR") || "").trim();
-    const amount = (prompt("Enter final price (numeric):") || "").trim();
-
-    if (!currency || !amount) {
-      alert("❌ Bill not processed: both currency and price are required.");
-      return;
-    }
-
+  window.processDefaultBill = async (id) => {
     try {
-      const res = await fetch("/api/bills", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerName: name,
-          customerEmail: email,
-          packageName: title,
-          amount,
-          currency,
-          description: "Thank you for booking with Life For Fun Travel & Tours!"
-        })
+      const res = await fetch(`/api/bills/send/${id}`, {
+        method: "POST"
       });
 
       const result = await res.json();
 
       if (res.ok) {
-        alert("✅ Bill sent successfully to " + email);
+        alert("✅ Bill sent successfully.");
+        fetchAcceptedBookings(); // Refresh the list after billing
       } else {
         alert(`❌ Error: ${result.error || "Unknown error"}`);
       }

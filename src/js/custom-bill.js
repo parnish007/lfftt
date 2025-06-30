@@ -32,22 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch("/api/bills", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(billData)
       });
 
-      if (!res.ok) {
-        console.error("❌ Server responded with status:", res.status);
-        alert(`❌ Server error: ${res.status}. Please try again later.`);
-        return;
-      }
-
       const result = await res.json();
 
-      if (result.success) {
-        alert("✅ Bill sent to customer email!");
+      if (res.ok) {
+        alert("✅ Bill sent successfully to " + billData.customerEmail);
         form.reset();
       } else {
         alert(`❌ Failed to send bill: ${result.error || "Unknown error"}`);
