@@ -33,7 +33,8 @@ exports.createVehicleBooking = async (req, res) => {
       travelDate: travelDate.trim(),
       days: tripType === 'Rental' ? Number(days) : undefined,
       message: message ? message.trim() : '',
-      status: 'Pending'
+      status: 'Pending',
+      newBooking: true // ✅ ensure badge works
     });
 
     await booking.save();
@@ -44,12 +45,12 @@ exports.createVehicleBooking = async (req, res) => {
   }
 };
 
-// ✅ Get all vehicle bookings (Admin side) + mark as seen
+// ✅ Admin: Get all vehicle bookings + mark new ones as seen
 exports.getVehicleBookings = async (req, res) => {
   try {
     const bookings = await VehicleBooking.find().sort({ createdAt: -1 });
 
-    // 👉 Mark new bookings as seen
+    // ✅ Clear new booking badge
     await VehicleBooking.updateMany({ newBooking: true }, { newBooking: false });
 
     res.json(bookings);
@@ -59,7 +60,7 @@ exports.getVehicleBookings = async (req, res) => {
   }
 };
 
-// ✅ Get accepted bookings
+// ✅ Billing: Get only bookings with status "Confirmed"
 exports.getAcceptedVehicleBookings = async (req, res) => {
   try {
     const acceptedBookings = await VehicleBooking.find({
@@ -72,7 +73,7 @@ exports.getAcceptedVehicleBookings = async (req, res) => {
   }
 };
 
-// ✅ Delete a vehicle booking
+// ✅ Admin: Delete a vehicle booking
 exports.deleteVehicleBooking = async (req, res) => {
   try {
     const deleted = await VehicleBooking.findByIdAndDelete(req.params.id);
@@ -86,7 +87,7 @@ exports.deleteVehicleBooking = async (req, res) => {
   }
 };
 
-// ✅ New: Get count of new vehicle bookings (for badge)
+// ✅ Badge: Get count of new (unseen) bookings
 exports.getNewVehicleBookingCount = async (req, res) => {
   try {
     const count = await VehicleBooking.countDocuments({ newBooking: true });
@@ -97,7 +98,7 @@ exports.getNewVehicleBookingCount = async (req, res) => {
   }
 };
 
-// ✅ ✅ ✅ Add this to fix PUT update status error
+// ✅ Admin: Update status (Approve/Reject)
 exports.updateVehicleBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
