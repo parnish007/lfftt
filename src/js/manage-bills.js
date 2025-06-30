@@ -8,15 +8,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchAcceptedBookings() {
     try {
-      const res = await fetch("/api/bills/unbilled");
+      const [tourRes, vehicleRes] = await Promise.all([
+        fetch("/api/tour-bookings/accepted"),
+        fetch("/api/vehicle-bookings/accepted")
+      ]);
 
-      if (!res.ok) {
-        throw new Error(`Server responded ${res.status}`);
+      if (!tourRes.ok || !vehicleRes.ok) {
+        throw new Error("Server error while fetching bookings.");
       }
 
-      const bookings = await res.json();
+      const [tourBookings, vehicleBookings] = await Promise.all([
+        tourRes.json(),
+        vehicleRes.json()
+      ]);
 
-      displayBookings(bookings);
+      const allBookings = [
+        ...tourBookings.map(b => ({ ...b, type: "Tour", title: b.title || b.name || "Tour Booking" })),
+        ...vehicleBookings.map(b => ({ ...b, type: "Vehicle", title: b.vehicle || "Vehicle Booking" }))
+      ];
+
+      displayBookings(allBookings);
     } catch (err) {
       console.error("Failed to fetch bookings:", err);
       bookingContainer.innerHTML = "<p style='text-align:center;'>Failed to load accepted bookings.</p>";
@@ -29,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    bookingContainer.innerHTML = ""; // Clear previous if any
+    bookingContainer.innerHTML = "";
 
     bookings.forEach(b => {
       const card = document.createElement("div");
@@ -60,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       packageName: title
     }).toString();
 
-    window.location.href = "/html/custom-bill.html?" + query; // ✅ Root-relative for Render
+    window.location.href = "/html/custom-bill.html?" + query;
   };
 
   window.processDefaultBill = async (id) => {
@@ -73,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok) {
         alert("✅ Bill sent successfully.");
-        fetchAcceptedBookings(); // Refresh the list after billing
+        fetchAcceptedBookings();
       } else {
         alert(`❌ Error: ${result.error || "Unknown error"}`);
       }
