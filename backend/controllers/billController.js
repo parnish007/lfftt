@@ -1,4 +1,5 @@
 const Booking = require('../models/Booking');
+const VehicleBooking = require('../models/VehicleBooking'); // ✅ Add this
 const Tour = require('../models/Tour');
 const Vehicle = require('../models/Vehicle');
 const Bill = require('../models/Bill');
@@ -19,7 +20,7 @@ const currencySymbols = {
 // 📥 Get all accepted bookings not yet billed
 exports.getBillableRequests = async (req, res) => {
   try {
-    const bookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } }); // ✅ Use 'Confirmed' for billing
+    const bookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } });
 
     const result = await Promise.all(bookings.map(async (b) => {
       const dataSource = b.type === 'Vehicle' ? Vehicle : Tour;
@@ -61,10 +62,8 @@ exports.sendBillToUser = async (req, res) => {
     const price = item?.pricePerDay || item?.price || 0;
 
     const billId = `LFFTT-${booking._id}-${Date.now()}`;
-    const pdfDir = path.join(__dirname, '../../public/bills'); // ✅ Save in public/bills so it's accessible
-    if (!fs.existsSync(pdfDir)) {
-      fs.mkdirSync(pdfDir, { recursive: true });
-    }
+    const pdfDir = path.join(__dirname, '../../public/bills');
+    if (!fs.existsSync(pdfDir)) fs.mkdirSync(pdfDir, { recursive: true });
     const pdfPath = path.join(pdfDir, `bill-${billId}.pdf`);
 
     const doc = new PDFDocument();
@@ -138,9 +137,7 @@ exports.sendCustomBill = async (req, res) => {
     const currencySymbol = currencySymbols[currency] || '₨';
     const billId = `CUSTOM-${Date.now()}`;
     const pdfDir = path.join(__dirname, '../../public/bills');
-    if (!fs.existsSync(pdfDir)) {
-      fs.mkdirSync(pdfDir, { recursive: true });
-    }
+    if (!fs.existsSync(pdfDir)) fs.mkdirSync(pdfDir, { recursive: true });
     const pdfPath = path.join(pdfDir, `custom-bill-${billId}.pdf`);
 
     const doc = new PDFDocument();
@@ -204,29 +201,44 @@ exports.sendCustomBill = async (req, res) => {
     res.status(500).json({ error: "Failed to send custom bill" });
   }
 };
-// 📥 Get only confirmed bookings (tours & vehicles) that are not yet billed
+
+// 📥 Unified: Get all unbilled confirmed bookings (Tour + Vehicle)
 exports.getUnbilledConfirmedBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } });
+    const tourBookings = await Booking.find({ status: 'Confirmed', billed: { $ne: true } });
+    const vehicleBookings = await VehicleBooking.find({ status: 'Confirmed', billed: { $ne: true } });
 
-    const enriched = await Promise.all(bookings.map(async (b) => {
-      const model = b.type === 'Vehicle' ? Vehicle : Tour;
-      const matched = await model.findOne({ title: b.title });
-
+    const enrichedTours = await Promise.all(tourBookings.map(async (b) => {
+      const matched = await Tour.findOne({ title: b.title });
       return {
         _id: b._id,
         name: b.name,
         email: b.email,
-        type: b.type,
+        phone: b.phone || 'N/A',
+        type: 'Tour',
         title: b.title,
         currency: matched?.currency || 'NPR',
         currencySymbol: currencySymbols[matched?.currency] || '₨',
-        price: matched?.pricePerDay || matched?.price || 'Negotiable',
-        phone: b.phone || 'N/A'
+        price: matched?.price || 'Negotiable'
       };
     }));
 
-    res.json(enriched);
+    const enrichedVehicles = await Promise.all(vehicleBookings.map(async (b) => {
+      const matched = await Vehicle.findOne({ title: b.title });
+      return {
+        _id: b._id,
+        name: b.name,
+        email: b.email,
+        phone: b.phone || 'N/A',
+        type: 'Vehicle',
+        title: b.title,
+        currency: matched?.currency || 'NPR',
+        currencySymbol: currencySymbols[matched?.currency] || '₨',
+        price: matched?.pricePerDay || 'Negotiable'
+      };
+    }));
+
+    res.json([...enrichedTours, ...enrichedVehicles]);
   } catch (err) {
     console.error("❌ Error in getUnbilledConfirmedBookings:", err);
     res.status(500).json({ error: "Failed to fetch unbilled bookings" });
