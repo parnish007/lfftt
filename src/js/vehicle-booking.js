@@ -1,3 +1,5 @@
+// ✅ vehicle-bookings.js — Handles vehicle booking form submission
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("vehicleBookingForm");
 

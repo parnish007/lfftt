@@ -5,7 +5,8 @@ const {
   getVehicleBookings,
   getAcceptedVehicleBookings,
   deleteVehicleBooking,
-  getNewVehicleBookingCount // ✅ NEW: for badge
+  getNewVehicleBookingCount,
+  updateVehicleBookingStatus // ✅ NEW: add this import
 } = require('../controllers/vehicleBookingController');
 
 // ✅ Create a new vehicle booking
@@ -18,7 +19,10 @@ router.get('/', getVehicleBookings);
 router.get('/accepted', getAcceptedVehicleBookings);
 
 // ✅ Admin: Get count of new vehicle bookings (for badge)
-router.get('/new-count', getNewVehicleBookingCount); // ✅ NEW endpoint
+router.get('/new-count', getNewVehicleBookingCount);
+
+// ✅ Admin: Update booking status (Approve/Reject)
+router.put('/:id', updateVehicleBookingStatus); // ✅ NEW route
 
 // ✅ Admin: Delete a specific booking
 router.delete('/:id', deleteVehicleBooking);

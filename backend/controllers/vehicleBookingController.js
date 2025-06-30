@@ -96,3 +96,22 @@ exports.getNewVehicleBookingCount = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch new vehicle booking count.' });
   }
 };
+
+// ✅ ✅ ✅ Add this to fix PUT update status error
+exports.updateVehicleBookingStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const updated = await VehicleBooking.findByIdAndUpdate(id, { status }, { new: true });
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Vehicle booking not found.' });
+    }
+
+    res.json({ message: '✅ Vehicle booking status updated.', booking: updated });
+  } catch (err) {
+    console.error("❌ Error updating vehicle booking status:", err);
+    res.status(500).json({ error: 'Failed to update booking status.' });
+  }
+};
