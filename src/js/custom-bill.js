@@ -38,9 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(billData)
       });
 
+      if (!res.ok) {
+        console.error("❌ Server responded with status:", res.status);
+        alert(`❌ Server error: ${res.status}. Please try again later.`);
+        return;
+      }
+
       const result = await res.json();
 
-      if (res.ok && result.success) {
+      if (result.success) {
         alert("✅ Bill sent to customer email!");
         form.reset();
       } else {
