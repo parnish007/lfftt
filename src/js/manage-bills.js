@@ -8,26 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchAcceptedBookings() {
     try {
-      const [tourRes, vehicleRes] = await Promise.all([
-        fetch("/api/tour-bookings/accepted"),
-        fetch("/api/vehicle-bookings/accepted")
-      ]);
+      const res = await fetch("/api/bills/unbilled");
 
-      if (!tourRes.ok || !vehicleRes.ok) {
-        throw new Error("Server error while fetching bookings.");
+      if (!res.ok) {
+        throw new Error(`Server responded ${res.status}`);
       }
 
-      const [tourBookings, vehicleBookings] = await Promise.all([
-        tourRes.json(),
-        vehicleRes.json()
-      ]);
-
-      const allBookings = [
-        ...tourBookings.map(b => ({ ...b, type: "Tour", title: b.title || b.name || "Tour Booking" })),
-        ...vehicleBookings.map(b => ({ ...b, type: "Vehicle", title: b.vehicle || "Vehicle Booking" }))
-      ];
-
-      displayBookings(allBookings);
+      const bookings = await res.json();
+      displayBookings(bookings);
     } catch (err) {
       console.error("Failed to fetch bookings:", err);
       bookingContainer.innerHTML = "<p style='text-align:center;'>Failed to load accepted bookings.</p>";
@@ -84,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok) {
         alert("✅ Bill sent successfully.");
-        fetchAcceptedBookings();
+        fetchAcceptedBookings(); // Refresh after billing
       } else {
         alert(`❌ Error: ${result.error || "Unknown error"}`);
       }
