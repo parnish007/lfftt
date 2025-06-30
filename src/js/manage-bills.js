@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const bookingContainer = document.getElementById("bookingContainer");
+  const billModal = document.getElementById("billModal");
+  const billingForm = document.getElementById("billingForm");
+
+  let currentBookingId = null;
 
   if (!bookingContainer) {
     console.warn("⚠️ bookingContainer not found on this page.");
@@ -62,17 +66,45 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/html/custom-bill.html?" + query;
   };
 
-  window.processDefaultBill = async (id) => {
+  window.processDefaultBill = (id) => {
+    currentBookingId = id;
+    document.getElementById("amount").value = "";
+    document.getElementById("currency").value = "NPR";
+    billModal.style.display = "block";
+  };
+
+  window.closeModal = () => {
+    billModal.style.display = "none";
+    currentBookingId = null;
+  };
+
+  billingForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const amount = document.getElementById("amount").value;
+    const currency = document.getElementById("currency").value;
+
+    if (!amount || !currency || !currentBookingId) {
+      alert("Please enter amount and select currency.");
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/bills/send/${id}`, {
-        method: "POST"
+      const res = await fetch(`/api/bills/send/${currentBookingId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ amount, currency })
       });
 
       const result = await res.json();
 
       if (res.ok) {
         alert("✅ Bill sent successfully.");
-        fetchAcceptedBookings(); // Refresh after billing
+        billModal.style.display = "none";
+        currentBookingId = null;
+        fetchAcceptedBookings();
       } else {
         alert(`❌ Error: ${result.error || "Unknown error"}`);
       }
@@ -80,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error sending bill:", err);
       alert("❌ Failed to send bill.");
     }
-  };
+  });
 
   fetchAcceptedBookings();
 });
