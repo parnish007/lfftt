@@ -101,7 +101,7 @@ exports.sendBillToUser = async (req, res) => {
       await transporter.sendMail({
         from: `"Life For Fun Travel" <${process.env.EMAIL_USER}>`,
         to: booking.email,
-        subject: 'Your Travel/ vehicle Bill from Life For Fun Travel',
+        subject: 'Your Travel  Bill from Life For Fun Travel',
         text: 'Please find your attached bill below. Thank you!',
         attachments: [{ filename: `bill-${billId}.pdf`, path: pdfPath }]
       });
