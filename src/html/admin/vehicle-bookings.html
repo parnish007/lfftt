@@ -118,7 +118,7 @@
 
       window.updateStatus = async (id, status) => {
         try {
-          const res = await fetch(`/api/vehicle-bookings/${id}/status`, {
+          const res = await fetch(`/api/vehicle-bookings/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status })
