@@ -345,16 +345,11 @@ a:hover {
   <!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left">
-    <img src="../../public/images/backgrounds/logo.jpeg" alt="Company Logo" class="logo" />
+    <img id="logo-img" src="../../public/images/backgrounds/logo.jpeg" alt="Company Logo" class="logo" />
+
     <h1>LIFE FOR FUN TRAVEL AND TOURS</h1>
   </div>
   <div class="navbar-links">
-
-
-
-
-
-
     <a href="index.html">Home</a>
     <a href="tours/tours.html">Tours</a>
     <a href="vehicles/vehicle-rental.html">Vehicles</a>
@@ -510,11 +505,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await res.json();
 
     sections.forEach(section => {
-      const setting = data.find(img => img.section === section);
-      if (setting && setting.mode === "upload" && setting.path) {
+      const setting = data.find(img => img.sectionId === section);
+      if (setting && !setting.useDefault && setting.imagePath) {
         const imgEl = document.getElementById(idMap[section]);
         if (imgEl) {
-          imgEl.src = setting.path;
+          imgEl.src = setting.imagePath;
         }
       }
     });
@@ -523,7 +518,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 </script>
-
 <script>
 // Enable horizontal scroll on wheel for mobile navbar slider
 document.querySelectorAll('.navbar-links').forEach(nav => {

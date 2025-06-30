@@ -16,11 +16,11 @@ exports.updateImageSetting = async (req, res) => {
       };
     }
 
-    // ✅ Handle uploaded file
-    if (req.file) {
+    // ✅ Handle uploaded file (Cloudinary path)
+    if (req.file && req.file.path) {
       update = {
         useDefault: false,
-        imagePath: `/uploads/${req.file.filename}`
+        imagePath: req.file.path // ✅ Cloudinary URL
       };
     }
 

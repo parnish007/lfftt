@@ -1,34 +1,34 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const imageSections = [
     {
       id: 'hero',
       label: 'Hero Background',
-      defaultPath: '/public/images/backgrounds/mountain.jpeg'
+      defaultPath: '/images/backgrounds/mountain.jpeg'
     },
     {
       id: 'tour',
       label: 'Tour Image',
-      defaultPath: '/public/images/backgrounds/back.png'
+      defaultPath: '/images/backgrounds/back.png'
     },
     {
       id: 'vehicle',
       label: 'Vehicle Image',
-      defaultPath: '/public/images/backgrounds/vehicle.png'
+      defaultPath: '/images/backgrounds/vehicle.png'
     },
     {
       id: 'trekking',
       label: 'Trekking Image',
-      defaultPath: '/public/images/backgrounds/trek.png'
+      defaultPath: '/images/backgrounds/trek.png'
     },
     {
       id: 'flight',
       label: 'Flight Image',
-      defaultPath: '/public/images/backgrounds/flight.png'
+      defaultPath: '/images/backgrounds/flight.png'
     },
     {
       id: 'logo',
       label: 'Logo Image',
-      defaultPath: '/public/images/backgrounds/logo.jpeg'
+      defaultPath: '/images/backgrounds/logo.jpeg'
     }
   ];
 
@@ -39,22 +39,40 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Fetch current settings from backend
+  let currentSettings = {};
+  try {
+    const res = await fetch("/api/image-settings");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        data.forEach(entry => currentSettings[entry.section] = entry);
+      }
+    }
+  } catch (e) {
+    console.warn("⚠️ Could not load current image settings.", e);
+  }
+
   imageSections.forEach(section => {
+    const current = currentSettings[section.id];
+    const activeMode = current?.mode || 'default';
+    const activePath = activeMode === 'upload' ? current.path : section.defaultPath;
+
     const block = document.createElement("div");
     block.className = "image-block";
     block.innerHTML = `
       <h3>${section.label}</h3>
       <label for="${section.id}-mode">Select Mode:</label>
       <select id="${section.id}-mode">
-        <option value="default">Use Default</option>
-        <option value="upload">Upload New</option>
+        <option value="default" ${activeMode === 'default' ? 'selected' : ''}>Use Default</option>
+        <option value="upload" ${activeMode === 'upload' ? 'selected' : ''}>Upload New</option>
       </select>
 
       <label for="${section.id}-file">Choose Image:</label>
-      <input type="file" id="${section.id}-file" accept="image/*" disabled />
+      <input type="file" id="${section.id}-file" accept="image/*" ${activeMode === 'upload' ? '' : 'disabled'} />
 
       <div class="preview" id="${section.id}-preview">
-        <img src="${section.defaultPath}" alt="${section.label}" style="width: 100%; max-height: 180px; object-fit: cover; margin-top: 10px;" />
+        <img src="${activePath}" alt="${section.label}" style="width: 100%; max-height: 180px; object-fit: cover; margin-top: 10px;" />
       </div>
 
       <button class="btn" onclick="saveImageSetting('${section.id}', '${section.defaultPath}')">Save</button>
@@ -107,7 +125,6 @@ async function saveImageSetting(sectionId, defaultPath) {
 
       alert("✅ Default image selected for " + sectionId);
 
-      // ✅ Update preview to default after successful save
       const previewImg = document.querySelector(`#${sectionId}-preview img`);
       if (previewImg) {
         previewImg.src = defaultPath;
@@ -125,6 +142,12 @@ async function saveImageSetting(sectionId, defaultPath) {
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || 'Upload failed');
+      }
+
+      const { path } = await res.json();
+      const previewImg = document.querySelector(`#${sectionId}-preview img`);
+      if (previewImg && path) {
+        previewImg.src = path;
       }
 
       alert("✅ New image uploaded for " + sectionId);
