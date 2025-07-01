@@ -36,7 +36,10 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static assets (local fallback only)
+// ✅ Serve static files from /public root (for sitemap.xml, robots.txt, etc.)
+app.use(express.static(path.join(__dirname, '../public')));
+
+// ✅ Serve specific static folders from /public
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
