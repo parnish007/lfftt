@@ -1,3 +1,4 @@
+// ✅ IMAGE LOADING - DO NOT TOUCH
 document.addEventListener("DOMContentLoaded", async () => {
   const sections = ["logo", "hero", "tour", "vehicle", "trekking", "flight"];
   const idMap = {
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-// Enable horizontal scroll on wheel for mobile navbar slider
+// ✅ SCROLL WHEEL SUPPORT for horizontal nav scroll (mobile)
 document.querySelectorAll('.navbar-links').forEach(nav => {
   nav.addEventListener('wheel', e => {
     if (window.innerWidth <= 768) {
@@ -37,10 +38,8 @@ document.querySelectorAll('.navbar-links').forEach(nav => {
     }
   });
 });
-</script>
 
-<script>
-// Enable click-and-drag horizontal scroll for mobile navbar slider
+// ✅ DRAG TO SCROLL for nav on mobile
 document.querySelectorAll('.navbar-links').forEach(nav => {
   let isDown = false;
   let startX, scrollLeft;
@@ -56,8 +55,46 @@ document.querySelectorAll('.navbar-links').forEach(nav => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - nav.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust scroll speed multiplier
+    const walk = (x - startX) * 2;
     nav.scrollLeft = scrollLeft - walk;
   });
 });
 
+// ✅ ARC MENU TOGGLE LOGIC
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburger = document.querySelector('.hamburger');
+  const arcMenu = document.querySelector('.arc-menu');
+
+  if (!hamburger || !arcMenu) return;
+
+  // Toggle arc menu on hamburger click
+  hamburger.addEventListener('click', () => {
+    arcMenu.classList.toggle('open');
+  });
+
+  // Close arc menu on outside click
+  document.addEventListener('click', (e) => {
+    if (!arcMenu.contains(e.target) && !hamburger.contains(e.target)) {
+      arcMenu.classList.remove('open');
+    }
+  });
+
+  // Close arc menu on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      arcMenu.classList.remove('open');
+    }
+  });
+});
+
+// ✅ SCROLL SHADOW FOR NAVBAR
+window.addEventListener('scroll', () => {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+
+  if (window.scrollY > 10) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});

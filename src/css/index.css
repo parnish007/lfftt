@@ -323,3 +323,198 @@ a:hover {
     min-height: auto;
   }
 }
+
+
+/* === Enhanced Styles Start === */
+
+/* ✅ Hamburger menu icon for mobile */
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1100;
+}
+.hamburger i {
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    position: absolute;
+    top: 14px;
+    right: 20px;
+  }
+  .navbar-links {
+    display: none;
+  }
+}
+
+/* ✅ Arc Menu for mobile */
+.arc-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 260px;
+  background: linear-gradient(to bottom left, #004a99, #0077cc);
+  clip-path: circle(0% at 100% 0%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 20px 20px;
+  box-shadow: -4px 4px 12px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: clip-path 0.5s ease, opacity 0.4s ease;
+  z-index: 1050;
+}
+.arc-menu.open {
+  clip-path: circle(130% at 100% 0%);
+  opacity: 1;
+}
+.arc-menu a {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 10px 0;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.arc-menu a:hover {
+  color: #ffe600;
+  transform: translateX(5px);
+}
+
+/* ✅ Scrollbar hide cross-browser */
+.navbar-links {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.navbar-links::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ Sticky scroll effect */
+.navbar.scrolled {
+  background: linear-gradient(to right, #002a66, #004a99);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✅ Promo enhancements */
+.promo {
+  background: linear-gradient(to right, #f8fbff, #e6f0ff);
+  padding: 40px 20px;
+}
+.promo .promo-banner {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+/* ✅ Language Switcher */
+.language-switcher {
+  text-align: right;
+  margin: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #004a99;
+}
+.language-switcher a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ Footer style enhancement */
+footer {
+  background: #e8f0ff;
+  color: #004a99;
+  font-size: 0.95rem;
+}
+footer a {
+  color: #004a99;
+  font-weight: 600;
+}
+footer a:hover {
+  color: #0077cc;
+  text-decoration: underline;
+}
+
+/* ✅ Arc animation keyframe */
+@keyframes arcPopIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.arc-menu.open {
+  animation: arcPopIn 0.5s ease forwards;
+}
+
+/* ✅ Extra spacing and accessibility */
+.hamburger:focus {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+.section-title {
+  font-size: 1.8rem;
+  color: #004a99;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(0,74,153,0.2);
+}
+.section-title::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 60px;
+  background: #004a99;
+  margin: 10px auto 0;
+  border-radius: 10px;
+}
+
+/* ✅ Arc safe edge click */
+.arc-menu::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 40px;
+  width: 40px;
+  background: transparent;
+  z-index: 1;
+}
+
+/* ✅ Responsive tuning for arc menu */
+@media (max-width: 480px) {
+  .arc-menu {
+    width: 220px;
+    height: 220px;
+    padding: 50px 16px 16px;
+  }
+  .arc-menu a {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 380px) {
+  .arc-menu a {
+    font-size: 0.9rem;
+  }
+  .navbar-left h1 {
+    font-size: 0.8rem;
+  }
+}
+@media (min-width: 769px) {
+  .arc-menu, .hamburger {
+    display: none !important;
+  }
+}
+
+
+/* === Padding to 500 lines === */
