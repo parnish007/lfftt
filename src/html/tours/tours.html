@@ -63,12 +63,27 @@
 }
 
 
-  .tours-header p {
-    font-size: 1.2rem;
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    position: relative;
-    z-index: 1;
+.tours-header p {
+  font-size: 1.2rem;
+  color: #ffffff;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 12px #fff,
+    0 0 24px #fff;
+  animation: glowSubtitle 2s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes glowSubtitle {
+  0% {
+    text-shadow: 0 0 6px #fff;
   }
+  100% {
+    text-shadow: 0 0 12px #fff, 0 0 24px #fff;
+  }
+}
+
 
   .tours-list {
     display: grid;
