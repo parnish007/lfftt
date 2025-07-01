@@ -60,7 +60,7 @@ document.querySelectorAll('.navbar-links').forEach(nav => {
   });
 });
 
-// ✅ ARC MENU TOGGLE LOGIC
+// ✅ ARC MENU TOGGLE LOGIC (ENHANCED)
 document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.querySelector('.hamburger');
   const arcMenu = document.querySelector('.arc-menu');
@@ -70,14 +70,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toggle arc menu on hamburger click
   hamburger.addEventListener('click', () => {
     arcMenu.classList.toggle('open');
-    hamburger.classList.toggle('active'); // ✅ Added for rotation
+    hamburger.classList.toggle('active');
+    if (arcMenu.classList.contains('open')) {
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    } else {
+      document.body.style.overflow = '';
+    }
   });
 
   // Close arc menu on outside click
   document.addEventListener('click', (e) => {
     if (!arcMenu.contains(e.target) && !hamburger.contains(e.target)) {
       arcMenu.classList.remove('open');
-      hamburger.classList.remove('active'); // ✅ Close rotation when clicked outside
+      hamburger.classList.remove('active');
+      document.body.style.overflow = '';
     }
   });
 
@@ -85,9 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       arcMenu.classList.remove('open');
-      hamburger.classList.remove('active'); // ✅ Close rotation on ESC
+      hamburger.classList.remove('active');
+      document.body.style.overflow = '';
     }
   });
+
+  // ✅ Touch scroll fix for arc menu
+  arcMenu.addEventListener('touchmove', (e) => {
+    e.stopPropagation();
+  }, { passive: true });
 });
 
 // ✅ SCROLL SHADOW FOR NAVBAR

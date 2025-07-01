@@ -362,14 +362,13 @@ a:hover {
   }
 }
 
-/* ✅ Arc Menu for mobile */
 .arc-menu {
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 260px;
-  height: 260px;
-  background: linear-gradient(to bottom left, #004a99, #0077cc);
+  top: 10px;
+  right: 10px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle at top right, #004a99, #0077cc);
   clip-path: circle(0% at 100% 0%);
   display: flex;
   flex-direction: column;
@@ -378,13 +377,21 @@ a:hover {
   padding: 60px 20px 20px;
   box-shadow: -4px 4px 12px rgba(0,0,0,0.2);
   opacity: 0;
-  transition: clip-path 0.5s ease, opacity 0.4s ease;
-  z-index: 1050;
+  transition: clip-path 0.6s ease, opacity 0.4s ease;
+  z-index: 1100;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
+
 .arc-menu.open {
-  clip-path: circle(130% at 100% 0%);
+  clip-path: circle(150% at 100% 0%);
   opacity: 1;
 }
+
+.arc-menu::-webkit-scrollbar {
+  display: none;
+}
+
 .arc-menu a {
   color: white;
   font-size: 1rem;
@@ -393,10 +400,24 @@ a:hover {
   text-shadow: 0 0 10px rgba(255,255,255,0.4);
   transition: transform 0.3s ease, color 0.3s ease;
 }
+
 .arc-menu a:hover {
   color: #ffe600;
-  transform: translateX(5px);
+  transform: translateX(6px);
 }
+
+@media (max-width: 480px) {
+  .arc-menu {
+    width: 200px;
+    height: 200px;
+    padding: 50px 16px 16px;
+  }
+
+  .arc-menu a {
+    font-size: 0.95rem;
+  }
+}
+
 
 /* ✅ Scrollbar hide cross-browser */
 .navbar-links {
