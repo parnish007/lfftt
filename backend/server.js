@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static files from /public root (for sitemap.xml, robots.txt, etc.)
+// ✅ Serve static files from /public root (robots.txt, sitemap.xml, etc.)
 app.use(express.static(path.join(__dirname, '../public')));
 
 // ✅ Serve specific static folders from /public
