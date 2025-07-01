@@ -328,6 +328,15 @@ a:hover {
 /* === Enhanced Styles Start === */
 
 /* ✅ Hamburger menu icon for mobile */
+/* ✅ Animated hamburger rotation toggle */
+.hamburger.active i {
+  transform: rotate(90deg);
+  transition: transform 0.4s ease;
+}
+.hamburger i {
+  transition: transform 0.4s ease;
+}
+
 .hamburger {
   display: none;
   background: transparent;

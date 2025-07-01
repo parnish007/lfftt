@@ -70,12 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toggle arc menu on hamburger click
   hamburger.addEventListener('click', () => {
     arcMenu.classList.toggle('open');
+    hamburger.classList.toggle('active'); // ✅ Added for rotation
   });
 
   // Close arc menu on outside click
   document.addEventListener('click', (e) => {
     if (!arcMenu.contains(e.target) && !hamburger.contains(e.target)) {
       arcMenu.classList.remove('open');
+      hamburger.classList.remove('active'); // ✅ Close rotation when clicked outside
     }
   });
 
@@ -83,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       arcMenu.classList.remove('open');
+      hamburger.classList.remove('active'); // ✅ Close rotation on ESC
     }
   });
 });
