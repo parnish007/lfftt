@@ -24,13 +24,14 @@ const io = socketIo(server, {
   cors: { origin: '*' }
 });
 
-// ✅ Force HTTPS and redirect www to non-www — allow sitemap access directly
+// ✅ Force HTTPS and redirect www to non-www — allow sitemap and robots.txt access directly
 app.use((req, res, next) => {
   const proto = req.headers['x-forwarded-proto'];
   const host = req.headers.host;
 
-  // ✅ Let Google fetch sitemap directly (no redirect)
-  if (req.url === '/sitemap.xml') return next();
+  // ✅ Let Google fetch sitemap and robots.txt directly (no redirect)
+  const safePaths = ['/sitemap.xml', '/robots.txt'];
+  if (safePaths.includes(req.url)) return next();
 
   // Redirect to non-www + HTTPS
   if (proto !== 'https' || host.startsWith('www.')) {
@@ -81,6 +82,7 @@ app.use('/api/bills', require('./routes/bills'));
 
 // ✅ WebSocket
 require('./socket')(io);
+
 // ✅ Serve robots.txt explicitly to Googlebot
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain');
@@ -89,10 +91,9 @@ Allow: /
 Sitemap: https://lifeforfuntours.com/sitemap.xml`);
 });
 
-
 // ✅ Serve sitemap.xml explicitly for Googlebot with correct headers
 app.get('/sitemap.xml', (req, res) => {
-  res.type('application/xml'); // ✅ Use this instead of setHeader
+  res.type('application/xml');
   res.sendFile(path.join(__dirname, '../public/sitemap.xml'), (err) => {
     if (err) {
       console.error("❌ Error serving sitemap:", err.message);
