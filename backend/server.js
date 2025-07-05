@@ -79,9 +79,15 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket
 require('./socket')(io);
 
-// ✅ Serve sitemap.xml explicitly for Googlebot
+// ✅ Serve sitemap.xml explicitly for Googlebot with correct headers
 app.get('/sitemap.xml', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/sitemap.xml'));
+  res.setHeader('Content-Type', 'application/xml'); // 🟢 Important!
+  res.sendFile(path.join(__dirname, '../public/sitemap.xml'), (err) => {
+    if (err) {
+      console.error("❌ Error serving sitemap:", err.message);
+      res.status(500).end();
+    }
+  });
 });
 
 // ✅ Serve index.html
