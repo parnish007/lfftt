@@ -83,13 +83,7 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket
 require('./socket')(io);
 
-// ✅ Serve robots.txt manually to ensure Google gets correct file
-app.get('/robots.txt', (req, res) => {
-  res.type('text/plain');
-  res.send(`User-agent: *
-Allow: /
-Sitemap: https://lifeforfuntours.com/sitemap.xml`);
-});
+
 
 // ✅ Serve index.html
 app.get('/', (req, res) => {
