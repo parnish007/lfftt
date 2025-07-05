@@ -81,6 +81,14 @@ app.use('/api/bills', require('./routes/bills'));
 
 // ✅ WebSocket
 require('./socket')(io);
+// ✅ Serve robots.txt explicitly to Googlebot
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(`User-agent: *
+Allow: /
+Sitemap: https://lifeforfuntours.com/sitemap.xml`);
+});
+
 
 // ✅ Serve sitemap.xml explicitly for Googlebot with correct headers
 app.get('/sitemap.xml', (req, res) => {
