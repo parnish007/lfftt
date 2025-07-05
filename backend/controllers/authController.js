@@ -6,43 +6,54 @@ exports.loginUser = async (req, res) => {
   const { phone, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({ phone });
-    const user = await User.findOne({ phone });
+    let account = await Admin.findOne({ phone });
+    let role = 'admin';
 
-    const account = admin || user;
-    if (!account) return res.status(404).json({ message: 'User not found' });
+    if (!account) {
+      account = await User.findOne({ phone });
+      role = 'customer';
+    }
+
+    if (!account) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     const isMatch = await account.comparePassword(password);
-    if (!isMatch) return res.status(401).json({ message: 'Invalid password' });
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
 
-    const role = admin ? 'admin' : 'customer';
     const token = jwt.sign(
       { id: account._id, role },
       process.env.JWT_SECRET,
       { expiresIn: '3d' }
     );
 
-    res.json({
+    res.status(200).json({
       token,
       role,
       user: {
+        id: account._id,
         name: account.name,
         phone: account.phone
       }
     });
+
   } catch (err) {
     console.error('❌ Login Error:', err);
     res.status(500).json({ message: 'Login failed' });
   }
 };
 
-// Registration kept for future (optional)
+// Optional user registration
 exports.registerUser = async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
+    console.error('❌ Registration Error:', err);
     res.status(400).json({ message: 'Registration failed' });
   }
 };
+ 
