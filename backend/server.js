@@ -129,6 +129,16 @@ app.get('/*.html', (req, res, next) => {
 
   tryNext();
 });
+// ✅ Debug endpoint to inspect request headers (for Googlebot, browsers, etc.)
+app.get('/debug/headers', (req, res) => {
+  res.json({
+    method: req.method,
+    url: req.url,
+    headers: req.headers,
+    ip: req.ip,
+    protocol: req.protocol,
+  });
+});
 
 // ✅ 404 fallback
 app.use((req, res) => {
