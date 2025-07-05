@@ -47,6 +47,16 @@
     <!-- ✅ Support -->
     <a href="chat-admin.html">Live Chat</a>
   </nav>
+  <script>
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  if (!token || role !== "admin") {
+    // 🔒 Not authorized, redirect to login
+    window.location.href = "/html/login.html";
+  }
+</script>
+
 
   <script src="/js/admin-dashboard.js"></script>
 </body>
