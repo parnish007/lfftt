@@ -81,7 +81,7 @@ require('./socket')(io);
 
 // ✅ Serve sitemap.xml explicitly for Googlebot with correct headers
 app.get('/sitemap.xml', (req, res) => {
-  res.setHeader('Content-Type', 'application/xml'); // 🟢 Important!
+  res.type('application/xml'); // ✅ Use this instead of setHeader
   res.sendFile(path.join(__dirname, '../public/sitemap.xml'), (err) => {
     if (err) {
       console.error("❌ Error serving sitemap:", err.message);
@@ -89,6 +89,7 @@ app.get('/sitemap.xml', (req, res) => {
     }
   });
 });
+
 
 // ✅ Serve index.html
 app.get('/', (req, res) => {
