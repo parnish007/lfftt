@@ -24,10 +24,13 @@ const io = socketIo(server, {
   cors: { origin: '*' }
 });
 
-// ✅ Force HTTPS and redirect www to non-www
+// ✅ Force HTTPS and redirect www to non-www — allow sitemap access directly
 app.use((req, res, next) => {
   const proto = req.headers['x-forwarded-proto'];
   const host = req.headers.host;
+
+  // ✅ Let Google fetch sitemap directly (no redirect)
+  if (req.url === '/sitemap.xml') return next();
 
   // Redirect to non-www + HTTPS
   if (proto !== 'https' || host.startsWith('www.')) {
@@ -89,7 +92,6 @@ app.get('/sitemap.xml', (req, res) => {
     }
   });
 });
-
 
 // ✅ Serve index.html
 app.get('/', (req, res) => {
