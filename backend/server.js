@@ -28,13 +28,15 @@ const io = socketIo(server, {
 app.use((req, res, next) => {
   const proto = req.headers['x-forwarded-proto'];
   const host = req.headers.host;
+  const userAgent = req.headers['user-agent'] || '';
+  const isBot = /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandex/i.test(userAgent);
 
   // ✅ Let Google fetch sitemap and robots.txt directly (no redirect)
   const safePaths = ['/sitemap.xml', '/robots.txt'];
   if (safePaths.includes(req.url)) return next();
 
-  // Redirect to non-www + HTTPS
-  if (proto !== 'https' || host.startsWith('www.')) {
+  // ✅ Redirect to non-www + HTTPS unless it's a bot
+  if (!isBot && (proto !== 'https' || host.startsWith('www.'))) {
     return res.redirect(301, `https://lifeforfuntours.com${req.url}`);
   }
 
@@ -86,7 +88,6 @@ require('./socket')(io);
 // ✅ Serve robots.txt explicitly to Googlebot
 app.use('/robots.txt', express.static(path.join(__dirname, '../public/robots.txt')));
 
-
 // ✅ Serve sitemap.xml explicitly for Googlebot with correct headers
 app.get('/sitemap.xml', (req, res) => {
   res.type('application/xml');
@@ -129,6 +130,7 @@ app.get('/*.html', (req, res, next) => {
 
   tryNext();
 });
+
 // ✅ Debug endpoint to inspect request headers (for Googlebot, browsers, etc.)
 app.get('/debug/headers', (req, res) => {
   res.json({
