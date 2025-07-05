@@ -1,75 +1,83 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ✅ Main Static Pages -->
   <url>
     <loc>https://www.lifeforfuntours.com/</loc>
-    <lastmod>2025-07-01</lastmod>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
+
   <url>
-    <loc>https://www.lifeforfuntours.com/index.html</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://www.lifeforfuntours.com/tours/tours.html</loc>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
+
   <url>
-    <loc>https://www.lifeforfuntours.com/tours.html</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://www.lifeforfuntours.com/vehicles/vehicle-rental.html</loc>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
+
+  <!-- ✅ Tour Detail Slugs -->
   <url>
-    <loc>https://www.lifeforfuntours.com/vehicle-rental.html</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=rani-mahal-bhairabsthan-temple-ridi</loc>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
+
   <url>
-    <loc>https://www.lifeforfuntours.com/contact.html</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=illam-janakpur-sauraha-hetauda-dharan</loc>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
+
   <url>
-    <loc>https://www.lifeforfuntours.com/about.html</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=lumbini-janakpur-kathmandu-pokhara-muktinath</loc>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
+
+  <url>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=rara-lake</loc>
+    <lastmod>2025-07-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=muktinath-temple</loc>
+    <lastmod>2025-07-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=bardiya-national-park-wild-life-adventure</loc>
+    <lastmod>2025-07-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=paragliding-rafting-bungee-jumping</loc>
+    <lastmod>2025-07-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://lifeforfuntours.com/tour/tour-detail.html?slug=lumbini-kathmandu-pokhara</loc>
-    <lastmod>2025-07-01</lastmod>
+    <lastmod>2025-07-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://www.lifeforfuntours.com/tour-detail.html?id=lumbini-tour</loc>
-    <lastmod>2025-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.lifeforfuntours.com/tour-detail.html?id=everest-base-camp</loc>
-    <lastmod>2025-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.lifeforfuntours.com/vehicle-detail.html?id=scorpio-ac</loc>
-    <lastmod>2025-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.lifeforfuntours.com/vehicle-detail.html?id=hiace-deluxe</loc>
-    <lastmod>2025-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.lifeforfuntours.com/vehicle-detail.html?id=coaster-luxury</loc>
-    <lastmod>2025-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+
 </urlset>
