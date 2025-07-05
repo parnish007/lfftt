@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const Admin = require('../models/Admin'); // 🔁 Make sure this path is correct
+const Admin = require('../models/Admin'); // ✅ Ensure this path is correct
 
 async function createAdmin() {
   try {
@@ -12,8 +11,8 @@ async function createAdmin() {
       useUnifiedTopology: true
     });
 
-    const phone = '9847309013'; // ✅ CHANGE this if needed
-    const plainPassword = 'Ratorani12@+'; // ✅ CHANGE this securely
+    const phone = '9847309013'; // ✅ Update if needed
+    const plainPassword = 'Ratorani12@+'; // ✅ Update if needed
     const name = 'Admin';
 
     const existingAdmin = await Admin.findOne({ phone });
@@ -22,12 +21,10 @@ async function createAdmin() {
       return process.exit(0);
     }
 
-    const hashedPassword = await bcrypt.hash(plainPassword, 10);
-
     const newAdmin = new Admin({
       name,
       phone,
-      password: hashedPassword
+      password: plainPassword // 👉 Do NOT hash here — handled by Admin model
     });
 
     await newAdmin.save();

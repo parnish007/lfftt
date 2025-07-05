@@ -6,24 +6,22 @@ exports.loginUser = async (req, res) => {
   const { phone, password } = req.body;
 
   try {
-    // Try to find admin first
     let account = await Admin.findOne({ phone });
     let role = 'admin';
 
-    // If not admin, try to find regular user
     if (!account) {
       account = await User.findOne({ phone });
       role = 'customer';
     }
 
-    // No account found
     if (!account) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Ensure comparePassword is available (shared logic)
+    // Validate comparePassword is available
     if (typeof account.comparePassword !== 'function') {
-      return res.status(500).json({ message: 'Password comparison not supported for this user type' });
+      console.error('❌ comparePassword not found on this model');
+      return res.status(500).json({ message: 'Password comparison not supported' });
     }
 
     const isMatch = await account.comparePassword(password);
@@ -31,14 +29,13 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: 'Invalid password' });
     }
 
-    // Generate JWT
     const token = jwt.sign(
       { id: account._id, role },
       process.env.JWT_SECRET,
       { expiresIn: '3d' }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       token,
       role,
       user: {
@@ -49,19 +46,19 @@ exports.loginUser = async (req, res) => {
     });
 
   } catch (err) {
-    console.error('❌ Login Error:', err.message);
-    res.status(500).json({ message: 'Login failed' });
+    console.error('❌ Login Error:', err.message || err);
+    return res.status(500).json({ message: 'Login failed' });
   }
 };
 
-// Optional registration (only for users, not admins)
+// ✅ Optional user registration (not for admins)
 exports.registerUser = async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    console.error('❌ Registration Error:', err.message);
+    console.error('❌ Registration Error:', err.message || err);
     res.status(400).json({ message: 'Registration failed' });
   }
 };
