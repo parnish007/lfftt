@@ -37,20 +37,16 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // ✅ Middleware
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
 app.use(express.json());
 
-// ✅ Serve static files from /public root (robots.txt, sitemap.xml, etc.)
+// ✅ Serve static files from /public
 app.use(express.static(path.join(__dirname, '../public')));
-
-// ✅ Serve specific static folders from /public
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use('/bills', express.static(path.join(__dirname, '../public/bills')));
@@ -83,7 +79,10 @@ app.use('/api/bills', require('./routes/bills'));
 // ✅ WebSocket
 require('./socket')(io);
 
-
+// ✅ Serve sitemap.xml explicitly for Googlebot
+app.get('/sitemap.xml', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/sitemap.xml'));
+});
 
 // ✅ Serve index.html
 app.get('/', (req, res) => {
