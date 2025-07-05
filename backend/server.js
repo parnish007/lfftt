@@ -24,13 +24,19 @@ const io = socketIo(server, {
   cors: { origin: '*' }
 });
 
-// ✅ Force HTTPS (Render-specific)
+// ✅ Force HTTPS and redirect www to non-www
 app.use((req, res, next) => {
-  if (req.headers['x-forwarded-proto'] !== 'https') {
-    return res.redirect('https://' + req.headers.host + req.url);
+  const proto = req.headers['x-forwarded-proto'];
+  const host = req.headers.host;
+
+  // Redirect to non-www + HTTPS
+  if (proto !== 'https' || host.startsWith('www.')) {
+    return res.redirect(301, `https://lifeforfuntours.com${req.url}`);
   }
+
   next();
 });
+
 
 // ✅ Middleware
 app.use(cors());
